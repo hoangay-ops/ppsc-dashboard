@@ -368,7 +368,7 @@
         </div>
       </section>
     </div> <!-- END execSummary -->
-      <div class="footer">Generated May 11, 2026 11:24 · Source: March 2026 financial workbook · Award OT2OD036464</div>
+      <div class="footer">Generated May 11, 2026 11:30 · Source: March 2026 financial workbook · Award OT2OD036464</div>
 
     </div><!-- /.wrap -->
   </div><!-- /#dashboardContent -->
@@ -456,138 +456,153 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
 <script>
 function exportPDF() {
-  const month    = "March 2026";
-  const award    = "OT2OD036464";
+  var month    = "March 2026";
+  var award    = "OT2OD036464";
 
-  const fmtUsd = v => new Intl.NumberFormat('en-US', {
-    style: 'currency', currency: 'USD', maximumFractionDigits: 0
-  }).format(v);
+  var fmtUsd = function(v) {
+    return new Intl.NumberFormat('en-US', {
+      style: 'currency', currency: 'USD', maximumFractionDigits: 0
+    }).format(v);
+  };
 
-  const atRisk       = milestones.filter(m => m.status === 'At Risk');
-  const onTrack      = milestones.filter(m => m.status !== 'At Risk');
-  const totalOverrun = milestones.reduce((s,m) => s + Math.max(m.projected_overrun, 0), 0);
-  const estBal       = milestones.reduce((s,m) => s + (m.est_balance   || 0), 0);
-  const ytdTotal     = milestones.reduce((s,m) => s + (m.ytd_actual    || 0), 0);
-  const monthTotal   = milestones.reduce((s,m) => s + (m.monthly_spend || 0), 0);
-  const budgetTotal  = milestones.reduce((s,m) => s + (m.budget        || 0), 0);
-  const balColor     = estBal < 0 ? '#dc2626' : '#059669';
+  var atRisk       = milestones.filter(function(m){ return m.status === 'At Risk'; });
+  var onTrack      = milestones.filter(function(m){ return m.status !== 'At Risk'; });
+  var onPace       = milestones.filter(function(m){ return m.burn_rate_status === 'On Pace'; });
+  var ahead        = milestones.filter(function(m){ return m.burn_rate_status === 'Ahead'; });
+  var behind       = milestones.filter(function(m){ return m.burn_rate_status === 'Behind'; });
+  var totalOverrun = milestones.reduce(function(s,m){ return s + Math.max(m.projected_overrun, 0); }, 0);
+  var estBal       = milestones.reduce(function(s,m){ return s + (m.est_balance   || 0); }, 0);
+  var ytdTotal     = milestones.reduce(function(s,m){ return s + (m.ytd_actual    || 0); }, 0);
+  var monthTotal   = milestones.reduce(function(s,m){ return s + (m.monthly_spend || 0); }, 0);
+  var budgetTotal  = milestones.reduce(function(s,m){ return s + (m.budget        || 0); }, 0);
+  var balColor     = estBal < 0 ? '#dc2626' : '#059669';
 
-  const riskScore = m =>
-    Math.abs(m.projected_overrun) / Math.max(m.budget, 1) * 50 +
-    (m.burn_rate_status === 'Ahead' ? 30 : 0) +
-    (m.status === 'At Risk' ? 20 : 0);
+  var riskScore = function(m) {
+    return Math.abs(m.projected_overrun) / Math.max(m.budget, 1) * 50
+      + (m.burn_rate_status === 'Ahead' ? 30 : 0)
+      + (m.status === 'At Risk' ? 20 : 0);
+  };
 
-  const watchlist = [...milestones].sort((a,b) => riskScore(b) - riskScore(a)).slice(0, 8);
+  var watchlist = milestones.slice().sort(function(a,b){ return riskScore(b)-riskScore(a); }).slice(0,8);
 
-  const tableRows = watchlist.map(function(m) {
+  // ── Milestone table rows ──────────────────────────────────────
+  var tableRows = watchlist.map(function(m) {
     var rowBg    = m.status === 'At Risk' ? '#fff5f5' : '#ffffff';
     var varColor = m.projected_overrun > 0 ? '#dc2626' : '#059669';
     var varArrow = m.projected_overrun > 0 ? '▲' : '▼';
-    var burnColor= m.burn_rate_status === 'Ahead' ? '#d97706' : '#10203a';
-    return '<tr style="background:' + rowBg + '">'
-      + '<td>' + m.title + '</td>'
-      + '<td style="color:' + (m.status==='At Risk'?'#dc2626':'#059669') + ';font-weight:700">' + m.status + '</td>'
+    var burnColor= m.burn_rate_status === 'Ahead' ? '#d97706'
+                 : m.burn_rate_status === 'Behind' ? '#2563eb' : '#059669';
+    var statusColor = m.status === 'At Risk' ? '#dc2626' : '#059669';
+    return '<tr style="background:' + rowBg + ';page-break-inside:avoid;">'
+      + '<td style="font-weight:600">' + m.title + '</td>'
+      + '<td style="color:' + statusColor + ';font-weight:700">' + m.status + '</td>'
       + '<td>' + fmtUsd(m.budget) + '</td>'
       + '<td>' + fmtUsd(m.ytd_actual) + '</td>'
-      + '<td style="color:' + varColor + '">' + varArrow + ' ' + fmtUsd(Math.abs(m.projected_overrun)) + '</td>'
-      + '<td style="color:' + burnColor + '">' + m.burn_rate_status + '</td>'
+      + '<td style="color:' + varColor + ';font-weight:600">' + varArrow + ' ' + fmtUsd(Math.abs(m.projected_overrun)) + '</td>'
+      + '<td style="color:' + burnColor + ';font-weight:600">' + m.burn_rate_status + '</td>'
       + '</tr>';
   }).join('');
 
-  const findings = [];
-  findings.push(estBal < 0
-    ? '⚠️ Portfolio est. balance is <b>negative (' + fmtUsd(estBal) + ')</b> — review required.'
-    : '✅ Portfolio est. balance is positive at <b>' + fmtUsd(estBal) + '</b>.');
-  atRisk.slice(0, 3).forEach(function(m) {
-    findings.push('⚠️ <b>' + m.title + '</b>: projected overrun '
-      + fmtUsd(Math.abs(m.projected_overrun)) + ' vs ' + fmtUsd(m.budget) + ' budget.');
+  // ── Key findings (no redundancy with KPI row) ─────────────────
+  // Only include findings that add context beyond what the KPI chips already show
+  var findings = [];
+  if (estBal < 0)
+    findings.push('⚠️ Total estimated balance is <b>negative (' + fmtUsd(estBal) + ')</b> — portfolio is over projected spend.');
+  else
+    findings.push('✅ Portfolio estimated balance is positive at <b>' + fmtUsd(estBal) + '</b>.');
+
+  // At-risk milestones with specific overrun amounts
+  atRisk.slice(0,4).forEach(function(m) {
+    findings.push('⚠️ <b>' + m.title + '</b>: est. overrun of '
+      + fmtUsd(Math.abs(m.projected_overrun))
+      + ' (' + m.burn_rate_status + ' of pace).');
   });
-  var aheadMs = milestones.filter(function(m) { return m.burn_rate_status === 'Ahead'; });
-  if (aheadMs.length)
-    findings.push('🔥 ' + aheadMs.length + ' milestone(s) ahead of pace: '
-      + aheadMs.map(function(m){ return m.title; }).join(', ') + '.');
-  if (!atRisk.length)
-    findings.push('✅ No milestones showing projected overruns.');
+
+  // Pace outliers not already covered above
+  var aheadNotRisk = ahead.filter(function(m){ return m.status !== 'At Risk'; });
+  if (aheadNotRisk.length)
+    findings.push('🔥 ' + aheadNotRisk.length + ' on-track milestone(s) burning ahead of pace: '
+      + aheadNotRisk.map(function(m){ return m.title; }).join(', ') + '.');
+
+  if (behind.length)
+    findings.push('📉 ' + behind.length + ' milestone(s) behind pace: '
+      + behind.map(function(m){ return m.title; }).join(', ') + '.');
 
   var now = new Date().toLocaleString('en-US',{
     month:'long', day:'numeric', year:'numeric', hour:'2-digit', minute:'2-digit'
   });
 
-  var kpiCells = [
+  // ── KPI row (4 cards — balance + spend already tell the story) ─
+  var kpiData = [
     ['Award Budget',  fmtUsd(budgetTotal), '#10203a'],
     ['Monthly Spend', fmtUsd(monthTotal),  '#10203a'],
     ['YTD Spend',     fmtUsd(ytdTotal),    '#10203a'],
     ['Est. Balance',  fmtUsd(estBal),      balColor ],
-    ['On Track',      onTrack.length + ' / ' + milestones.length, '#059669'],
-    ['At Risk',       String(atRisk.length), atRisk.length ? '#dc2626' : '#059669'],
-  ].map(function(x, i) {
-    return (i > 0 ? '<td style="width:8px"></td>' : '')
+  ];
+  var kpiCells = kpiData.map(function(x, i) {
+    return (i > 0 ? '<td style="width:10px"></td>' : '')
       + '<td class="kpi"><div class="kpi-lbl">' + x[0] + '</div>'
       + '<div class="kpi-val" style="color:' + x[2] + '">' + x[1] + '</div></td>';
+  }).join('');
+
+  // ── Burn rate summary (replaces redundant status chips) ────────
+  var burnSummary = [
+    ['On Pace', onPace.length,  '#059669', '#f0fdf4'],
+    ['Ahead',   ahead.length,   '#d97706', '#fffbeb'],
+    ['Behind',  behind.length,  '#2563eb', '#eff6ff'],
+    ['At Risk', atRisk.length,  '#dc2626', '#fff5f5'],
+  ].map(function(x, i) {
+    return (i > 0 ? '<td style="width:6px"></td>' : '')
+      + '<td style="background:' + x[3] + ';border-radius:6px;padding:6px;text-align:center;">'
+      + '<div style="font-size:16px;font-weight:800;color:' + x[2] + '">' + x[1] + '</div>'
+      + '<div style="font-size:7px;text-transform:uppercase;color:' + x[2] + ';margin-top:1px;">' + x[0] + '</div>'
+      + '</td>';
   }).join('');
 
   var findingsHtml = findings.map(function(f) {
     return '<div class="finding">' + f + '</div>';
   }).join('');
 
-  // Build the print window HTML — uses @page CSS for exact paper sizing,
-  // no html2canvas involved, so nothing gets clipped.
   var html = '<!DOCTYPE html><html><head><meta charset="UTF-8"><style>'
-    + '@page { size: 11in 8.5in portrait; margin: 0.35in 0.35in 0.3in 0.35in; }'
+    + '@page { size: landscape; margin: 0.3in 0.3in 0.25in 0.3in; }'
     + '* { box-sizing:border-box; margin:0; padding:0; -webkit-print-color-adjust:exact; print-color-adjust:exact; }'
-    + 'body { font-family:Arial,sans-serif; font-size:9.5px; color:#10203a; background:white; }'
+    + 'body { font-family:Arial,sans-serif; font-size:9px; color:#10203a; background:white; }'
     + 'table { border-collapse:collapse; width:100%; }'
     + 'td, th { vertical-align:top; }'
-
-    + '.hdr { background:linear-gradient(135deg,#2563eb,#7c3aed) !important; color:white !important;'
-    + '  border-radius:6px; padding:9px 14px; margin-bottom:9px; }'
-    + '.hdr-title { font-size:16px; font-weight:800; }'
-    + '.hdr-sub { font-size:9px; opacity:0.85; margin-top:2px; }'
-
-    + '.kpi { border:1px solid #e2e8f0; border-radius:6px; padding:7px 10px; text-align:center; }'
-    + '.kpi-lbl { font-size:7.5px; text-transform:uppercase; color:#51627d; letter-spacing:.05em; }'
-    + '.kpi-val { font-size:14px; font-weight:800; margin-top:3px; }'
-
-    + '.sec-label { font-size:10px; font-weight:700; padding-bottom:5px; }'
-
-    + '.ms-table th { background:#f6f8fc !important; padding:5px 7px; font-size:8px;'
-    + '  text-transform:uppercase; color:#51627d; border-bottom:1px solid #e2e8f0; text-align:left; }'
-    + '.ms-table td { padding:5px 7px; border-bottom:1px solid #f1f5f9; font-size:9px; }'
-
-    + '.chip { border-radius:6px; padding:7px; text-align:center; }'
-    + '.chip-n { font-size:20px; font-weight:800; }'
-    + '.chip-t { font-size:7.5px; text-transform:uppercase; margin-top:2px; }'
-    + '.chip-good { background:#f0fdf4 !important; color:#059669 !important; }'
-    + '.chip-risk { background:#fff5f5 !important; color:#dc2626 !important; }'
-
-    + '.finding { font-size:9px; line-height:1.5; padding:3px 0; border-bottom:1px solid #f1f5f9; }'
-    + '.notes { font-size:8px; color:#51627d; line-height:1.6; }'
-    + '.footer { font-size:8px; color:#94a3b8; text-align:center;'
-    + '  border-top:1px solid #f1f5f9; padding-top:5px; margin-top:8px; }'
-
-    + '.overrun-box { padding:6px 8px; border-radius:6px; text-align:center; margin-bottom:7px; }'
+    + '.hdr { background:linear-gradient(135deg,#2563eb,#7c3aed) !important; color:white !important; border-radius:6px; padding:8px 14px; margin-bottom:8px; }'
+    + '.hdr-title { font-size:15px; font-weight:800; }'
+    + '.hdr-sub { font-size:8.5px; opacity:0.85; margin-top:2px; }'
+    + '.kpi { border:1px solid #e2e8f0; border-radius:6px; padding:6px 10px; text-align:center; }'
+    + '.kpi-lbl { font-size:7px; text-transform:uppercase; color:#51627d; letter-spacing:.05em; }'
+    + '.kpi-val { font-size:13px; font-weight:800; margin-top:2px; }'
+    + '.sec-label { font-size:9.5px; font-weight:700; padding-bottom:4px; color:#10203a; }'
+    + '.ms-table th { background:#f6f8fc !important; padding:4px 6px; font-size:7.5px; text-transform:uppercase; color:#51627d; border-bottom:1px solid #e2e8f0; text-align:left; }'
+    + '.ms-table td { padding:4px 6px; border-bottom:1px solid #f1f5f9; font-size:8.5px; }'
+    + '.finding { font-size:8.5px; line-height:1.5; padding:3px 0; border-bottom:1px solid #f1f5f9; }'
+    + '.notes { font-size:7.5px; color:#51627d; line-height:1.6; }'
+    + '.footer { font-size:7.5px; color:#94a3b8; text-align:center; border-top:1px solid #f1f5f9; padding-top:5px; margin-top:7px; }'
     + '</style></head><body>'
 
     // Header
-    + '<table style="margin-bottom:9px;"><tr><td class="hdr">'
+    + '<table style="margin-bottom:8px;"><tr><td class="hdr">'
     + '<div class="hdr-title">PPSC Financial Executive Summary</div>'
     + '<div class="hdr-sub">' + month + ' &nbsp;·&nbsp; Award ' + award + ' &nbsp;·&nbsp; ' + now + '</div>'
     + '</td></tr></table>'
 
-    // KPI row — let table stretch full width naturally
-    + '<table style="margin-bottom:9px;table-layout:fixed;"><tr>'
+    // KPI row — 4 cards only (balance is the key signal; status counts move to side panel)
+    + '<table style="margin-bottom:8px;table-layout:fixed;"><tr>'
     + kpiCells
     + '</tr></table>'
 
-    // Body
-    + '<table style="table-layout:fixed;"><tr valign="top">'
+    // Body: left = milestone table (64%), right = analysis panel (35%)
+    + '<table style="table-layout:fixed;margin-bottom:0;"><tr valign="top">'
 
-    // Left: milestone table (66%)
-    + '<td style="width:66%">'
-    + '<div class="sec-label">Top Milestones by Risk Score <span style="font-weight:400;color:#51627d;">(up to 8)</span></div>'
-    + '<table class="ms-table"><thead><tr>'
-    + '<th style="width:28%">Milestone</th>'
-    + '<th style="width:11%">Status</th>'
+    // LEFT
+    + '<td style="width:64%">'
+    + '<div class="sec-label">Milestone Risk Ranking <span style="font-weight:400;color:#51627d;font-size:8px;">(top 8 by risk score)</span></div>'
+    + '<table class="ms-table" style="margin-top:4px;"><thead><tr>'
+    + '<th style="width:29%">Milestone</th>'
+    + '<th style="width:10%">Status</th>'
     + '<th style="width:14%">Budget</th>'
     + '<th style="width:14%">YTD Actual</th>'
     + '<th style="width:17%">Proj. Variance</th>'
@@ -597,36 +612,45 @@ function exportPDF() {
 
     + '<td style="width:14px"></td>'
 
-    // Right: side panel (33%)
-    + '<td style="width:33%">'
+    // RIGHT
+    + '<td style="width:35%">'
 
-    + '<table style="margin-bottom:7px;width:100%;table-layout:fixed;"><tr>'
-    + '<td class="chip chip-good"><div class="chip-n">' + onTrack.length + '</div><div class="chip-t">On Track</div></td>'
-    + '<td style="width:8px"></td>'
-    + '<td class="chip chip-risk"><div class="chip-n">' + atRisk.length + '</div><div class="chip-t">At Risk</div></td>'
+    // Burn rate summary (replaces redundant status chips)
+    + '<div class="sec-label" style="margin-bottom:5px;">Portfolio Burn Rate Summary</div>'
+    + '<table style="margin-bottom:8px;table-layout:fixed;width:100%;"><tr>'
+    + burnSummary
     + '</tr></table>'
 
-    + '<div class="overrun-box" style="background:' + (totalOverrun>0?'#fff5f5':'#f0fdf4') + ';color:' + (totalOverrun>0?'#dc2626':'#059669') + ';">'
-    + '<div style="font-size:7.5px;text-transform:uppercase;letter-spacing:.05em;">Total Projected Overrun</div>'
-    + '<div style="font-size:14px;font-weight:800;margin-top:2px;">' + (totalOverrun>0?fmtUsd(totalOverrun):'None') + '</div>'
+    // Overrun total
+    + '<div style="padding:5px 8px;border-radius:6px;text-align:center;margin-bottom:7px;'
+    + 'background:' + (totalOverrun>0?'#fff5f5':'#f0fdf4') + ';color:' + (totalOverrun>0?'#dc2626':'#059669') + ';">'
+    + '<div style="font-size:7px;text-transform:uppercase;letter-spacing:.05em;">Total Projected Overrun</div>'
+    + '<div style="font-size:13px;font-weight:800;margin-top:2px;">' + (totalOverrun>0?fmtUsd(totalOverrun):'None') + '</div>'
     + '</div>'
 
+    // Key findings
     + '<div class="sec-label" style="margin-bottom:3px;">Key Findings</div>'
     + findingsHtml
 
-    + '<div class="notes" style="margin-top:7px;padding:5px 8px;border:1px solid #e2e8f0;border-radius:6px;">'
+    // Legend
+    + '<div class="notes" style="margin-top:6px;padding:5px 7px;border:1px solid #e2e8f0;border-radius:6px;">'
     + '<b style="color:#10203a;">Notes</b><br>'
-    + 'At Risk = negative estimated balance<br>'
-    + 'Ahead = YTD &gt;110% of expected pace<br>'
-    + 'Proj. Variance = est. total vs. budget'
+    + 'At Risk = negative estimated balance &nbsp;·&nbsp; Ahead = YTD &gt;110% of expected pace<br>'
+    + 'Proj. Variance = est. total spend vs. award budget'
     + '</div>'
-
     + '</td></tr></table>'
 
     + '<div class="footer">PPSC Financial Automation &nbsp;·&nbsp; ' + month + ' &nbsp;·&nbsp; Award ' + award + ' &nbsp;·&nbsp; ' + now + '</div>'
 
-    // Auto-print on load, then close
-    + '<script>window.onload = function() { window.print(); window.onafterprint = function() { window.close(); }; };<\/script>'
+    // Print on load — Chrome will open the Save as PDF dialog automatically
+    + '<script>'
+    + 'window.onload = function() {'
+    + '  setTimeout(function() {'
+    + '    window.print();'
+    + '    window.onafterprint = function() { window.close(); };'
+    + '  }, 300);'
+    + '};'
+    + '<\/script>'
     + '</body></html>';
 
   var win = window.open('', '_blank', 'width=1200,height=900');
