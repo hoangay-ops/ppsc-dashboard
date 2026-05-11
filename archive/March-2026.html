@@ -368,7 +368,7 @@
         </div>
       </section>
     </div> <!-- END execSummary -->
-      <div class="footer">Generated May 08, 2026 17:00 · Source: March 2026 financial workbook · Award OT2OD036464</div>
+      <div class="footer">Generated May 11, 2026 10:02 · Source: March 2026 financial workbook · Award OT2OD036464</div>
 
     </div><!-- /.wrap -->
   </div><!-- /#dashboardContent -->
@@ -457,32 +457,186 @@
 
 <script>
 function exportPDF() {
-  const element = document.getElementById('execSummary');
-  const month = "March 2026";
-  const filename = 'PPSC_Financial_Dashboard_' + month.replace(/\s+/g, '_') + '.pdf';
+  // ── 1. Pull data already injected by automate.py ──────────────
+  const month    = "March 2026";
+  const award    = "OT2OD036464";
+  const budget   = "$34,122,956";
+  const ytd      = "$14,479,400";   // add this placeholder (see note below)
+  const monthSpend = "$2,692,098";
+  const filename = 'PPSC_Executive_Summary_' + month.replace(/\s+/g, '_') + '.pdf';
 
-  element.classList.add('pdf-exec');
+  const fmt = v => new Intl.NumberFormat('en-US', { style:'currency', currency:'USD', maximumFractionDigits:0 }).format(v);
+
+  const atRisk   = milestones.filter(m => m.status === 'At Risk');
+  const onTrack  = milestones.filter(m => m.status !== 'At Risk');
+  const totalOverrun = milestones.reduce((s,m) => s + Math.max(m.projected_overrun, 0), 0);
+  const estBal   = milestones.reduce((s,m) => s + (m.est_balance ?? 0), 0);
+  const balColor = estBal < 0 ? '#dc2626' : '#059669';
+
+  // Top 8 by risk score (same logic as automate.py)
+  const riskScore = m =>
+    Math.abs(m.projected_overrun) / Math.max(m.budget, 1) * 50 +
+    (m.burn_rate_status === 'Ahead' ? 30 : 0) +
+    (m.status === 'At Risk' ? 20 : 0);
+
+  const watchlist = [...milestones].sort((a,b) => riskScore(b) - riskScore(a)).slice(0, 8);
+
+  // ── 2. Build milestone table rows ─────────────────────────────
+  const tableRows = watchlist.map(m => {
+    const rowBg   = m.status === 'At Risk' ? '#fff5f5' : '#ffffff';
+    const varColor= m.projected_overrun > 0 ? '#dc2626' : '#059669';
+    const varArrow= m.projected_overrun > 0 ? '▲' : '▼';
+    const burnColor= m.burn_rate_status === 'Ahead' ? '#d97706' : '#10203a';
+    return `
+      <tr style="background:${rowBg}">
+        <td style="padding:5px 8px;border-bottom:1px solid #f1f5f9;font-size:10px;">${m.title}</td>
+        <td style="padding:5px 8px;border-bottom:1px solid #f1f5f9;font-size:10px;color:${m.status==='At Risk'?'#dc2626':'#059669'};font-weight:700">${m.status}</td>
+        <td style="padding:5px 8px;border-bottom:1px solid #f1f5f9;font-size:10px;">${fmt(m.budget)}</td>
+        <td style="padding:5px 8px;border-bottom:1px solid #f1f5f9;font-size:10px;">${fmt(m.ytd_actual)}</td>
+        <td style="padding:5px 8px;border-bottom:1px solid #f1f5f9;font-size:10px;color:${varColor}">${varArrow} ${fmt(Math.abs(m.projected_overrun))}</td>
+        <td style="padding:5px 8px;border-bottom:1px solid #f1f5f9;font-size:10px;color:${burnColor}">${m.burn_rate_status}</td>
+      </tr>`;
+  }).join('');
+
+  // ── 3. Build key findings bullets ─────────────────────────────
+  const findings = [];
+  if (estBal < 0)
+    findings.push(`⚠️ Portfolio estimated balance is <strong>negative (${fmt(estBal)})</strong> — immediate review required.`);
+  else
+    findings.push(`✅ Portfolio estimated balance is positive at <strong>${fmt(estBal)}</strong>.`);
+
+  atRisk.slice(0, 3).forEach(m =>
+    findings.push(`⚠️ <strong>${m.title}</strong> — projected overrun of ${fmt(Math.abs(m.projected_overrun))} against a ${fmt(m.budget)} budget.`)
+  );
+
+  const aheadMs = milestones.filter(m => m.burn_rate_status === 'Ahead');
+  if (aheadMs.length)
+    findings.push(`🔥 ${aheadMs.length} milestone${aheadMs.length>1?'s':''} burning ahead of pace: ${aheadMs.map(m=>m.title).join(', ')}.`);
+
+  if (!atRisk.length)
+    findings.push('✅ No milestones showing projected overruns at this time.');
+
+  const findingsList = findings.map(f =>
+    `<li style="margin-bottom:5px;font-size:10px;line-height:1.5;">${f}</li>`
+  ).join('');
+
+  // ── 4. Compose the 1-page HTML ────────────────────────────────
+  const now = new Date().toLocaleString('en-US',{month:'long',day:'numeric',year:'numeric',hour:'2-digit',minute:'2-digit'});
+
+  const html = `
+<div style="font-family:Arial,sans-serif;font-size:10px;color:#10203a;background:white;width:100%;">
+
+  <!-- Header -->
+  <div style="background:linear-gradient(135deg,#2563eb,#7c3aed);color:white;padding:10px 16px;border-radius:8px;margin-bottom:10px;display:flex;justify-content:space-between;align-items:center;">
+    <div>
+      <div style="font-size:17px;font-weight:800;margin-bottom:2px;">PPSC Financial Executive Summary</div>
+      <div style="font-size:10px;opacity:0.85;">${month} &nbsp;·&nbsp; Award ${award}</div>
+    </div>
+    <div style="font-size:9px;opacity:0.75;text-align:right;">Generated ${now}</div>
+  </div>
+
+  <!-- KPI row -->
+  <div style="display:grid;grid-template-columns:repeat(6,1fr);gap:8px;margin-bottom:10px;">
+    ${[
+      ['Award Budget',     budget,          '#10203a'],
+      ['Monthly Spend',    monthSpend,      '#10203a'],
+      ['YTD Spend',        fmt(milestones.reduce((s,m)=>s+m.ytd_actual,0)), '#10203a'],
+      ['Est. Balance',     fmt(estBal),     balColor ],
+      ['On Track',         `${onTrack.length} / ${milestones.length}`, '#059669'],
+      ['At Risk',          atRisk.length,   atRisk.length ? '#dc2626' : '#059669'],
+    ].map(([lbl,val,col]) => `
+      <div style="border:1px solid #e2e8f0;border-radius:8px;padding:8px 10px;text-align:center;">
+        <div style="font-size:8px;text-transform:uppercase;color:#51627d;letter-spacing:.05em;">${lbl}</div>
+        <div style="font-size:15px;font-weight:800;margin-top:3px;color:${col};">${val}</div>
+      </div>`).join('')}
+  </div>
+
+  <!-- Body: table + side panel -->
+  <div style="display:grid;grid-template-columns:2fr 1fr;gap:10px;">
+
+    <!-- Milestone table -->
+    <div>
+      <div style="font-size:11px;font-weight:700;margin-bottom:6px;color:#10203a;">
+        Top Milestones by Risk Score <span style="font-weight:400;color:#51627d;">(up to 8 shown)</span>
+      </div>
+      <table style="width:100%;border-collapse:collapse;">
+        <thead>
+          <tr style="background:#f6f8fc;">
+            ${['Milestone','Status','Budget','YTD Actual','Proj. Variance','Burn Rate']
+              .map(h=>`<th style="text-align:left;padding:5px 8px;font-size:8px;text-transform:uppercase;color:#51627d;border-bottom:1px solid #e2e8f0;">${h}</th>`)
+              .join('')}
+          </tr>
+        </thead>
+        <tbody>${tableRows}</tbody>
+      </table>
+    </div>
+
+    <!-- Side panel -->
+    <div style="display:flex;flex-direction:column;gap:8px;">
+
+      <!-- Status chips -->
+      <div style="border:1px solid #e2e8f0;border-radius:8px;padding:10px;">
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:6px;">
+          <div style="background:#f0fdf4;border-radius:6px;padding:8px;text-align:center;">
+            <div style="font-size:20px;font-weight:800;color:#059669;">${onTrack.length}</div>
+            <div style="font-size:8px;text-transform:uppercase;color:#059669;">On Track</div>
+          </div>
+          <div style="background:#fff5f5;border-radius:6px;padding:8px;text-align:center;">
+            <div style="font-size:20px;font-weight:800;color:#dc2626;">${atRisk.length}</div>
+            <div style="font-size:8px;text-transform:uppercase;color:#dc2626;">At Risk</div>
+          </div>
+        </div>
+        ${totalOverrun > 0 ? `
+        <div style="margin-top:8px;padding:6px 8px;background:#fff5f5;border-radius:6px;font-size:9px;color:#dc2626;text-align:center;">
+          Total Projected Overrun<br>
+          <strong style="font-size:13px;">${fmt(totalOverrun)}</strong>
+        </div>` : `
+        <div style="margin-top:8px;padding:6px 8px;background:#f0fdf4;border-radius:6px;font-size:9px;color:#059669;text-align:center;">
+          No projected overruns
+        </div>`}
+      </div>
+
+      <!-- Key findings -->
+      <div style="border:1px solid #e2e8f0;border-radius:8px;padding:10px;flex:1;">
+        <div style="font-size:10px;font-weight:700;margin-bottom:6px;">Key Findings</div>
+        <ul style="margin:0;padding-left:14px;">${findingsList}</ul>
+      </div>
+
+      <!-- Legend -->
+      <div style="border:1px solid #e2e8f0;border-radius:8px;padding:8px;font-size:8px;color:#51627d;line-height:1.6;">
+        <strong style="color:#10203a;">Notes</strong><br>
+        At Risk = negative estimated balance<br>
+        Ahead = YTD spend &gt;110% of expected pace<br>
+        Proj. Variance = est. total spend vs. budget
+      </div>
+    </div>
+  </div>
+
+  <!-- Footer -->
+  <div style="margin-top:8px;font-size:8px;color:#94a3b8;text-align:center;border-top:1px solid #f1f5f9;padding-top:6px;">
+    PPSC Financial Automation &nbsp;·&nbsp; ${month} &nbsp;·&nbsp; Award ${award} &nbsp;·&nbsp; Generated ${now}
+  </div>
+</div>`;
+
+  // ── 5. Inject into hidden container and export ─────────────────
+  let container = document.getElementById('__pdfExecContainer');
+  if (!container) {
+    container = document.createElement('div');
+    container.id = '__pdfExecContainer';
+    container.style.cssText = 'position:fixed;left:-9999px;top:0;width:10.5in;background:white;padding:0.15in;';
+    document.body.appendChild(container);
+  }
+  container.innerHTML = html;
 
   html2pdf().set({
-    margin: 0.12,
-    filename: filename,
-    image: { type: 'jpeg', quality: 0.98 },
-    html2canvas: {
-      scale: 2,
-      useCORS: true,
-      scrollY: 0
-    },
-    jsPDF: {
-      unit: 'in',
-      format: 'letter',
-      orientation: 'landscape'
-    },
-    pagebreak: {
-      mode: ['css', 'legacy'],
-      avoid: ['.panel', '.hero', '.kpis']
-    }
-  }).from(element).save().then(() => {
-    element.classList.remove('pdf-exec');
+    margin:       0.15,
+    filename:     filename,
+    image:        { type: 'jpeg', quality: 0.97 },
+    html2canvas:  { scale: 2, useCORS: true, scrollY: 0 },
+    jsPDF:        { unit: 'in', format: 'letter', orientation: 'landscape' },
+    pagebreak:    { mode: [] }   // no page breaks — keep it 1 page
+  }).from(container).save().then(() => {
+    container.innerHTML = '';
   });
 }
 </script>
