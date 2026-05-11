@@ -374,8 +374,16 @@
 <div class="bullet"><div class="dot good"></div><div><strong>M53 – Licenses</strong> — Annual license fees paid upfront in February. This milestone is exempt from burn rate risk flagging. No action required unless additional spend is anticipated.</div></div></div>
         </div>
       </section>
+    
+      
+    <section class="panel" style="margin-bottom:18px;">
+      <h2>Narrative Risk Summary</h2>
+      <p class="note">Program narrative provided for March 2026. Sourced from the monthly risk memo.</p>
+      
+      <div style="color:#51627d;font-size:13px;padding:12px 0;">No narrative summaries found for this reporting period. Add a .docx file to the data/ folder.</div>
+    </section>
     </div> <!-- END execSummary -->
-      <div class="footer">Generated May 11, 2026 17:12 · Source: March 2026 financial workbook · Award OT2OD036464</div>
+      <div class="footer">Generated May 11, 2026 17:25 · Source: March 2026 financial workbook · Award OT2OD036464</div>
 
     </div><!-- /.wrap -->
   </div><!-- /#dashboardContent -->
@@ -577,6 +585,23 @@ function exportPDF() {
     return '<div class="finding">' + f + '</div>';
   }).join('');
 
+// Build narrative section for PDF from milestones that have exception_note
+  // or are At Risk / Watch — matching to narratives passed via the dashboard data
+  var narrativePdfHtml = '';
+  var narrativeMiles = milestones.filter(function(m) {
+    return m.status === 'At Risk' || m.status === 'Watch' || m.exception_note;
+  });
+  if (narrativeMiles.length) {
+    narrativePdfHtml = '<div style="margin-top:10px;border-top:1px solid #e2e8f0;padding-top:8px;">'
+      + '<div style="font-size:9.5px;font-weight:700;margin-bottom:6px;color:#10203a;">Narrative Risk Notes</div>';
+    narrativeMiles.forEach(function(m) {
+      var note = m.exception_note || '';
+      if (!note) return;
+      narrativePdfHtml += '<div style="margin-bottom:5px;font-size:8.5px;line-height:1.5;">'
+        + '<b>' + m.title + ':</b> ' + note + '</div>';
+    });
+    narrativePdfHtml += '</div>';
+  }
   var html = '<!DOCTYPE html><html><head><meta charset="UTF-8"><style>'
     + '@page { size: landscape; margin: 0.55in 0.5in 0.45in 0.5in; }'
     + '* { box-sizing:border-box; margin:0; padding:0; -webkit-print-color-adjust:exact; print-color-adjust:exact; }'
