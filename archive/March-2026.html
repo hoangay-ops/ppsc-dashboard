@@ -139,7 +139,10 @@
     .status-chip .num { font-size: 18px; font-weight: 800; margin-top: 4px; }
     .status-chip .txt { color: var(--muted); font-size: 12px; text-transform: uppercase; letter-spacing: .06em; }
     .status-good .num { color: var(--good); }
-    .status-warn .num { color: var(--warn); }
+    .status-warn .num { color: #b45309; }
+    .status-watch { background: #fefce8; border: 1px solid #fde68a; }
+    .status-watch .num { color: #92400e; }
+    .status-watch .txt { color: #92400e; }
     .status-risk .num { color: var(--risk); }
     .status-neutral .num { color: var(--accent); }
     table { width: 100%; border-collapse: collapse; margin-top: 8px; overflow: hidden; }
@@ -236,11 +239,11 @@
       </div>
       <div style="flex:1;">
         <h2 style="margin-bottom:6px;">Priority Watchlist</h2>
-        <div class="bullets"><div class="bullet"><div class="dot risk"></div><div><strong>M53 – Licenses</strong> — Projected overrun of $380,258 · Burn rate: <strong>Ahead</strong> (▲ $7,291,117 vs expected pace)</div></div>
-<div class="bullet"><div class="dot risk"></div><div><strong>M54 – Directorate and Management</strong> — Projected overrun of $8,565 · Burn rate: <strong>Ahead</strong> (▲ $116,524 vs expected pace)</div></div>
+        <div class="bullets"><div class="bullet"><div class="dot risk"></div><div><strong>M54 – Directorate and Management</strong> — Projected overrun of $8,565 · Burn rate: <strong>Ahead</strong> (▲ $116,524 vs expected pace)</div></div>
 <div class="bullet"><div class="dot warn"></div><div><strong>M49 – Tier 2&3 support</strong> — Projected underrun of $18,171 · Burn rate: <strong>Ahead</strong> (▲ $104,957 vs expected pace)</div></div>
 <div class="bullet"><div class="dot warn"></div><div><strong>M56 – Partner and Participant Coordination</strong> — Projected underrun of $12,639 · Burn rate: <strong>Ahead</strong> (▲ $69,805 vs expected pace)</div></div>
-<div class="bullet"><div class="dot warn"></div><div><strong>M57 – Data Governance and Delivery</strong> — Projected underrun of $248 · Burn rate: <strong>Ahead</strong> (▲ $277,341 vs expected pace)</div></div></div>
+<div class="bullet"><div class="dot warn"></div><div><strong>M57 – Data Governance and Delivery</strong> — Projected underrun of $248 · Burn rate: <strong>Ahead</strong> (▲ $277,341 vs expected pace)</div></div>
+<div class="bullet"><div class="dot risk"></div><div><strong>M47 – Communications Delivery</strong> — Projected overrun of $38,510 · Burn rate: <strong>Behind</strong> (▼ $184,255 vs expected pace)</div></div></div>
       </div>
     </div>
   </section>
@@ -362,14 +365,17 @@
         <div class="panel">
           <h2>Key Financial Callouts</h2>
           <p class="note">Key financial risks and portfolio balance position.</p>
-          <div class="bullets"><div class="bullet"><div class="dot risk"></div><div>Total estimated balance is negative: $-44,938. Review overruns immediately.</div></div>
-<div class="bullet"><div class="dot warn"></div><div>M49 – Tier 2&3 support shows a projected overrun of $18,171 against a $843,742 budget.</div></div>
-<div class="bullet"><div class="dot warn"></div><div>M54 – Directorate and Management shows a projected overrun of $8,565 against a $500,887 budget.</div></div>
-<div class="bullet"><div class="dot warn"></div><div>M56 – Partner and Participant Coordination shows a projected overrun of $12,639 against a $600,671 budget.</div></div></div>
+          <div class="bullets"><div class="bullet"><div class="dot risk"></div><div><strong>Portfolio balance is negative ($-44,938).</strong> Action: Program leadership should convene a budget review before the April reporting period to identify reallocation opportunities or request a budget modification.</div></div>
+<div class="bullet"><div class="dot risk"></div><div><strong>M49 – Tier 2&3 support</strong> is projecting a $18,171 overrun (2.2% over its $843,742 budget). Action: Milestone PI should submit a revised spend plan by end of April identifying where spending can be reduced or deferred to Q3/Q4.</div></div>
+<div class="bullet"><div class="dot risk"></div><div><strong>M54 – Directorate and Management</strong> is projecting a $8,565 overrun (1.7% over its $500,887 budget). Action: Milestone PI should submit a revised spend plan by end of April identifying where spending can be reduced or deferred to Q3/Q4.</div></div>
+<div class="bullet"><div class="dot risk"></div><div><strong>M56 – Partner and Participant Coordination</strong> is projecting a $12,639 overrun (2.1% over its $600,671 budget). Action: Milestone PI should submit a revised spend plan by end of April identifying where spending can be reduced or deferred to Q3/Q4.</div></div>
+<div class="bullet"><div class="dot warn"></div><div><strong>M44 – Directorate</strong> has a tightening balance ($-5,453 remaining). Action: Review April actuals closely — if balance continues to decline, flag for reallocation discussion before mid-year.</div></div>
+<div class="bullet"><div class="dot warn"></div><div><strong>M47 – Communications Delivery</strong> has a tightening balance ($-38,510 remaining). Action: Review April actuals closely — if balance continues to decline, flag for reallocation discussion before mid-year.</div></div>
+<div class="bullet"><div class="dot good"></div><div><strong>M53 – Licenses</strong> — Annual license fees paid upfront in February. This milestone is exempt from burn rate risk flagging. No action required unless additional spend is anticipated.</div></div></div>
         </div>
       </section>
     </div> <!-- END execSummary -->
-      <div class="footer">Generated May 11, 2026 16:56 · Source: March 2026 financial workbook · Award OT2OD036464</div>
+      <div class="footer">Generated May 11, 2026 17:12 · Source: March 2026 financial workbook · Award OT2OD036464</div>
 
     </div><!-- /.wrap -->
   </div><!-- /#dashboardContent -->
@@ -411,7 +417,9 @@
       });
       filtered.forEach(m => {
         const tr = document.createElement('tr');
-        const statusClass  = m.status === 'At Risk' ? 'risk' : 'good';
+        const statusClass  = m.status === 'At Risk' ? 'risk'
+                           : m.status === 'Watch'   ? 'warn'
+                           : 'good';
         const burnClass    = m.burn_rate_status === 'Ahead' ? 'warn' : m.burn_rate_status === 'Behind' ? 'neutral' : 'good';
         const varianceSign = m.projected_overrun > 0 ? '+' : '';
         const varianceCls  = m.projected_overrun > 0 ? 'risk' : 'good';
@@ -462,6 +470,7 @@
 function exportPDF() {
   var month    = "March 2026";
   var award    = "OT2OD036464";
+  var onWatch = milestones.filter(function(m){ return m.status === 'Watch'; });
 
   var fmtUsd = function(v) {
     return new Intl.NumberFormat('en-US', {
@@ -550,6 +559,7 @@ function exportPDF() {
   }).join('');
 
   // ── Burn rate summary (replaces redundant status chips) ────────
+  var onWatch    = milestones.filter(function(m){ return m.status === 'Watch'; });
   var burnSummary = [
     ['On Pace', onPace.length,  '#059669', '#f0fdf4'],
     ['Ahead',   ahead.length,   '#d97706', '#fffbeb'],
