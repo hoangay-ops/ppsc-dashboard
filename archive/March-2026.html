@@ -368,7 +368,7 @@
         </div>
       </section>
     </div> <!-- END execSummary -->
-      <div class="footer">Generated May 11, 2026 10:59 · Source: March 2026 financial workbook · Award OT2OD036464</div>
+      <div class="footer">Generated May 11, 2026 11:02 · Source: March 2026 financial workbook · Award OT2OD036464</div>
 
     </div><!-- /.wrap -->
   </div><!-- /#dashboardContent -->
@@ -531,7 +531,7 @@ function exportPDF() {
 
   var html = '<!DOCTYPE html><html><head><meta charset="UTF-8"><style>'
     + '* { box-sizing:border-box; margin:0; padding:0; }'
-    + 'body { font-family:Arial,sans-serif; font-size:9px; color:#10203a; background:white; width:1020px; padding:14px 16px; }'
+    + 'body { font-family:Arial,sans-serif; font-size:9px; color:#10203a; background:white; width:960px; padding:12px 14px; overflow:hidden; }'
     + 'table { border-collapse:collapse; width:100%; } td,th { vertical-align:top; }'
     + '.hdr { background:linear-gradient(135deg,#2563eb,#7c3aed); color:white; border-radius:6px; padding:8px 14px; margin-bottom:8px; }'
     + '.hdr-title { font-size:15px; font-weight:800; }'
@@ -563,7 +563,7 @@ function exportPDF() {
 
     // Body: milestone table + side panel
     + '<table style="table-layout:fixed;"><tr valign="top">'
-    + '<td style="width:655px">'
+    + '<td style="width:615px">'
     + '<div class="sec-label">Top Milestones by Risk Score <span style="font-weight:400;color:#51627d;">(up to 8)</span></div>'
     + '<table class="ms-table"><thead><tr>'
     + '<th style="width:30%">Milestone</th><th style="width:11%">Status</th>'
@@ -610,8 +610,8 @@ function exportPDF() {
     + '    margin: [0.15,0.15,0.15,0.15],'
     + '    filename: "' + filename + '",'
     + '    image: { type:"jpeg", quality:0.97 },'
-    + '    html2canvas: { scale:2, useCORS:true, scrollY:0, windowWidth:1020, width:1020 },'
-    + '    jsPDF: { unit:"in", format:"letter", orientation:"portrait" },'
+    + '    html2canvas: { scale:2, useCORS:true, scrollY:0, windowWidth:960, width:960 },'
+    + '    jsPDF: { unit:"in", format:"letter", orientation:"landscape" },'
     + '    pagebreak: { mode:[] }'
     + '  }).from(document.body).save().then(function(){ window.close(); });'
     + '};'
