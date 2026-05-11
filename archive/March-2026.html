@@ -368,7 +368,7 @@
         </div>
       </section>
     </div> <!-- END execSummary -->
-      <div class="footer">Generated May 11, 2026 10:47 · Source: March 2026 financial workbook · Award OT2OD036464</div>
+      <div class="footer">Generated May 11, 2026 10:48 · Source: March 2026 financial workbook · Award OT2OD036464</div>
 
     </div><!-- /.wrap -->
   </div><!-- /#dashboardContent -->
@@ -611,7 +611,7 @@ function exportPDF() {
     + '    filename: "' + filename + '",'
     + '    image: { type:"jpeg", quality:0.97 },'
     + '    html2canvas: { scale:2, useCORS:true, scrollY:0, windowWidth:1020, width:1020 },'
-    + '    jsPDF: { unit:"in", format:"letter", orientation:"landscape" },'
+    + '    jsPDF: { unit:"in", format:"letter", orientation:"portrait" },'
     + '    pagebreak: { mode:[] }'
     + '  }).from(document.body).save().then(function(){ window.close(); });'
     + '};'
