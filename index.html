@@ -195,7 +195,7 @@
           </div>
         </div>
         <div class="hero-side">
-          <div><div class="mini-title">At a Glance</div><div class="mini-copy">9 milestones on track, 4 showing projected overruns. Monthly spend: $2,692,098. YTD: $14,479,400.</div></div>
+          <div><div class="mini-title">At a Glance</div><div class="mini-copy">9 milestones on track, 3 on watch, 4 at risk. Monthly spend: $2,692,098. YTD: $14,479,400.</div></div>
           <div><div class="mini-title">What is Visualized</div><div class="mini-copy">Monthly actuals vs. budget across all milestones, spend trend, and estimated balance risk flags.</div></div>
         </div>
       </section>
@@ -203,8 +203,8 @@
       <section class="kpis">
         <div class="card"><div class="label">Award budget</div><div class="value">$34,122,956</div><div class="delta">Award dollars reported for the current monthly financial workbook.</div></div>
         <div class="card"><div class="label">Monthly spend</div><div class="value">$2,692,098</div><div class="delta">Reported monthly actuals.</div></div>
-        <div class="card"><div class="label">Milestones on track</div><div class="value">9</div><div class="delta">Based on the current technical status summary table.</div></div>
-        <div class="card"><div class="label">At Risk</div><div class="value">4</div><div class="delta">Milestones with burn rate exceeding 120% of expected monthly pace.</div></div>
+        <div class="card"><div class="label">On Track</div><div class="value">9</div><div class="delta">Projected to stay within budget based on current spend trajectory.</div></div>
+        <div class="card"><div class="label">At Risk</div><div class="value">4</div><div class="delta">Spending significantly ahead of plan and likely to overrun budget.</div></div>
 
       </section>
 
@@ -232,7 +232,7 @@
     <div class="panel" style="display:flex;flex-direction:column;gap:14px;">
       <div>
         <h2 style="margin-bottom:6px;">Status Mix</h2>
-        <p class="note" style="margin-bottom:10px;">Milestone status derived from estimated balance. Negative balance = At Risk.</p>
+        <p class="note" style="margin-bottom:10px;">Budget Status: On Track = within budget · Watch = balance negative or tightening · At Risk = spending significantly ahead of plan.</p>
       </div>
       <div style="flex:1;">
         <h2 style="margin-bottom:6px;">Priority Watchlist</h2>
@@ -313,7 +313,7 @@
 
       <section class="panel" style="margin-bottom:18px;">
         <h2>Milestone Budget Snapshot</h2>
-        <p class="note">Budget, burn rate, and projected variance for all milestones. Use the filter to focus on what needs attention.</p>
+        <p class="note">Budget Status: On Track = within budget · Watch = balance tightening · At Risk = ahead of plan, likely overrun. Pace Status: Ahead/On Pace/Behind = avg monthly spend vs. 1/12 of budget. Projected Overrun = est. total spend minus budget.</p>
         <div class="filter-row">
           <label for="statusFilter">Filter</label>
           <select id="statusFilter" aria-label="Filter milestones by status">
@@ -369,7 +369,7 @@
         </div>
       </section>
     </div> <!-- END execSummary -->
-      <div class="footer">Generated May 11, 2026 16:32 · Source: March 2026 financial workbook · Award OT2OD036464</div>
+      <div class="footer">Generated May 11, 2026 16:56 · Source: March 2026 financial workbook · Award OT2OD036464</div>
 
     </div><!-- /.wrap -->
   </div><!-- /#dashboardContent -->
@@ -392,9 +392,9 @@
     const atRisk   = milestones.filter(m => m.status === 'At Risk').length;
     const totalOverrun = milestones.reduce((s, m) => s + (m.projected_overrun > 0 ? m.projected_overrun : 0), 0);
     [
-      { label: 'On Pace',          value: `${onPace} of ${milestones.length}`, cls: 'status-good' },
-      { label: 'Burning Ahead',    value: ahead,      cls: 'status-warn' },
-      { label: 'Behind Pace',      value: behind,     cls: 'status-neutral' },
+      { label: 'On Pace',             value: `${onPace} of ${milestones.length}`, cls: 'status-good' },
+      { label: 'Ahead of Plan',       value: ahead,      cls: 'status-warn' },
+      { label: 'Behind Plan',         value: behind,     cls: 'status-neutral' },
       { label: 'Total Proj. Overrun', value: fmt.format(totalOverrun), cls: atRisk > 0 ? 'status-risk' : 'status-good' },
     ].forEach(c => {
       healthEl.innerHTML += `<div class="status-chip ${c.cls}"><div class="txt">${c.label}</div><div class="num">${c.value}</div></div>`;
@@ -568,23 +568,23 @@ function exportPDF() {
   }).join('');
 
   var html = '<!DOCTYPE html><html><head><meta charset="UTF-8"><style>'
-    + '@page { size: landscape; margin: 0.3in 0.3in 0.25in 0.3in; }'
+    + '@page { size: landscape; margin: 0.55in 0.5in 0.45in 0.5in; }'
     + '* { box-sizing:border-box; margin:0; padding:0; -webkit-print-color-adjust:exact; print-color-adjust:exact; }'
-    + 'body { font-family:Arial,sans-serif; font-size:9px; color:#10203a; background:white; }'
+    + 'body { font-family:Arial,sans-serif; font-size:9.5px; color:#10203a; background:white; }'
     + 'table { border-collapse:collapse; width:100%; }'
     + 'td, th { vertical-align:top; }'
-    + '.hdr { background:linear-gradient(135deg,#2563eb,#7c3aed) !important; color:white !important; border-radius:6px; padding:8px 14px; margin-bottom:8px; }'
-    + '.hdr-title { font-size:15px; font-weight:800; }'
-    + '.hdr-sub { font-size:8.5px; opacity:0.85; margin-top:2px; }'
-    + '.kpi { border:1px solid #e2e8f0; border-radius:6px; padding:6px 10px; text-align:center; }'
-    + '.kpi-lbl { font-size:7px; text-transform:uppercase; color:#51627d; letter-spacing:.05em; }'
-    + '.kpi-val { font-size:13px; font-weight:800; margin-top:2px; }'
-    + '.sec-label { font-size:9.5px; font-weight:700; padding-bottom:4px; color:#10203a; }'
-    + '.ms-table th { background:#f6f8fc !important; padding:4px 6px; font-size:7.5px; text-transform:uppercase; color:#51627d; border-bottom:1px solid #e2e8f0; text-align:left; }'
-    + '.ms-table td { padding:4px 6px; border-bottom:1px solid #f1f5f9; font-size:8.5px; }'
-    + '.finding { font-size:8.5px; line-height:1.5; padding:3px 0; border-bottom:1px solid #f1f5f9; }'
-    + '.notes { font-size:7.5px; color:#51627d; line-height:1.6; }'
-    + '.footer { font-size:7.5px; color:#94a3b8; text-align:center; border-top:1px solid #f1f5f9; padding-top:5px; margin-top:7px; }'
+    + '.hdr { background:linear-gradient(135deg,#2563eb,#7c3aed) !important; color:white !important; border-radius:7px; padding:10px 16px; margin-bottom:10px; }'
+    + '.hdr-title { font-size:16px; font-weight:800; }'
+    + '.hdr-sub { font-size:9px; opacity:0.85; margin-top:3px; }'
+    + '.kpi { border:1px solid #e2e8f0; border-radius:7px; padding:8px 12px; text-align:center; }'
+    + '.kpi-lbl { font-size:7.5px; text-transform:uppercase; color:#51627d; letter-spacing:.05em; }'
+    + '.kpi-val { font-size:14px; font-weight:800; margin-top:3px; }'
+    + '.sec-label { font-size:10px; font-weight:700; padding-bottom:5px; color:#10203a; }'
+    + '.ms-table th { background:#f6f8fc !important; padding:5px 8px; font-size:8px; text-transform:uppercase; color:#51627d; border-bottom:1px solid #e2e8f0; text-align:left; }'
+    + '.ms-table td { padding:5px 8px; border-bottom:1px solid #f1f5f9; font-size:9px; line-height:1.4; }'
+    + '.finding { font-size:9px; line-height:1.55; padding:4px 0; border-bottom:1px solid #f1f5f9; }'
+    + '.notes { font-size:8px; color:#51627d; line-height:1.7; }'
+    + '.footer { font-size:8px; color:#94a3b8; text-align:center; border-top:1px solid #f1f5f9; padding-top:6px; margin-top:9px; }'
     + '</style></head><body>'
 
     // Header
@@ -594,7 +594,7 @@ function exportPDF() {
     + '</td></tr></table>'
 
     // KPI row — 4 cards only (balance is the key signal; status counts move to side panel)
-    + '<table style="margin-bottom:8px;table-layout:fixed;"><tr>'
+    + '<table style="margin-bottom:12px;table-layout:fixed;"><tr>'
     + kpiCells
     + '</tr></table>'
 
@@ -620,8 +620,8 @@ function exportPDF() {
     + '<td style="width:35%">'
 
     // Burn rate summary (replaces redundant status chips)
-    + '<div class="sec-label" style="margin-bottom:5px;">Portfolio Burn Rate Summary</div>'
-    + '<table style="margin-bottom:8px;table-layout:fixed;width:100%;"><tr>'
+    + '<div class="sec-label" style="margin-bottom:6px;">Portfolio Pace Summary</div>'
+    + '<table style="margin-bottom:10px;table-layout:fixed;width:100%;"><tr>'
     + burnSummary
     + '</tr></table>'
 
@@ -633,14 +633,18 @@ function exportPDF() {
     + '</div>'
 
     // Key findings
-    + '<div class="sec-label" style="margin-bottom:3px;">Key Findings</div>'
+    + '<div class="sec-label" style="margin-bottom:5px;">Key Findings</div>'
     + findingsHtml
 
     // Legend
-    + '<div class="notes" style="margin-top:6px;padding:5px 7px;border:1px solid #e2e8f0;border-radius:6px;">'
-    + '<b style="color:#10203a;">Notes</b><br>'
-    + 'At Risk = avg monthly spend &gt;120% of 1/12 budget &nbsp;·&nbsp; Watch = negative est. balance<br>'
-    + 'Proj. Overrun = est. total spend vs. award budget'
+    
+    + '<div class="notes" style="margin-top:8px;padding:7px 9px;border:1px solid #e2e8f0;border-radius:7px;">'
+    + '<b style="color:#10203a;">Budget Status</b><br>'
+    + 'On Track = projected within budget &nbsp;·&nbsp; Watch = balance negative or tightening &nbsp;·&nbsp; At Risk = spending ahead of plan, likely overrun<br>'
+    + '<b style="color:#10203a;margin-top:4px;display:block;">Pace Status</b>'
+    + 'Ahead = avg monthly &gt;120% of 1/12 budget &nbsp;·&nbsp; On Pace = within range &nbsp;·&nbsp; Behind = slower than expected<br>'
+    + '<b style="color:#10203a;margin-top:4px;display:block;">Projected Overrun</b>'
+    + 'Estimated total spend minus award budget'
     + '</div>'
     + '</td></tr></table>'
 
