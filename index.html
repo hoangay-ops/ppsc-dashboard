@@ -368,7 +368,7 @@
         </div>
       </section>
     </div> <!-- END execSummary -->
-      <div class="footer">Generated May 11, 2026 10:02 · Source: March 2026 financial workbook · Award OT2OD036464</div>
+      <div class="footer">Generated May 11, 2026 10:09 · Source: March 2026 financial workbook · Award OT2OD036464</div>
 
     </div><!-- /.wrap -->
   </div><!-- /#dashboardContent -->
@@ -454,26 +454,29 @@
     });
   </script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
-
+<!-- ============================================================
+     REPLACE the existing exportPDF <script> block with this.
+     Keep everything else in the template unchanged.
+     ============================================================ -->
 <script>
 function exportPDF() {
-  // ── 1. Pull data already injected by automate.py ──────────────
-  const month    = "March 2026";
-  const award    = "OT2OD036464";
-  const budget   = "$34,122,956";
-  const ytd      = "$14,479,400";   // add this placeholder (see note below)
+  const month      = "March 2026";
+  const award      = "OT2OD036464";
   const monthSpend = "$2,692,098";
-  const filename = 'PPSC_Executive_Summary_' + month.replace(/\s+/g, '_') + '.pdf';
+  const filename   = 'PPSC_Executive_Summary_' + month.replace(/\s+/g, '_') + '.pdf';
 
-  const fmt = v => new Intl.NumberFormat('en-US', { style:'currency', currency:'USD', maximumFractionDigits:0 }).format(v);
+  // Use the fmt already declared in the main script block above
+  const fmtUsd = v => new Intl.NumberFormat('en-US', {
+    style: 'currency', currency: 'USD', maximumFractionDigits: 0
+  }).format(v);
 
-  const atRisk   = milestones.filter(m => m.status === 'At Risk');
-  const onTrack  = milestones.filter(m => m.status !== 'At Risk');
-  const totalOverrun = milestones.reduce((s,m) => s + Math.max(m.projected_overrun, 0), 0);
-  const estBal   = milestones.reduce((s,m) => s + (m.est_balance ?? 0), 0);
-  const balColor = estBal < 0 ? '#dc2626' : '#059669';
+  const atRisk      = milestones.filter(m => m.status === 'At Risk');
+  const onTrack     = milestones.filter(m => m.status !== 'At Risk');
+  const totalOverrun= milestones.reduce((s,m) => s + Math.max(m.projected_overrun, 0), 0);
+  const estBal      = milestones.reduce((s,m) => s + (m.est_balance || 0), 0);
+  const ytdTotal    = milestones.reduce((s,m) => s + (m.ytd_actual  || 0), 0);
+  const balColor    = estBal < 0 ? '#dc2626' : '#059669';
 
-  // Top 8 by risk score (same logic as automate.py)
   const riskScore = m =>
     Math.abs(m.projected_overrun) / Math.max(m.budget, 1) * 50 +
     (m.burn_rate_status === 'Ahead' ? 30 : 0) +
@@ -481,163 +484,220 @@ function exportPDF() {
 
   const watchlist = [...milestones].sort((a,b) => riskScore(b) - riskScore(a)).slice(0, 8);
 
-  // ── 2. Build milestone table rows ─────────────────────────────
+  // ── Milestone table rows ──────────────────────────────────────
   const tableRows = watchlist.map(m => {
-    const rowBg   = m.status === 'At Risk' ? '#fff5f5' : '#ffffff';
-    const varColor= m.projected_overrun > 0 ? '#dc2626' : '#059669';
-    const varArrow= m.projected_overrun > 0 ? '▲' : '▼';
+    const rowBg    = m.status === 'At Risk' ? '#fff5f5' : '#ffffff';
+    const varColor = m.projected_overrun > 0 ? '#dc2626' : '#059669';
+    const varArrow = m.projected_overrun > 0 ? '▲' : '▼';
     const burnColor= m.burn_rate_status === 'Ahead' ? '#d97706' : '#10203a';
-    return `
-      <tr style="background:${rowBg}">
-        <td style="padding:5px 8px;border-bottom:1px solid #f1f5f9;font-size:10px;">${m.title}</td>
-        <td style="padding:5px 8px;border-bottom:1px solid #f1f5f9;font-size:10px;color:${m.status==='At Risk'?'#dc2626':'#059669'};font-weight:700">${m.status}</td>
-        <td style="padding:5px 8px;border-bottom:1px solid #f1f5f9;font-size:10px;">${fmt(m.budget)}</td>
-        <td style="padding:5px 8px;border-bottom:1px solid #f1f5f9;font-size:10px;">${fmt(m.ytd_actual)}</td>
-        <td style="padding:5px 8px;border-bottom:1px solid #f1f5f9;font-size:10px;color:${varColor}">${varArrow} ${fmt(Math.abs(m.projected_overrun))}</td>
-        <td style="padding:5px 8px;border-bottom:1px solid #f1f5f9;font-size:10px;color:${burnColor}">${m.burn_rate_status}</td>
-      </tr>`;
+    return `<tr style="background:${rowBg};">
+      <td>${m.title}</td>
+      <td style="color:${m.status==='At Risk'?'#dc2626':'#059669'};font-weight:700">${m.status}</td>
+      <td>${fmtUsd(m.budget)}</td>
+      <td>${fmtUsd(m.ytd_actual)}</td>
+      <td style="color:${varColor}">${varArrow} ${fmtUsd(Math.abs(m.projected_overrun))}</td>
+      <td style="color:${burnColor}">${m.burn_rate_status}</td>
+    </tr>`;
   }).join('');
 
-  // ── 3. Build key findings bullets ─────────────────────────────
+  // ── Key findings ──────────────────────────────────────────────
   const findings = [];
-  if (estBal < 0)
-    findings.push(`⚠️ Portfolio estimated balance is <strong>negative (${fmt(estBal)})</strong> — immediate review required.`);
-  else
-    findings.push(`✅ Portfolio estimated balance is positive at <strong>${fmt(estBal)}</strong>.`);
-
+  findings.push(estBal < 0
+    ? `⚠️ Portfolio est. balance is <b>negative (${fmtUsd(estBal)})</b> — review required.`
+    : `✅ Portfolio est. balance is positive at <b>${fmtUsd(estBal)}</b>.`);
   atRisk.slice(0, 3).forEach(m =>
-    findings.push(`⚠️ <strong>${m.title}</strong> — projected overrun of ${fmt(Math.abs(m.projected_overrun))} against a ${fmt(m.budget)} budget.`)
-  );
-
+    findings.push(`⚠️ <b>${m.title}</b> — projected overrun ${fmtUsd(Math.abs(m.projected_overrun))} vs ${fmtUsd(m.budget)} budget.`));
   const aheadMs = milestones.filter(m => m.burn_rate_status === 'Ahead');
   if (aheadMs.length)
-    findings.push(`🔥 ${aheadMs.length} milestone${aheadMs.length>1?'s':''} burning ahead of pace: ${aheadMs.map(m=>m.title).join(', ')}.`);
-
+    findings.push(`🔥 ${aheadMs.length} milestone(s) burning ahead of pace: ${aheadMs.map(m=>m.title).join(', ')}.`);
   if (!atRisk.length)
-    findings.push('✅ No milestones showing projected overruns at this time.');
+    findings.push('✅ No milestones showing projected overruns.');
 
-  const findingsList = findings.map(f =>
-    `<li style="margin-bottom:5px;font-size:10px;line-height:1.5;">${f}</li>`
-  ).join('');
-
-  // ── 4. Compose the 1-page HTML ────────────────────────────────
-  const now = new Date().toLocaleString('en-US',{month:'long',day:'numeric',year:'numeric',hour:'2-digit',minute:'2-digit'});
-
-  const html = `
-<div style="font-family:Arial,sans-serif;font-size:10px;color:#10203a;background:white;width:100%;">
-
-  <!-- Header -->
-  <div style="background:linear-gradient(135deg,#2563eb,#7c3aed);color:white;padding:10px 16px;border-radius:8px;margin-bottom:10px;display:flex;justify-content:space-between;align-items:center;">
-    <div>
-      <div style="font-size:17px;font-weight:800;margin-bottom:2px;">PPSC Financial Executive Summary</div>
-      <div style="font-size:10px;opacity:0.85;">${month} &nbsp;·&nbsp; Award ${award}</div>
-    </div>
-    <div style="font-size:9px;opacity:0.75;text-align:right;">Generated ${now}</div>
-  </div>
-
-  <!-- KPI row -->
-  <div style="display:grid;grid-template-columns:repeat(6,1fr);gap:8px;margin-bottom:10px;">
-    ${[
-      ['Award Budget',     budget,          '#10203a'],
-      ['Monthly Spend',    monthSpend,      '#10203a'],
-      ['YTD Spend',        fmt(milestones.reduce((s,m)=>s+m.ytd_actual,0)), '#10203a'],
-      ['Est. Balance',     fmt(estBal),     balColor ],
-      ['On Track',         `${onTrack.length} / ${milestones.length}`, '#059669'],
-      ['At Risk',          atRisk.length,   atRisk.length ? '#dc2626' : '#059669'],
-    ].map(([lbl,val,col]) => `
-      <div style="border:1px solid #e2e8f0;border-radius:8px;padding:8px 10px;text-align:center;">
-        <div style="font-size:8px;text-transform:uppercase;color:#51627d;letter-spacing:.05em;">${lbl}</div>
-        <div style="font-size:15px;font-weight:800;margin-top:3px;color:${col};">${val}</div>
-      </div>`).join('')}
-  </div>
-
-  <!-- Body: table + side panel -->
-  <div style="display:grid;grid-template-columns:2fr 1fr;gap:10px;">
-
-    <!-- Milestone table -->
-    <div>
-      <div style="font-size:11px;font-weight:700;margin-bottom:6px;color:#10203a;">
-        Top Milestones by Risk Score <span style="font-weight:400;color:#51627d;">(up to 8 shown)</span>
-      </div>
-      <table style="width:100%;border-collapse:collapse;">
-        <thead>
-          <tr style="background:#f6f8fc;">
-            ${['Milestone','Status','Budget','YTD Actual','Proj. Variance','Burn Rate']
-              .map(h=>`<th style="text-align:left;padding:5px 8px;font-size:8px;text-transform:uppercase;color:#51627d;border-bottom:1px solid #e2e8f0;">${h}</th>`)
-              .join('')}
-          </tr>
-        </thead>
-        <tbody>${tableRows}</tbody>
-      </table>
-    </div>
-
-    <!-- Side panel -->
-    <div style="display:flex;flex-direction:column;gap:8px;">
-
-      <!-- Status chips -->
-      <div style="border:1px solid #e2e8f0;border-radius:8px;padding:10px;">
-        <div style="display:grid;grid-template-columns:1fr 1fr;gap:6px;">
-          <div style="background:#f0fdf4;border-radius:6px;padding:8px;text-align:center;">
-            <div style="font-size:20px;font-weight:800;color:#059669;">${onTrack.length}</div>
-            <div style="font-size:8px;text-transform:uppercase;color:#059669;">On Track</div>
-          </div>
-          <div style="background:#fff5f5;border-radius:6px;padding:8px;text-align:center;">
-            <div style="font-size:20px;font-weight:800;color:#dc2626;">${atRisk.length}</div>
-            <div style="font-size:8px;text-transform:uppercase;color:#dc2626;">At Risk</div>
-          </div>
-        </div>
-        ${totalOverrun > 0 ? `
-        <div style="margin-top:8px;padding:6px 8px;background:#fff5f5;border-radius:6px;font-size:9px;color:#dc2626;text-align:center;">
-          Total Projected Overrun<br>
-          <strong style="font-size:13px;">${fmt(totalOverrun)}</strong>
-        </div>` : `
-        <div style="margin-top:8px;padding:6px 8px;background:#f0fdf4;border-radius:6px;font-size:9px;color:#059669;text-align:center;">
-          No projected overruns
-        </div>`}
-      </div>
-
-      <!-- Key findings -->
-      <div style="border:1px solid #e2e8f0;border-radius:8px;padding:10px;flex:1;">
-        <div style="font-size:10px;font-weight:700;margin-bottom:6px;">Key Findings</div>
-        <ul style="margin:0;padding-left:14px;">${findingsList}</ul>
-      </div>
-
-      <!-- Legend -->
-      <div style="border:1px solid #e2e8f0;border-radius:8px;padding:8px;font-size:8px;color:#51627d;line-height:1.6;">
-        <strong style="color:#10203a;">Notes</strong><br>
-        At Risk = negative estimated balance<br>
-        Ahead = YTD spend &gt;110% of expected pace<br>
-        Proj. Variance = est. total spend vs. budget
-      </div>
-    </div>
-  </div>
-
-  <!-- Footer -->
-  <div style="margin-top:8px;font-size:8px;color:#94a3b8;text-align:center;border-top:1px solid #f1f5f9;padding-top:6px;">
-    PPSC Financial Automation &nbsp;·&nbsp; ${month} &nbsp;·&nbsp; Award ${award} &nbsp;·&nbsp; Generated ${now}
-  </div>
-</div>`;
-
-  // ── 5. Inject into hidden container and export ─────────────────
-  let container = document.getElementById('__pdfExecContainer');
-  if (!container) {
-    container = document.createElement('div');
-    container.id = '__pdfExecContainer';
-    container.style.cssText = 'position:fixed;left:-9999px;top:0;width:10.5in;background:white;padding:0.15in;';
-    document.body.appendChild(container);
-  }
-  container.innerHTML = html;
-
-  html2pdf().set({
-    margin:       0.15,
-    filename:     filename,
-    image:        { type: 'jpeg', quality: 0.97 },
-    html2canvas:  { scale: 2, useCORS: true, scrollY: 0 },
-    jsPDF:        { unit: 'in', format: 'letter', orientation: 'landscape' },
-    pagebreak:    { mode: [] }   // no page breaks — keep it 1 page
-  }).from(container).save().then(() => {
-    container.innerHTML = '';
+  const now = new Date().toLocaleString('en-US',{
+    month:'long', day:'numeric', year:'numeric', hour:'2-digit', minute:'2-digit'
   });
+
+  // ── Full HTML for the 1-page PDF ─────────────────────────────
+  // Uses tables-only layout (no CSS grid/flexbox) so html2canvas
+  // renders it correctly without needing a paint cycle.
+  const html = `<!DOCTYPE html>
+<html><head><meta charset="UTF-8">
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: Arial, sans-serif; font-size: 10px; color: #10203a;
+         background: white; width: 9.8in; padding: 0.18in; }
+  table { border-collapse: collapse; width: 100%; }
+  td, th { vertical-align: top; }
+
+  /* Header */
+  .hdr { background: linear-gradient(135deg,#2563eb,#7c3aed); color: white;
+         border-radius: 8px; padding: 10px 16px; margin-bottom: 10px; }
+  .hdr-title { font-size: 17px; font-weight: 800; }
+  .hdr-sub { font-size: 10px; opacity: 0.85; margin-top: 2px; }
+  .hdr-date { font-size: 9px; opacity: 0.7; text-align: right; }
+
+  /* KPI chips */
+  .kpi { border: 1px solid #e2e8f0; border-radius: 8px; padding: 8px 10px;
+         text-align: center; }
+  .kpi-lbl { font-size: 8px; text-transform: uppercase; color: #51627d;
+              letter-spacing: .05em; }
+  .kpi-val { font-size: 16px; font-weight: 800; margin-top: 3px; }
+
+  /* Section label */
+  .sec-label { font-size: 11px; font-weight: 700; color: #10203a;
+               padding-bottom: 5px; }
+
+  /* Milestone table */
+  .ms-table th { background: #f6f8fc; padding: 5px 7px; font-size: 8px;
+                 text-transform: uppercase; color: #51627d;
+                 border-bottom: 1px solid #e2e8f0; text-align: left; }
+  .ms-table td { padding: 5px 7px; border-bottom: 1px solid #f1f5f9;
+                 font-size: 9.5px; }
+
+  /* Status chips */
+  .chip { border-radius: 6px; padding: 8px; text-align: center; }
+  .chip-n { font-size: 22px; font-weight: 800; }
+  .chip-t { font-size: 8px; text-transform: uppercase; margin-top: 2px; }
+  .chip-good { background: #f0fdf4; color: #059669; }
+  .chip-risk { background: #fff5f5; color: #dc2626; }
+
+  /* Findings */
+  .finding { font-size: 9.5px; line-height: 1.5; padding: 4px 0;
+             border-bottom: 1px solid #f1f5f9; }
+
+  /* Notes box */
+  .notes { font-size: 8.5px; color: #51627d; line-height: 1.6; }
+
+  /* Footer */
+  .footer { font-size: 8px; color: #94a3b8; text-align: center;
+            border-top: 1px solid #f1f5f9; padding-top: 6px; margin-top: 8px; }
+</style>
+</head><body>
+
+<!-- HEADER -->
+<table style="margin-bottom:10px;"><tr>
+  <td class="hdr" style="width:75%">
+    <div class="hdr-title">PPSC Financial Executive Summary</div>
+    <div class="hdr-sub">${month} &nbsp;·&nbsp; Award ${award}</div>
+  </td>
+  <td width="12"></td>
+  <td class="hdr hdr-date" style="width:25%;vertical-align:middle">${now}</td>
+</tr></table>
+
+<!-- KPI ROW -->
+<table style="margin-bottom:10px;"><tr>
+  ${[
+    ['Award Budget',  '$34,122,956', '#10203a'],
+    ['Monthly Spend', monthSpend,         '#10203a'],
+    ['YTD Spend',     fmtUsd(ytdTotal),   '#10203a'],
+    ['Est. Balance',  fmtUsd(estBal),     balColor],
+    ['On Track',      onTrack.length+' / '+milestones.length, '#059669'],
+    ['At Risk',       atRisk.length,      atRisk.length ? '#dc2626' : '#059669'],
+  ].map(([l,v,c],i) =>
+    `${i>0?'<td width="8"></td>':''}<td class="kpi" style="width:16%">
+       <div class="kpi-lbl">${l}</div>
+       <div class="kpi-val" style="color:${c}">${v}</div>
+     </td>`
+  ).join('')}
+</tr></table>
+
+<!-- BODY: milestone table (left) + side panel (right) -->
+<table><tr valign="top">
+
+  <!-- LEFT: milestone table -->
+  <td style="width:66%">
+    <div class="sec-label">
+      Top Milestones by Risk Score
+      <span style="font-weight:400;color:#51627d;">(up to 8 shown)</span>
+    </div>
+    <table class="ms-table">
+      <thead><tr>
+        <th>Milestone</th><th>Status</th><th>Budget</th>
+        <th>YTD Actual</th><th>Proj. Variance</th><th>Burn Rate</th>
+      </tr></thead>
+      <tbody>${tableRows}</tbody>
+    </table>
+  </td>
+
+  <td width="12"></td>
+
+  <!-- RIGHT: side panel -->
+  <td style="width:34%">
+
+    <!-- Status chips -->
+    <table style="margin-bottom:8px;width:100%;"><tr>
+      <td class="chip chip-good" style="width:50%">
+        <div class="chip-n">${onTrack.length}</div>
+        <div class="chip-t">On Track</div>
+      </td>
+      <td width="8"></td>
+      <td class="chip chip-risk" style="width:50%">
+        <div class="chip-n">${atRisk.length}</div>
+        <div class="chip-t">At Risk</div>
+      </td>
+    </tr></table>
+
+    <!-- Overrun total -->
+    <div style="padding:6px 8px;border-radius:6px;text-align:center;margin-bottom:8px;
+      background:${totalOverrun>0?'#fff5f5':'#f0fdf4'};
+      color:${totalOverrun>0?'#dc2626':'#059669'};">
+      <div style="font-size:8px;text-transform:uppercase;letter-spacing:.05em;">
+        Total Projected Overrun</div>
+      <div style="font-size:15px;font-weight:800;margin-top:2px;">
+        ${totalOverrun > 0 ? fmtUsd(totalOverrun) : 'None'}</div>
+    </div>
+
+    <!-- Key findings -->
+    <div class="sec-label" style="margin-bottom:4px;">Key Findings</div>
+    ${findings.map(f=>`<div class="finding">${f}</div>`).join('')}
+
+    <!-- Legend -->
+    <div class="notes" style="margin-top:8px;padding:6px 8px;
+      border:1px solid #e2e8f0;border-radius:6px;">
+      <b style="color:#10203a;">Notes</b><br>
+      At Risk = negative estimated balance<br>
+      Ahead = YTD &gt;110% of expected pace<br>
+      Proj. Variance = est. total spend vs. budget
+    </div>
+
+  </td>
+</tr></table>
+
+<div class="footer">
+  PPSC Financial Automation &nbsp;·&nbsp; ${month} &nbsp;·&nbsp;
+  Award ${award} &nbsp;·&nbsp; Generated ${now}
+</div>
+</body></html>`;
+
+  // ── Render in a hidden iframe, then export ────────────────────
+  // Using an iframe avoids the CSS grid/layout issues that cause
+  // html2canvas to produce a blank page from an off-screen div.
+  let iframe = document.getElementById('__pdfIframe');
+  if (!iframe) {
+    iframe = document.createElement('iframe');
+    iframe.id = '__pdfIframe';
+    iframe.style.cssText =
+      'position:fixed;left:-9999px;top:0;width:10in;height:8in;border:none;visibility:hidden;';
+    document.body.appendChild(iframe);
+  }
+
+  const doc = iframe.contentDocument || iframe.contentWindow.document;
+  doc.open(); doc.write(html); doc.close();
+
+  // Give the iframe one paint cycle to lay out before capturing
+  setTimeout(() => {
+    html2pdf().set({
+      margin:      0.15,
+      filename:    filename,
+      image:       { type: 'jpeg', quality: 0.97 },
+      html2canvas: { scale: 2, useCORS: true, scrollY: 0,
+                     windowWidth: 1056 },   // ~9.8in at 96dpi — matches body width
+      jsPDF:       { unit: 'in', format: 'letter', orientation: 'landscape' },
+      pagebreak:   { mode: [] }
+    }).from(iframe.contentDocument.body).save().then(() => {
+      doc.open(); doc.write(''); doc.close();
+    });
+  }, 400);
 }
 </script>
 <script>
