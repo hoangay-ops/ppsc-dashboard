@@ -5,88 +5,31 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>PPSC Dashboard Archive</title>
   <style>
-    :root {
-      --text: #10203a;
-      --muted: #51627d;
-      --accent: #2563eb;
-      --good: #059669;
-      --warn: #d97706;
-      --risk: #dc2626;
-      --shadow: 0 18px 40px rgba(15, 23, 42, 0.10);
-      --radius: 22px;
-    }
-    * { box-sizing: border-box; }
-    body {
-      margin: 0;
-      font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
-      color: var(--text);
-      background:
-        radial-gradient(circle at top left, rgba(59, 130, 246, 0.10), transparent 28%),
-        radial-gradient(circle at top right, rgba(168, 85, 247, 0.08), transparent 26%),
-        linear-gradient(180deg, #ffffff 0%, #f6f8fc 52%, #eef3fb 100%);
-      min-height: 100vh;
-    }
-    .wrap { max-width: 1300px; margin: 0 auto; padding: 14px; }
-    .hero, .panel, .card {
-      background: linear-gradient(180deg, rgba(255,255,255,0.96), rgba(248,250,252,0.98));
-      border: 1px solid rgba(15,23,42,0.10);
-      box-shadow: var(--shadow);
-      border-radius: var(--radius);
-      backdrop-filter: blur(14px);
-    }
-    .hero { display: grid; grid-template-columns: 1fr; padding: 26px; margin-bottom: 18px; }
-    .eyebrow {
-      display: inline-flex; gap: 8px; align-items: center; padding: 8px 12px; border-radius: 999px;
-      background: rgba(37,99,235,0.08); color: #1d4ed8; font-size: 12px;
-      letter-spacing: 0.08em; text-transform: uppercase; margin-bottom: 14px;
-    }
-    h1 { margin: 0; font-size: clamp(16px, 2vw, 22px); line-height: 1.15; }
-    .subtitle { margin-top: 10px; color: var(--muted); max-width: 900px; font-size: 15px; line-height: 1.6; }
-    .header-bar {
-      display: flex;
-      justify-content: flex-end;
-      align-items: center;
-      margin-bottom: 12px;
-      padding: 0 10px;
-    }
-    .header-actions {
-      display: flex;
-      gap: 10px;
-      align-items: center;
-      flex-wrap: wrap;
-    }
-    .header-actions a {
-      font-size: 12px;
-      line-height: 1;
-      padding: 8px 12px;
-      border-radius: 6px;
-      text-decoration: none;
-      border: 1px solid #cbd5e1;
-      background: #fff;
-      color: #10203a;
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-    }
-    .panel { padding: 18px; }
-    .grid {
-      display: grid;
-      grid-template-columns: repeat(3, minmax(0, 1fr));
-      gap: 14px;
-      margin-top: 16px;
-    }
-    .month-card {
-      display: block;
-      text-decoration: none;
-      color: var(--text);
-      padding: 18px;
-    }
-    .month-card:hover { background: rgba(37,99,235,0.03); }
-    .month-title { font-size: 18px; font-weight: 800; margin-bottom: 6px; }
-    .month-copy { color: var(--muted); font-size: 13px; line-height: 1.4; }
-    @media (max-width: 1100px) {
-      .grid { grid-template-columns: 1fr; }
-    }
+    :root {--text:#10203a;--muted:#51627d;--accent:#2563eb;--shadow:0 18px 40px rgba(15,23,42,0.10);--radius:22px;}
+    *{box-sizing:border-box;}
+    body{margin:0;font-family:Inter,ui-sans-serif,system-ui,sans-serif;color:var(--text);
+      background:radial-gradient(circle at top left,rgba(59,130,246,0.10),transparent 28%),
+      linear-gradient(180deg,#ffffff 0%,#f6f8fc 52%,#eef3fb 100%);min-height:100vh;}
+    .wrap{max-width:1300px;margin:0 auto;padding:14px;}
+    .hero,.panel,.card{background:linear-gradient(180deg,rgba(255,255,255,0.96),rgba(248,250,252,0.98));
+      border:1px solid rgba(15,23,42,0.10);box-shadow:var(--shadow);border-radius:var(--radius);}
+    .hero{padding:26px;margin-bottom:18px;}
+    .eyebrow{display:inline-flex;gap:8px;align-items:center;padding:8px 12px;border-radius:999px;
+      background:rgba(37,99,235,0.08);color:#1d4ed8;font-size:12px;letter-spacing:0.08em;
+      text-transform:uppercase;margin-bottom:14px;}
+    h1{margin:0;font-size:clamp(16px,2vw,22px);}
+    .subtitle{margin-top:10px;color:var(--muted);font-size:15px;line-height:1.6;}
+    .header-bar{display:flex;justify-content:flex-end;margin-bottom:12px;padding:0 10px;}
+    .header-actions{display:flex;gap:10px;align-items:center;}
+    .header-actions a{font-size:12px;padding:8px 12px;border-radius:6px;text-decoration:none;
+      border:1px solid #cbd5e1;background:#fff;color:#10203a;}
+    .panel{padding:18px;}
+    .grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px;margin-top:16px;}
+    .month-card{display:block;text-decoration:none;color:var(--text);padding:18px;}
+    .month-card:hover{background:rgba(37,99,235,0.03);}
+    .month-title{font-size:18px;font-weight:800;margin-bottom:6px;}
+    .month-copy{color:var(--muted);font-size:13px;line-height:1.4;}
+    @media(max-width:1100px){.grid{grid-template-columns:1fr;}}
   </style>
 </head>
 <body>
@@ -97,13 +40,11 @@
         <a href="./">Archive</a>
       </div>
     </div>
-
     <section class="hero">
       <div class="eyebrow">PPSC / Archive</div>
       <h1>PPSC Dashboard Archive</h1>
       <div class="subtitle">Monthly dashboard snapshots saved from the automation.</div>
     </section>
-
     <section class="panel">
       <div class="grid">
         
