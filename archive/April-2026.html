@@ -175,6 +175,9 @@
            display:flex; align-items:flex-end; justify-content:center; }
     .bar span { position:absolute; top:-22px; font-size:11px; color:#1d4ed8; white-space:nowrap; }
     .bar-label { font-size:12px; color:#51627d; text-align:center; line-height:1.2; }
+    .bar-pair { width:100%; height:100%; display:flex; align-items:end; justify-content:center; gap:6px; padding-bottom:4px; }
+    .bar-mini { width:42%; min-width:12px; border-radius:12px 12px 6px 6px; position:relative; display:flex; align-items:flex-end; justify-content:center; }
+    .bar-mini span { position:absolute; top:-22px; font-size:10px; color:#51627d; white-space:nowrap; }
 
     @media (max-width:1100px) {
       .hero, .grid, .two-col { grid-template-columns:1fr; }
@@ -548,7 +551,7 @@
       <section class="panel" style="margin-bottom:18px;"><h2>User Stories &amp; Story Points</h2><p class="note">No stories file found. Add a file matching <em>*Points*Milestone*.xlsx</em> to the data/ folder.</p></section>
 
     </div><!-- END execSummary -->
-    <div class="footer">Generated May 12, 2026 15:48 · Source: April 2026 workbook · Award OT2OD036464</div>
+    <div class="footer">Generated May 12, 2026 16:11 · Source: April 2026 workbook · Award OT2OD036464</div>
   </div>
 </div>
 
@@ -625,22 +628,47 @@
   statusFilter.addEventListener('change', renderRows);
   renderRows();
 
-  // ── Bar chart fallback (Chart.js version injected by automate.py) ──
+  // ── Bar chart fallback (compare actuals vs. prior forecast) ──
   var bars   = document.getElementById('bars');
-  var maxVal = monthlyData.length ? Math.max.apply(null, monthlyData.map(function(d){ return d.value; })) : 1;
+  var maxVal = 1;
   monthlyData.forEach(function(d) {
+    if (d.month === 'YTD') return;
+    var actualVal = d.is_forecast ? null : (d.value || null);
+    var forecastVal = (d.forecast_val !== null && d.forecast_val !== undefined) ? d.forecast_val : null;
+    if (actualVal !== null && actualVal > maxVal) maxVal = actualVal;
+    if (forecastVal !== null && forecastVal > maxVal) maxVal = forecastVal;
+  });
+  monthlyData.forEach(function(d) {
+    if (d.month === 'YTD') return;
+    var actualVal = d.is_forecast ? null : (d.value || null);
+    var forecastVal = (d.forecast_val !== null && d.forecast_val !== undefined) ? d.forecast_val : null;
     var col  = document.createElement('div'); col.className  = 'bar-col';
     var wrap = document.createElement('div'); wrap.className = 'bar-wrap';
-    var bar  = document.createElement('div'); bar.className  = 'bar';
-    bar.style.height     = ((d.value / maxVal) * 100) + '%';
-    bar.style.background = d.is_forecast
-      ? 'linear-gradient(180deg,rgba(156,163,175,0.7),rgba(107,114,128,0.7))'
-      : 'linear-gradient(180deg,rgba(37,99,235,0.92),rgba(124,58,237,0.92))';
-    bar.style.boxShadow  = d.is_forecast ? 'none' : '0 10px 20px rgba(37,99,235,0.14)';
-    bar.innerHTML        = '<span>' + d.label + '</span>';
-    wrap.appendChild(bar);
+    var pair = document.createElement('div'); pair.className = 'bar-pair';
+
+    if (actualVal !== null) {
+      var actual = document.createElement('div'); actual.className = 'bar-mini';
+      actual.style.height = Math.max((actualVal / maxVal) * 100, 1) + '%';
+      actual.style.background = 'linear-gradient(180deg,rgba(37,99,235,0.92),rgba(124,58,237,0.92))';
+      actual.style.boxShadow  = '0 10px 20px rgba(37,99,235,0.14)';
+      actual.innerHTML = '<span>' + (d.valueLabel || '$' + Math.round(actualVal).toLocaleString()) + '</span>';
+      actual.title = d.month + ' actual';
+      pair.appendChild(actual);
+    }
+
+    if (forecastVal !== null) {
+      var forecast = document.createElement('div'); forecast.className = 'bar-mini';
+      forecast.style.height = Math.max((forecastVal / maxVal) * 100, 1) + '%';
+      forecast.style.background = 'linear-gradient(180deg,rgba(156,163,175,0.8),rgba(107,114,128,0.8))';
+      forecast.style.boxShadow  = 'none';
+      forecast.innerHTML = '<span>' + '$' + Math.round(forecastVal).toLocaleString() + '</span>';
+      forecast.title = d.month + ' prior forecast';
+      pair.appendChild(forecast);
+    }
+
+    wrap.appendChild(pair);
     var label = document.createElement('div'); label.className = 'bar-label';
-    label.textContent = d.month + (d.is_forecast ? '*' : '');
+    label.textContent = d.month;
     col.appendChild(wrap); col.appendChild(label);
     bars.appendChild(col);
   });
