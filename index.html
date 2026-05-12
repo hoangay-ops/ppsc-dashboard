@@ -193,6 +193,14 @@
       .panel { box-shadow:none !important; border:1px solid #ddd !important; }
       #exportBtn, button { display:none !important; }
     }
+  table.sortable th { cursor: pointer; position: relative; padding-right: 20px; }
+    table.sortable th:after { 
+      content: ' \2195'; 
+      position: absolute; 
+      right: 5px; 
+      opacity: 0.3; 
+      font-size: 0.8em; 
+    }
   </style>
 </head>
 <body data-current-file="April-2026.html">
@@ -342,7 +350,7 @@
 </script>
   <script>
     (function() {
-      var md             = [{"month": "Jan", "value": 0.0, "label": "$0.0M", "is_forecast": false, "forecast_val": 2808956.53}, {"month": "Feb", "value": 11787301.55, "label": "$11.8M", "is_forecast": false, "forecast_val": 2808956.53}, {"month": "Mar", "value": 2692098.19, "label": "$2.7M", "is_forecast": false, "forecast_val": 2808956.53}, {"month": "Apr", "value": 4099160.98, "label": "$4.1M", "is_forecast": false, "forecast_val": 2808956.53}, {"month": "May", "value": 2629214.67, "label": "$2.6M", "is_forecast": true, "forecast_val": 2808956.53}, {"month": "Jun", "value": 2384619.02, "label": "$2.4M", "is_forecast": true, "forecast_val": 2808956.53}, {"month": "Jul", "value": 2534941.62, "label": "$2.5M", "is_forecast": true, "forecast_val": 2808956.53}, {"month": "Aug", "value": 2574573.87, "label": "$2.6M", "is_forecast": true, "forecast_val": 2808956.53}, {"month": "Sep", "value": 3028015.84, "label": "$3.0M", "is_forecast": true, "forecast_val": 2808956.53}, {"month": "Oct", "value": 612057.55, "label": "$0.6M", "is_forecast": true, "forecast_val": 2808956.53}, {"month": "Nov", "value": 594751.7, "label": "$0.6M", "is_forecast": true, "forecast_val": 2808956.53}, {"month": "Dec", "value": 771229.58, "label": "$0.8M", "is_forecast": true, "forecast_val": 2808956.53}, {"month": "YTD", "value": 18578560.72, "label": "$18.6M", "is_forecast": false, "forecast_val": 11235826.14, "is_ytd": true}];
+      var md             = [{"month": "Jan", "value": 0.0, "is_forecast": false, "forecast_val": 0.0}, {"month": "Feb", "value": 11787301.55, "is_forecast": false, "forecast_val": 11787301.554000003}, {"month": "Mar", "value": 2692098.19, "is_forecast": false, "forecast_val": 2692098.1944999998}, {"month": "Apr", "value": 4099160.98, "is_forecast": false, "forecast_val": 4099160.9760000003}, {"month": "May", "value": 2629214.67, "is_forecast": true, "forecast_val": 2629214.6742369975}, {"month": "Jun", "value": 2384619.02, "is_forecast": true, "forecast_val": 2384619.020867792}, {"month": "Jul", "value": 2534941.62, "is_forecast": true, "forecast_val": 2534941.6179205542}, {"month": "Aug", "value": 2574573.87, "is_forecast": true, "forecast_val": 2574573.868608147}, {"month": "Sep", "value": 3028015.84, "is_forecast": true, "forecast_val": 3028015.837029723}, {"month": "Oct", "value": 612057.55, "is_forecast": true, "forecast_val": 612057.5503014642}, {"month": "Nov", "value": 594751.7, "is_forecast": true, "forecast_val": 594751.7042962809}, {"month": "Dec", "value": 771229.58, "is_forecast": true, "forecast_val": 771229.5816198492}, {"month": "YTD", "value": 18578560.72, "label": "$18.6M", "is_forecast": false, "forecast_val": 11235826.14, "is_ytd": true}];
       var labels         = md.map(function(d) { return d.month; });
       var actuals        = md.map(function(d) { return d.is_forecast ? null : (d.value || null); });
       var forecastSpend  = md.map(function(d) { return d.is_forecast ? (d.value || null) : null; });
@@ -426,11 +434,6 @@
         </div>
       </section>
 
-      <!-- Consolidated Action Panel -->
-      <section class="panel" style="margin-bottom:18px; border-left:6px solid var(--accent);">
-        
-      </section>
-
       <!-- Operational + Callouts -->
       <section class="two-col">
         <div class="panel">
@@ -441,8 +444,8 @@
 <div class="bullet"><div class="dot warn"></div><div><strong>Spend spike — M51 – Data Process and Protocol Automation:</strong> $274,578 this month (42.7% of annual budget in a single period). Verify invoices are correctly period-coded.</div></div>
 <div class="bullet"><div class="dot warn"></div><div><strong>Spend spike — M44 – Directorate:</strong> $140,833 this month (35.0% of annual budget in a single period). Verify invoices are correctly period-coded.</div></div></div>
         </div>
+
         <div class="panel">
-          <div style="display:grid;grid-template-columns:1.5fr 1fr;gap:24px;">
           <div class="decision-box">
             <h2 style="font-size:16px;color:#1e293b;">Decisions Needed</h2>
             <ul style="padding-left:20px;margin-top:10px;font-size:13px;line-height:1.8;color:#334155;">
@@ -451,11 +454,6 @@
               <li>Confirm whether any front-loaded milestones should remain excluded from pace alerts.</li>
             </ul>
           </div>
-        </div>
-            <h2>Key Financial Callouts</h2>
-            <p class="note">Risk context sourced from the monthly narrative memo.</p>
-            <div class="bullets"><div class="bullet"><div class="dot risk"></div><div><strong>Portfolio balance is negative ($-485).</strong> Projected spend is above budget.</div></div>
-<div class="bullet"><div class="dot warn"></div><div><strong>7 flagged, and all are minor — monitor closely.</strong></div></div></div>
         </div>
       </section>
 
@@ -493,7 +491,7 @@
   </div>
   <div style="font-size:13px;font-weight:700;margin-bottom:8px;">All milestones — hours breakdown</div>
   <div style="overflow-x:auto;">
-    <table style="width:100%;border-collapse:collapse;">
+    <table class="sortable" style="width:100%;border-collapse:collapse;">
       <thead><tr style="border-bottom:1px solid rgba(15,23,42,0.10);">
         <th style="text-align:left;padding:8px;font-size:11px;color:#51627d;font-weight:400;text-transform:uppercase;letter-spacing:.06em;">Milestone</th>
         <th style="text-align:left;padding:8px;font-size:11px;color:#51627d;font-weight:400;text-transform:uppercase;letter-spacing:.06em;">Code</th>
@@ -505,16 +503,17 @@
   </div>
 </section>
 
+
       <!-- User Stories Panel (generated by automate.py from *Points*Milestone*.xlsx) -->
       <section class="panel" style="margin-bottom:18px;"><h2>User Stories &amp; Story Points</h2><p class="note">No stories file found. Add a file matching <em>*Points*Milestone*.xlsx</em> to the data/ folder.</p></section>
 
     </div><!-- END execSummary -->
-    <div class="footer">Generated May 12, 2026 14:13 · Source: April 2026 workbook · Award OT2OD036464</div>
+    <div class="footer">Generated May 12, 2026 15:22 · Source: April 2026 workbook · Award OT2OD036464</div>
   </div>
 </div>
 
 <script>
-  const monthlyData  = [{"month": "Jan", "value": 0.0, "label": "$0.0M", "is_forecast": false, "forecast_val": 2808956.53}, {"month": "Feb", "value": 11787301.55, "label": "$11.8M", "is_forecast": false, "forecast_val": 2808956.53}, {"month": "Mar", "value": 2692098.19, "label": "$2.7M", "is_forecast": false, "forecast_val": 2808956.53}, {"month": "Apr", "value": 4099160.98, "label": "$4.1M", "is_forecast": false, "forecast_val": 2808956.53}, {"month": "May", "value": 2629214.67, "label": "$2.6M", "is_forecast": true, "forecast_val": 2808956.53}, {"month": "Jun", "value": 2384619.02, "label": "$2.4M", "is_forecast": true, "forecast_val": 2808956.53}, {"month": "Jul", "value": 2534941.62, "label": "$2.5M", "is_forecast": true, "forecast_val": 2808956.53}, {"month": "Aug", "value": 2574573.87, "label": "$2.6M", "is_forecast": true, "forecast_val": 2808956.53}, {"month": "Sep", "value": 3028015.84, "label": "$3.0M", "is_forecast": true, "forecast_val": 2808956.53}, {"month": "Oct", "value": 612057.55, "label": "$0.6M", "is_forecast": true, "forecast_val": 2808956.53}, {"month": "Nov", "value": 594751.7, "label": "$0.6M", "is_forecast": true, "forecast_val": 2808956.53}, {"month": "Dec", "value": 771229.58, "label": "$0.8M", "is_forecast": true, "forecast_val": 2808956.53}, {"month": "YTD", "value": 18578560.72, "label": "$18.6M", "is_forecast": false, "forecast_val": 11235826.14, "is_ytd": true}];
+  const monthlyData  = [{"month": "Jan", "value": 0.0, "is_forecast": false, "forecast_val": 0.0}, {"month": "Feb", "value": 11787301.55, "is_forecast": false, "forecast_val": 11787301.554000003}, {"month": "Mar", "value": 2692098.19, "is_forecast": false, "forecast_val": 2692098.1944999998}, {"month": "Apr", "value": 4099160.98, "is_forecast": false, "forecast_val": 4099160.9760000003}, {"month": "May", "value": 2629214.67, "is_forecast": true, "forecast_val": 2629214.6742369975}, {"month": "Jun", "value": 2384619.02, "is_forecast": true, "forecast_val": 2384619.020867792}, {"month": "Jul", "value": 2534941.62, "is_forecast": true, "forecast_val": 2534941.6179205542}, {"month": "Aug", "value": 2574573.87, "is_forecast": true, "forecast_val": 2574573.868608147}, {"month": "Sep", "value": 3028015.84, "is_forecast": true, "forecast_val": 3028015.837029723}, {"month": "Oct", "value": 612057.55, "is_forecast": true, "forecast_val": 612057.5503014642}, {"month": "Nov", "value": 594751.7, "is_forecast": true, "forecast_val": 594751.7042962809}, {"month": "Dec", "value": 771229.58, "is_forecast": true, "forecast_val": 771229.5816198492}, {"month": "YTD", "value": 18578560.72, "label": "$18.6M", "is_forecast": false, "forecast_val": 11235826.14, "is_ytd": true}];
   const milestones   = [{"milestone_id": "M44", "title": "M44 \u2013 Directorate", "status": "At Risk", "budget": 402821.6875, "monthly_spend": 140832.825, "percent_spent": 14.42, "ytd_actual": 264122.74, "expected_spend": 134273.9, "burn_rate_status": "Ahead", "pace_variance": 129848.84, "projected_overrun": 11543.38, "est_balance": -11543.37766128776, "exception_note": ""}, {"milestone_id": "M45", "title": "M45 \u2013 Product Implementation", "status": "Watch", "budget": 2335517.05, "monthly_spend": 525222.831, "percent_spent": 1.42, "ytd_actual": 789168.6494999999, "expected_spend": 778505.68, "burn_rate_status": "On Pace", "pace_variance": 10662.97, "projected_overrun": 2837.54, "est_balance": -2838.5415100798054, "exception_note": ""}, {"milestone_id": "M46", "title": "M46 \u2013 Website Maintenance", "status": "On Track", "budget": 1100033.55, "monthly_spend": 259459.4205, "percent_spent": 4.37, "ytd_actual": 417539.7345, "expected_spend": 366677.85, "burn_rate_status": "On Pace", "pace_variance": 50861.88, "projected_overrun": -3190.45, "est_balance": 3190.4499863816654, "exception_note": ""}, {"milestone_id": "M47", "title": "M47 \u2013 Communications Delivery", "status": "Watch", "budget": 1682690.1, "monthly_spend": 333497.388, "percent_spent": 1.63, "ytd_actual": 569914.5165, "expected_spend": 560896.7, "burn_rate_status": "On Pace", "pace_variance": 9017.82, "projected_overrun": 38509.63, "est_balance": -38509.6251986252, "exception_note": ""}, {"milestone_id": "M48", "title": "M48 \u2013 Data Quality & Platform analytics", "status": "On Track", "budget": 934901.2365, "monthly_spend": 219096.864, "percent_spent": 9.28, "ytd_actual": 393271.11149999994, "expected_spend": 311633.75, "burn_rate_status": "On Pace", "pace_variance": 81637.36, "projected_overrun": -15685.21, "est_balance": 15685.213358260116, "exception_note": ""}, {"milestone_id": "M49", "title": "M49 \u2013 Tier 2&3 support", "status": "Watch", "budget": 818740.125, "monthly_spend": 121836.6555, "percent_spent": 26.02, "ytd_actual": 437729.5335000001, "expected_spend": 272913.38, "burn_rate_status": "Ahead", "pace_variance": 164816.15, "projected_overrun": -4650.41, "est_balance": 4650.410163837369, "exception_note": ""}, {"milestone_id": "M50", "title": "M50 \u2013 Development + Operations & Maintenance", "status": "On Track", "budget": 7460577.6, "monthly_spend": 1709166.3015, "percent_spent": 2.87, "ytd_actual": 2642932.4669999997, "expected_spend": 2486859.2, "burn_rate_status": "On Pace", "pace_variance": 156073.27, "projected_overrun": -50114.4, "est_balance": 50114.39945872387, "exception_note": ""}, {"milestone_id": "M51", "title": "M51 \u2013 Data Process and Protocol Automation", "status": "Watch", "budget": 642997.95, "monthly_spend": 274578.108, "percent_spent": 0.73, "ytd_actual": 395701.1625, "expected_spend": 214332.65, "burn_rate_status": "Ahead", "pace_variance": 181368.51, "projected_overrun": -20677.28, "est_balance": 20677.281161399093, "exception_note": ""}, {"milestone_id": "M52", "title": "M52 \u2013 Security", "status": "On Track", "budget": 507006.8115, "monthly_spend": 85315.73399999998, "percent_spent": 14.44, "ytd_actual": 203691.1695, "expected_spend": 169002.27, "burn_rate_status": "On Pace", "pace_variance": 34688.9, "projected_overrun": -351.07, "est_balance": 351.07478824245845, "exception_note": ""}, {"milestone_id": "M53", "title": "M53 \u2013 Licenses", "status": "On Track", "budget": 9214479.75, "monthly_spend": -222515.23949999997, "percent_spent": 103.98, "ytd_actual": 9372222.1155, "expected_spend": 3071493.25, "burn_rate_status": "Ahead", "pace_variance": 6300728.87, "projected_overrun": 157742.37, "est_balance": -157742.36550000036, "exception_note": "Annual license fees paid upfront in February \u2014 no further spend expected."}, {"milestone_id": "M54", "title": "M54 \u2013 Directorate and Management", "status": "On Track", "budget": 450886.078, "monthly_spend": -50473.248, "percent_spent": 38.95, "ytd_actual": 191272.85100000002, "expected_spend": 150295.36, "burn_rate_status": "On Pace", "pace_variance": 40977.49, "projected_overrun": -3700.05, "est_balance": 3699.0458117119033, "exception_note": ""}, {"milestone_id": "M55", "title": "M55 \u2013 Protocol Compliance", "status": "Watch", "budget": 917727.489, "monthly_spend": 199417.386, "percent_spent": 8.9, "ytd_actual": 403737.7365, "expected_spend": 305909.16, "burn_rate_status": "On Pace", "pace_variance": 97828.58, "projected_overrun": 84.2, "est_balance": -84.19733424895821, "exception_note": ""}, {"milestone_id": "M56", "title": "M56 \u2013 Partner and Participant Coordination", "status": "On Track", "budget": 600671.4, "monthly_spend": 54957.903, "percent_spent": 23.64, "ytd_actual": 274931.03400000004, "expected_spend": 200223.8, "burn_rate_status": "On Pace", "pace_variance": 74707.23, "projected_overrun": -11389.96, "est_balance": 11389.955125589728, "exception_note": ""}, {"milestone_id": "M57", "title": "M57 \u2013 Data Governance and Delivery", "status": "Watch", "budget": 1214051.412, "monthly_spend": 153997.557, "percent_spent": 33.02, "ytd_actual": 747351.885, "expected_spend": 404683.8, "burn_rate_status": "Ahead", "pace_variance": 342668.09, "projected_overrun": -15961.95, "est_balance": 15961.950766808994, "exception_note": ""}, {"milestone_id": "M58", "title": "M58 \u2013 TEP", "status": "On Track", "budget": 574478.2784999999, "monthly_spend": 15267.3045, "percent_spent": 7.38, "ytd_actual": 77269.185, "expected_spend": 191492.76, "burn_rate_status": "Behind", "pace_variance": -114223.58, "projected_overrun": -4706.35, "est_balance": 4706.347373966997, "exception_note": ""}, {"milestone_id": "M59", "title": "M59 \u2013 Support Center", "status": "On Track", "budget": 4849897.8915, "monthly_spend": 279503.1855, "percent_spent": 12.48, "ytd_actual": 1397704.8329999999, "expected_spend": 1616632.63, "burn_rate_status": "On Pace", "pace_variance": -218927.8, "projected_overrun": -79803.81, "est_balance": 79806.80932851016, "exception_note": ""}];
   const fmt          = new Intl.NumberFormat('en-US', {style:'currency',currency:'USD',maximumFractionDigits:0});
   const rows         = document.getElementById('milestoneRows');
@@ -802,5 +801,33 @@ function exportPDF() {
     +'</div>';
 })();
 </script>
+  <script>
+  document.addEventListener('click', function (e) {
+      var target = e.target;
+      if (target.tagName !== 'TH') return;
+      var table = target.closest('table.sortable');
+      if (!table) return;
+      
+      var index = Array.prototype.indexOf.call(target.parentNode.children, target);
+      var tbody = table.querySelector('tbody') || table; // Fallback if no tbody
+      var rows = Array.prototype.slice.call(tbody.querySelectorAll('tr'));
+      
+      // Don't sort the header row if using table instead of tbody
+      if (tbody.tagName === 'TABLE') rows.shift(); 
+
+      var ascending = table.dataset.sortOrder !== 'asc';
+      
+      rows.sort(function (a, b) {
+          var cellA = (a.children[index] ? a.children[index].innerText : "").replace(/[%$,]/g, '');
+          var cellB = (b.children[index] ? b.children[index].innerText : "").replace(/[%$,]/g, '');
+          var valA = isNaN(parseFloat(cellA)) ? cellA.toLowerCase() : parseFloat(cellA);
+          var valB = isNaN(parseFloat(cellB)) ? cellB.toLowerCase() : parseFloat(cellB);
+          return (valA < valB ? -1 : 1) * (ascending ? 1 : -1);
+      });
+      
+      table.dataset.sortOrder = ascending ? 'asc' : 'desc';
+      rows.forEach(function (row) { tbody.appendChild(row); });
+  });
+  </script>
 </body>
 </html>
