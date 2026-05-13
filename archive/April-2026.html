@@ -12,6 +12,43 @@
     }
     * { box-sizing: border-box; }
 
+    .health-matrix {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+      gap: 12px;
+      margin-top: 10px;
+    }
+    .matrix-tile {
+      padding: 12px;
+      border-radius: 14px;
+      text-align: center;
+      border: 1px solid rgba(0,0,0,0.05);
+      transition: transform 0.2s;
+    }
+    .matrix-tile:hover { transform: translateY(-2px); }
+    .matrix-tile.risk { background: #fee2e2; color: #991b1b; }
+    .matrix-tile.warn { background: #fef9c3; color: #854d0e; }
+    .matrix-tile.good { background: #dcfce7; color: #166534; }
+    .tile-id   { font-size: 11px; font-weight: 800; opacity: 0.8; }
+    .tile-name { font-size: 12px; font-weight: 600; display: block; margin: 4px 0;
+                 white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    .tile-val  { font-size: 13px; font-weight: 700; }
+
+    .progress-container {
+      width: 100%; height: 8px; background: #e2e8f0;
+      border-radius: 4px; margin: 8px 0; position: relative;
+    }
+    .progress-fill   { height: 100%; background: var(--accent); border-radius: 4px; }
+    .progress-marker {
+      position: absolute; top: -4px; width: 2px; height: 16px;
+      background: #ef4444; z-index: 10;
+    }
+
+    .decision-box {
+      background: #f1f5f9; border-radius: 12px;
+      padding: 16px; margin-top: 12px;
+    }
+
     body {
       margin: 0;
       font-family: Inter, ui-sans-serif, system-ui, -apple-system, sans-serif;
@@ -22,11 +59,13 @@
         linear-gradient(180deg, #ffffff 0%, #f6f8fc 52%, #eef3fb 100%);
       min-height: 100vh;
     }
-
     .wrap { max-width: 1300px; margin: 0 auto; padding: 14px; }
+
     .header-bar { display:flex; justify-content:flex-end; align-items:center; margin-bottom:12px; padding:0 10px; }
     .header-actions { display:flex; gap:10px; align-items:center; flex-wrap:wrap; }
-    .header-actions a, .header-actions button { font-size:12px; line-height:1; padding:8px 12px; border-radius:6px; text-decoration:none; }
+    .header-actions a, .header-actions button {
+      font-size:12px; line-height:1; padding:8px 12px; border-radius:6px; text-decoration:none;
+    }
     #exportBtn { border:1px solid #cbd5e1; background:#2563eb; color:#fff; cursor:pointer; }
     #exportBtn:hover { background:#1d4ed8; }
 
@@ -45,151 +84,235 @@
     .subtitle { margin-top:10px; color:var(--muted); max-width:900px; font-size:15px; line-height:1.6; }
     .meta { margin-top:18px; display:flex; flex-wrap:wrap; gap:10px; color:#51627d; font-size:13px; }
     .meta span { padding:8px 12px; border-radius:999px; background:rgba(15,23,42,0.04); border:1px solid rgba(15,23,42,0.08); }
-    
+    .hero-side { display:grid; gap:12px; align-content:start; }
+    .mini-title { font-weight:700; font-size:14px; color:#10203a; margin-bottom:6px; }
+    .mini-copy  { color:var(--muted); font-size:13px; line-height:1.5; }
+
+    .tension-box {
+      background: linear-gradient(135deg, rgba(37,99,235,0.06), rgba(124,58,237,0.06));
+      border: 1px solid rgba(37,99,235,0.18); border-radius: 14px;
+      padding: 14px 18px; margin-bottom: 18px;
+      display: flex; align-items: flex-start; gap: 14px;
+    }
+    .tension-icon  { font-size: 24px; flex: none; margin-top: 2px; }
+    .tension-label { font-size:11px; font-weight:700; color:#1d4ed8; text-transform:uppercase; letter-spacing:.08em; margin-bottom:4px; }
+    .tension-text  { font-size:14px; color:#10203a; line-height:1.6; }
+
     .kpis { display:grid; grid-template-columns:repeat(4,1fr); gap:14px; margin:18px 0; }
     .card { padding:18px; min-height:110px; }
     .label { color:var(--muted); font-size:12px; text-transform:uppercase; letter-spacing:.08em; }
     .value { font-size:clamp(14px,1.6vw,20px); font-weight:800; margin-top:8px; }
     .delta { margin-top:8px; font-size:13px; color:var(--muted); }
+    .kpi-bar-wrap { height:4px; background:rgba(15,23,42,0.10); border-radius:2px; margin-top:8px; }
+    .kpi-bar      { height:4px; border-radius:2px; background:var(--accent); }
 
-    .progress-container { width: 100%; height: 8px; background: #e2e8f0; border-radius: 4px; margin: 8px 0; position: relative; }
-    .progress-fill { height: 100%; background: var(--accent); border-radius: 4px; }
-    .progress-marker { position: absolute; top: -4px; width: 2px; height: 16px; background: #ef4444; z-index: 10; }
+    .health-grid { display:grid; grid-template-columns:repeat(4,1fr); gap:14px; margin-top:12px; }
 
-    .grid { display:grid; grid-template-columns:1.35fr 1fr; gap:18px; margin-bottom:18px; }
+    .grid    { display:grid; grid-template-columns:1.35fr 1fr; gap:18px; margin-bottom:18px; }
     .two-col { display:grid; grid-template-columns:1fr 1fr; gap:18px; margin-bottom:18px; }
-    .panel { padding:20px; }
+    .panel    { padding:20px; }
     .panel h2 { margin:0 0 8px; font-size:18px; }
-    .note { margin:0 0 16px; color:var(--muted); font-size:13px; line-height:1.5; }
+    .panel p.note { margin:0 0 16px; color:var(--muted); font-size:13px; line-height:1.5; }
 
-    .status-row { display:grid; grid-template-columns:repeat(4,1fr); gap:10px; margin-top:10px; }
+    .status-row  { display:grid; grid-template-columns:repeat(3,1fr); gap:10px; margin-top:10px; }
     .status-chip { border-radius:16px; padding:14px; background:rgba(15,23,42,0.03); border:1px solid rgba(15,23,42,0.08); }
     .status-chip .num { font-size:18px; font-weight:800; margin-top:4px; }
     .status-chip .txt { color:var(--muted); font-size:12px; text-transform:uppercase; letter-spacing:.06em; }
-    
+    .status-good .num    { color:var(--good); }
+    .status-warn .num    { color:#b45309; }
+    .status-watch        { background:#fefce8; border:1px solid #fde68a; }
+    .status-watch .num   { color:#92400e; }
+    .status-watch .txt   { color:#92400e; }
+    .status-risk .num    { color:var(--risk); }
+    .status-neutral .num { color:var(--accent); }
+
+    table { width:100%; border-collapse:collapse; margin-top:8px; }
+    thead th {
+      text-align:left; font-size:12px; color:var(--muted); padding:12px 10px;
+      border-bottom:1px solid rgba(15,23,42,0.10); text-transform:uppercase; letter-spacing:.06em;
+    }
+    tbody td { padding:12px 10px; border-bottom:1px solid rgba(15,23,42,0.06); font-size:14px; vertical-align:top; }
+    tbody tr:hover { background:rgba(37,99,235,0.03); }
+    .pill { display:inline-flex; align-items:center; padding:6px 10px; border-radius:999px; font-size:12px; font-weight:700; }
+    .pill.good    { background:rgba(5,150,105,0.10);  color:#047857; }
+    .pill.warn    { background:rgba(217,119,6,0.10);  color:#b45309; }
+    .pill.risk    { background:rgba(220,38,38,0.10);  color:#b91c1c; }
+    .pill.neutral { background:rgba(37,99,235,0.10);  color:#1d4ed8; }
+
+    .bullets { display:grid; gap:10px; margin-top:10px; }
+    .bullet  { display:flex; gap:12px; padding:12px; border-radius:16px; background:rgba(15,23,42,0.03); border:1px solid rgba(15,23,42,0.07); color:#10203a; font-size:14px; line-height:1.5; }
+    .dot { width:10px; height:10px; border-radius:50%; margin-top:7px; flex:none; background:var(--accent); box-shadow:0 0 0 5px rgba(37,99,235,0.10); }
+    .dot.risk { background:var(--risk); box-shadow:0 0 0 5px rgba(220,38,38,0.10); }
+    .dot.warn { background:var(--warn); box-shadow:0 0 0 5px rgba(217,119,6,0.10); }
+    .dot.good { background:var(--good); box-shadow:0 0 0 5px rgba(5,150,105,0.10); }
+
+    .footer { color:var(--muted); font-size:12px; margin-top:12px; line-height:1.5; }
+
+    .filter-row { display:flex; gap:12px; flex-wrap:wrap; margin:8px 0 14px; align-items:center; }
+    .filter-row label  { font-size:13px; color:var(--muted); font-weight:600; }
+    .filter-row select { padding:10px 12px; border-radius:12px; border:1px solid rgba(15,23,42,0.14); background:#fff; color:#10203a; font:inherit; }
+
     .bars { display:grid; grid-template-columns:repeat(10,1fr); gap:10px; align-items:end; height:340px; padding-top:14px; }
-    .bar-col { display:flex; flex-direction:column; align-items:center; gap:8px; height:100%; justify-content:end; }
-    .bar-wrap { width:100%; height:100%; display:flex; align-items:end; justify-content:center; position:relative; }
-    .bar-pair { width:100%; height:100%; display:flex; align-items:end; justify-content:center; gap:6px; }
+    .bar-col  { display:flex; flex-direction:column; align-items:center; gap:8px; height:100%; justify-content:end; }
+    .bar-wrap { width:100%; height:100%; display:flex; align-items:end; justify-content:center; padding-bottom:4px; }
+    .bar { width:72%; min-width:28px; border-radius:16px 16px 8px 8px;
+           background:linear-gradient(180deg,rgba(37,99,235,0.92),rgba(124,58,237,0.92));
+           box-shadow:0 10px 20px rgba(37,99,235,0.14); position:relative;
+           display:flex; align-items:flex-end; justify-content:center; }
+    .bar span { position:absolute; top:-22px; font-size:11px; color:#1d4ed8; white-space:nowrap; }
+    .bar-label { font-size:12px; color:#51627d; text-align:center; line-height:1.2; }
+    .bar-pair { width:100%; height:100%; display:flex; align-items:end; justify-content:center; gap:6px; padding-bottom:4px; }
     .bar-mini { width:42%; min-width:12px; border-radius:12px 12px 6px 6px; position:relative; display:flex; align-items:flex-end; justify-content:center; }
     .bar-mini span { position:absolute; top:-22px; font-size:10px; color:#51627d; white-space:nowrap; }
 
-    .forecast-dot {
-      width: 10px; height: 10px; background: #d97706; border-radius: 50%;
-      position: absolute; left: 50%; transform: translate(-50%, 50%);
-      z-index: 10; border: 2px solid #fff; box-shadow: 0 2px 4px rgba(0,0,0,0.2);
-    }
-
-    table { width:100%; border-collapse:collapse; margin-top:8px; }
-    thead th { text-align:left; font-size:12px; color:var(--muted); padding:12px 10px; border-bottom:1px solid rgba(15,23,42,0.10); text-transform:uppercase; }
-    tbody td { padding:12px 10px; border-bottom:1px solid rgba(15,23,42,0.06); font-size:14px; }
-    .pill { display:inline-flex; align-items:center; padding:4px 10px; border-radius:999px; font-size:12px; font-weight:700; }
-    .pill.risk { background:rgba(220,38,38,0.1); color:#b91c1c; }
-    .pill.good { background:rgba(5,150,105,0.1); color:#047857; }
-    .pill.warn { background:rgba(217,119,6,0.1); color:#b45309; }
-
     @media (max-width:1100px) {
       .hero, .grid, .two-col { grid-template-columns:1fr; }
-      .kpis, .status-row { grid-template-columns:repeat(2,1fr); }
+      .kpis, .health-grid { grid-template-columns:repeat(2,1fr); }
+      .status-row { grid-template-columns:repeat(2,1fr); }
+      .bars { grid-template-columns:repeat(5,1fr); height:420px; }
+    }
+    @media (max-width:700px) {
+      .wrap { padding:16px; }
+      .kpis, .status-row, .health-grid { grid-template-columns:1fr; }
+      .bars { grid-template-columns:repeat(2,1fr); height:auto; }
+      .bar-col { min-height:170px; }
+    }
+    @media print {
+      body { background:white !important; }
+      .panel { box-shadow:none !important; border:1px solid #ddd !important; }
+      #exportBtn, button { display:none !important; }
+    }
+    table.sortable th { cursor: pointer; position: relative; padding-right: 20px; }
+    table.sortable th:after {
+      content: ' \2195';
+      position: absolute;
+      right: 5px;
+      opacity: 0.3;
+      font-size: 0.8em;
     }
   </style>
 </head>
 <body data-current-file="April-2026.html">
 <div id="dashboardContent">
   <div class="wrap">
-    <div class="header-bar">
-      <div class="header-actions">
-        <div id="siteNav"></div>
-        <button id="exportBtn" onclick="exportPDF()">Export to PDF</button>
-      </div>
-    </div>
+    <div id="execSummary">
 
-    <section class="hero">
-      <div>
-        <div class="eyebrow">PPSC / April 2026 Dashboard</div>
-        <h1>PPSC Financial Dashboard — April 2026</h1>
-        <div class="subtitle">Award(s): OT2OD036464 · 32 milestones tracked · April 2026 reporting period.</div>
-        <div class="meta">
-          <span>Report period: April 2026</span>
-          <span>Award: OT2OD036464</span>
+      <div class="header-bar">
+        <div class="header-actions">
+          <div id="siteNav"></div>
+          <button id="exportBtn" onclick="exportPDF()">Export to PDF</button>
         </div>
       </div>
-      <div class="hero-side">
-        <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;">
-          <div class="status-chip">
-            <div class="label">Award budget</div>
-            <div style="font-size:18px;font-weight:800;">$67,830,434</div>
-          </div>
-          <div class="status-chip">
-            <div class="label">YTD spent</div>
-            <div style="font-size:18px;font-weight:800;">$18,578,561</div>
+
+      <section class="hero">
+        <div>
+          <div class="eyebrow">PPSC / April 2026 Dashboard</div>
+          <h1>PPSC Financial Dashboard — April 2026</h1>
+          <div class="subtitle">Award OT2OD036464 · 16 milestones tracked · April 2026 reporting period.</div>
+          <div class="meta">
+            <span>Report period: April 2026</span>
+            <span>Award: OT2OD036464</span>
+            <span>Milestones M44–M59</span>
           </div>
         </div>
-      </div>
-    </section>
-
-    <section class="kpis">
-      <div class="card">
-        <div class="label">Budget Utilization</div>
-        <div class="value">27.4%</div>
-        <div class="progress-container">
-          <div class="progress-fill" id="budgetFill"></div>
-          <div class="progress-marker" id="yearMarker"></div>
+        <div class="hero-side">
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;">
+            <div style="background:rgba(37,99,235,0.06);border:1px solid rgba(37,99,235,0.14);border-radius:14px;padding:12px 14px;">
+              <div class="label">Award budget</div>
+              <div style="font-size:18px;font-weight:800;margin-top:4px;">$33,707,478</div>
+            </div>
+            <div style="background:rgba(37,99,235,0.06);border:1px solid rgba(37,99,235,0.14);border-radius:14px;padding:12px 14px;">
+              <div class="label">YTD spent</div>
+              <div style="font-size:18px;font-weight:800;margin-top:4px;">$18,578,561</div>
+            </div>
+            <div style="background:rgba(37,99,235,0.06);border:1px solid rgba(37,99,235,0.14);border-radius:14px;padding:12px 14px;">
+              <div class="label">Est. balance</div>
+              <div style="font-size:18px;font-weight:800;margin-top:4px;color:#dc2626;">$-485</div>
+            </div>
+            <div style="background:rgba(37,99,235,0.06);border:1px solid rgba(37,99,235,0.14);border-radius:14px;padding:12px 14px;">
+              <div class="label">This month</div>
+              <div style="font-size:18px;font-weight:800;margin-top:4px;">$4,099,161</div>
+            </div>
+          </div>
+          <div style="margin-top:10px;font-size:12px;color:var(--muted);line-height:1.6;">
+            55.1% of budget used · 33.3% of year elapsed
+          </div>
         </div>
-        <div class="delta">33.3% of year elapsed</div>
-      </div>
-      <div class="card">
-        <div class="label">Monthly Spend</div>
-        <div class="value">$6,791,259</div>
-        <div class="delta">▲ 152.3% vs prior month.</div>
-      </div>
-      <div class="card">
-        <div class="label">Milestone Flags</div>
-        <div class="value">11 flagged</div>
-      </div>
-      <div class="card">
-        <div class="label">Portfolio Balance</div>
-        <div class="value" id="balanceVal">$34,167,410</div>
-      </div>
-    </section>
+      </section>
 
-    <section class="panel" style="margin-bottom:18px;">
-      <h2>Portfolio Health</h2>
-      <div class="status-row" id="healthCards"></div>
-    </section>
+      <div class="tension-box">
+        <div class="tension-icon">📊</div>
+        <div>
+          <div class="tension-label">Executive Insight</div>
+          <div class="tension-text">Budget used is 55.1% versus 33.3% of the year elapsed. 1 milestone(s) At Risk and 6 Watch.</div>
+        </div>
+      </div>
 
-    
+      <section class="kpis">
+        <div class="card">
+          <div class="label">Budget Utilization</div>
+          <div class="value" id="budgetUtilVal">55.1%</div>
+          <div class="progress-container">
+            <div class="progress-fill" id="budgetFill"></div>
+            <div class="progress-marker" id="yearMarker" title="Year elapsed"></div>
+          </div>
+          <div class="delta">33.3% of year elapsed · +21.8pp gap</div>
+        </div>
+        <div class="card">
+          <div class="label">Monthly Spend</div>
+          <div class="value">$4,099,161 <span style="font-size:13px;color:#dc2626;font-weight:600;">▲ 52.3%</span></div>
+          <div class="delta">Compared with last month. ▲ 52.3% vs prior month.</div>
+        </div>
+        <div class="card">
+          <div class="label">Milestone Flags</div>
+          <div class="value">7 flagged</div>
+          <div class="delta">7 flagged, and all are minor — monitor closely.</div>
+        </div>
+        <div class="card">
+          <div class="label">Portfolio Balance</div>
+          <div class="value" id="balanceVal">$-485</div>
+          <div class="delta">Estimated end-of-year balance</div>
+        </div>
+      </section>
+
+      <section class="panel" style="margin-bottom:18px;">
+        <h2>Portfolio Health</h2>
+        <p class="note">How milestones track against their monthly spend allowance — only true outliers flag red.</p>
+        <div class="health-grid" id="healthCards"></div>
+      </section>
+
+      
   <section class="grid" style="margin-bottom:18px;">
     <div class="panel">
-      <h2>Monthly Spend Trend — Actuals vs. Prior-Month Forecast</h2>
-      <p class="note">Blue bars = actuals. Orange bars = what the previous month's workbook forecast for the same period.</p>
+      <h2>Monthly Spend Trend — Actuals vs. Planned Spend</h2>
+      <p class="note">Blue bars are current actuals through the reporting month. The grey line is the previous month's forecast for the same months, which is the comparison we want to see.</p>
       <div style="display:flex;gap:16px;margin-bottom:8px;font-size:12px;color:#51627d;">
         <span style="display:flex;align-items:center;gap:4px;"><span style="width:10px;height:10px;border-radius:2px;background:#2563eb;display:inline-block;"></span>Actual</span>
-        <span style="display:flex;align-items:center;gap:4px;"><span style="width:10px;height:10px;border-radius:2px;background:#d97706;display:inline-block;"></span>Prior forecast</span>
+        <span style="display:flex;align-items:center;gap:4px;"><span style="width:10px;height:10px;border-radius:2px;background:#9ca3af;display:inline-block;"></span>Planned spend</span>
+        <span style="display:flex;align-items:center;gap:4px;"><span style="width:10px;height:10px;border-radius:2px;background:#f97316;display:inline-block;"></span>Current forecast</span>
       </div>
       <div style="position:relative;width:100%;height:280px;">
         <canvas id="spendChart" role="img" aria-label="Monthly spend trend"></canvas>
       </div>
-      <div class="footer" style="margin-top:8px;">Forecast sourced from the previous month's workbook column totals.</div>
+      <div class="footer" style="margin-top:8px;">Current workbook actuals compared with the prior workbook forecast.</div>
     </div>
     <div class="panel" style="display:flex;flex-direction:column;gap:14px;">
       <div>
         <h2 style="margin-bottom:6px;">Status Mix</h2>
-        <p class="note" style="margin-bottom:10px;">On Track = within budget · Watch = balance tightening · At Risk = spending ahead of plan.</p>
+        <p class="note" style="margin-bottom:10px;">Budget Status: On Track = within budget · Watch = balance tightening · At Risk = spending ahead of plan.</p>
         <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;">
-          <div class="status-chip status-good"><div class="txt">On Track</div><div class="num">21</div></div>
-          <div class="status-chip status-watch"><div class="txt">Watch</div><div class="num">9</div></div>
-          <div class="status-chip status-risk"><div class="txt">At Risk</div><div class="num">2</div></div>
+          <div class="status-chip status-good"><div class="txt">On Track</div><div class="num">9</div></div>
+          <div class="status-chip status-watch"><div class="txt">Watch</div><div class="num">6</div></div>
+          <div class="status-chip status-risk"><div class="txt">At Risk</div><div class="num">1</div></div>
         </div>
       </div>
       <div style="flex:1;">
-        <h2 style="margin-bottom:4px;">Priority Watchlist</h2>
-        <p class="note" style="margin-bottom:8px;">Sorted by budget pressure and projected overrun. Use this list to focus the next leadership discussion.</p>
-        <div class="bullets"><div class="bullet"><div class="dot risk"></div><div><strong>M44 — Directorate</strong> — $12k overrun.</div></div>
-<div class="bullet"><div class="dot risk"></div><div><strong>M55 — Protocol Compliance</strong> — $84 overrun.</div></div>
-<div class="bullet"><div class="dot warn"></div><div><strong>M47 — Communications Delivery</strong> — $39k overrun.</div></div>
-<div class="bullet"><div class="dot warn"></div><div><strong>M51 — Data Process and Protocol Automation</strong> — $21k overrun.</div></div>
-<div class="bullet"><div class="dot warn"></div><div><strong>M57 — Data Governance and Delivery</strong> — $16k overrun.</div></div></div>
+        <h2 style="margin-bottom:6px;">Priority Watchlist</h2>
+        <div class="bullets"><div class="bullet"><div class="dot warn"></div><div><strong>M47</strong> — $39k overrun — Needs review.</div></div>
+<div class="bullet"><div class="dot warn"></div><div><strong>M51</strong> — $21k overrun — Needs review.</div></div>
+<div class="bullet"><div class="dot warn"></div><div><strong>M57</strong> — $16k overrun — Needs review.</div></div>
+<div class="bullet"><div class="dot warn"></div><div><strong>M44</strong> — $12k overrun — Needs review.</div></div>
+<div class="bullet"><div class="dot warn"></div><div><strong>M49</strong> — $5k overrun — Needs review.</div></div></div>
       </div>
     </div>
   </section>
@@ -210,10 +333,13 @@
 </script>
   <script>
     (function() {
-      var md = [{"month": "Jan", "value": 0.0, "forecast_val": null, "is_forecast": false, "value_pct": 0.0}, {"month": "Feb", "value": 11787301.55, "forecast_val": 11787301.55, "is_forecast": false, "value_pct": 17.4}, {"month": "Mar", "value": 2692098.19, "forecast_val": 2692098.19, "is_forecast": false, "value_pct": 4.0}, {"month": "Apr", "value": 4099160.98, "forecast_val": 2562981.95, "is_forecast": false, "value_pct": 6.0}, {"month": "May", "value": 2629214.67, "forecast_val": 2688381.16, "is_forecast": true, "value_pct": 3.9}, {"month": "Jun", "value": 2384619.02, "forecast_val": 2455792.22, "is_forecast": true, "value_pct": 3.5}, {"month": "Jul", "value": 2534941.62, "forecast_val": 2636672.07, "is_forecast": true, "value_pct": 3.7}, {"month": "Aug", "value": 2574573.87, "forecast_val": 3719269.39, "is_forecast": true, "value_pct": 3.8}, {"month": "Sep", "value": 3028015.84, "forecast_val": 3734471.42, "is_forecast": true, "value_pct": 4.5}, {"month": "Oct", "value": 612057.55, "forecast_val": 606803.87, "is_forecast": true, "value_pct": 0.9}, {"month": "Nov", "value": 594751.7, "forecast_val": 554438.26, "is_forecast": true, "value_pct": 0.9}, {"month": "Dec", "value": 771229.58, "forecast_val": 729684.64, "is_forecast": true, "value_pct": 1.1}];
-      var labels   = md.map(function(d){ return d.month; });
-      var actuals  = md.map(function(d){ return d.value > 0 ? d.value : null; });
-      var forecast = md.map(function(d){ return (d.forecast_val && d.forecast_val > 0) ? d.forecast_val : null; });
+      var md       = [{"month": "Jan", "value": 0.0, "is_forecast": false, "forecast_val": 0.0}, {"month": "Feb", "value": 11787301.55, "is_forecast": false, "forecast_val": 11787301.55}, {"month": "Mar", "value": 2692098.19, "is_forecast": false, "forecast_val": 2692098.19}, {"month": "Apr", "value": 4099160.98, "is_forecast": false, "forecast_val": 4099160.98}, {"month": "May", "value": 2629214.67, "is_forecast": true, "forecast_val": 2629214.67}, {"month": "Jun", "value": 2384619.02, "is_forecast": true, "forecast_val": 2384619.02}, {"month": "Jul", "value": 2534941.62, "is_forecast": true, "forecast_val": 2534941.62}, {"month": "Aug", "value": 2574573.87, "is_forecast": true, "forecast_val": 2574573.87}, {"month": "Sep", "value": 3028015.84, "is_forecast": true, "forecast_val": 3028015.84}, {"month": "Oct", "value": 612057.55, "is_forecast": true, "forecast_val": 612057.55}, {"month": "Nov", "value": 594751.7, "is_forecast": true, "forecast_val": 594751.7}, {"month": "Dec", "value": 771229.58, "is_forecast": true, "forecast_val": 771229.58}, {"month": "YTD", "value": 18578560.72, "label": "$18.6M", "is_forecast": false, "forecast_val": 11235826.14, "is_ytd": true}];
+      var labels   = md.map(function(d) { return d.month; });
+      var actuals  = md.map(function(d) { return d.is_forecast ? null : (d.value || null); });
+      var priorForecast = md.map(function(d) {
+        if (d.month === 'YTD') return null;
+        return (d.forecast_val !== null && d.forecast_val !== undefined) ? d.forecast_val : null;
+      });
       var canvas = document.getElementById('spendChart');
       if (!canvas) return;
       new Chart(canvas, {
@@ -222,159 +348,347 @@
           labels: labels,
           datasets: [
             { label:'Actual Spend', data: actuals,
-               backgroundColor:'rgba(37,99,235,0.85)', borderRadius:4, borderSkipped:false, order:2 },
-            { label:'Prior Forecast', data: forecast,
-               backgroundColor:'rgba(217,119,6,0.75)', borderRadius:4, borderSkipped:false, order:1 }
+               backgroundColor:'#2563eb', borderRadius:4, borderSkipped:false, order:2 },
+            { label:'Planned Spend', data: priorForecast, type:'line',
+               borderColor:'#9ca3af', backgroundColor:'rgba(156,163,175,0.08)',
+               borderWidth:2, borderDash:[5,4], pointRadius:4,
+               pointBackgroundColor:'#9ca3af', fill:false, tension:0.3, order:1 }
           ]
         },
         options: {
           responsive:true, maintainAspectRatio:false,
           interaction:{ mode:'index', intersect:false },
           plugins:{ legend:{ display:false },
-            tooltip:{ callbacks:{ label:function(ctx){
-              if (ctx.parsed.y===null) return null;
-              return ctx.dataset.label+': $'+Math.abs(ctx.parsed.y).toLocaleString(undefined,{maximumFractionDigits:0});
+            tooltip:{ callbacks:{ label:function(ctx) {
+              if (ctx.parsed.y === null) return null;
+              return ctx.dataset.label + ': $' + Math.abs(ctx.parsed.y).toLocaleString(undefined, {maximumFractionDigits:0});
             } } }
           },
           scales:{
             x:{ ticks:{ autoSkip:false, maxRotation:0, font:{size:11} } },
-            y:{ ticks:{ callback:function(v){
-              if (v>=1000000) return '$'+(v/1000000).toFixed(1)+'M';
-              if (v>=1000)    return '$'+(v/1000).toFixed(0)+'k';
-              return '$'+v;
-            }, font:{size:11} }, min:0 }
+            y:{
+              type: 'logarithmic',
+              ticks:{ callback:function(v) {
+                if ([100000,500000,1000000,5000000,10000000,50000000].indexOf(v) !== -1)
+                  return '$' + (v/1000000).toFixed(1) + 'M';
+                return '';
+              } },
+              min: 100000
+            }
           }
         }
       });
     })();
   </script>
 
-    <section class="panel">
-      <h2>Milestone Budget Snapshot</h2>
-      <div class="filter-row" style="margin-bottom: 10px;">
-        <select id="statusFilter">
-          <option value="Exceptions">Exceptions (At Risk / Watch)</option>
-          <option value="All">All milestones</option>
-        </select>
-      </div>
-      <table>
-        <thead>
-          <tr>
-            <th>Milestone</th>
-            <th>Status</th>
-            <th>Budget</th>
-            <th>YTD Actual</th>
-            <th>Projected Overrun</th>
-          </tr>
-        </thead>
-        <tbody id="milestoneRows"></tbody>
-      </table>
-    </section>
 
-    <section class="two-col" style="margin-top:18px;">
-      <div class="panel">
-        <h2>Top 5 by Personnel</h2>
-        <table class="sortable">
-          <thead><tr><th>Milestone</th><th style="text-align:right;">Staff</th></tr></thead>
-          <tbody id="topPeopleRows"></tbody>
-        </table>
-      </div>
-      <div class="panel">
-        <h2>Top 5 by Total Hours</h2>
-        <table class="sortable">
-          <thead><tr><th>Milestone</th><th style="text-align:right;">Hours</th></tr></thead>
-          <tbody id="topHoursRows"></tbody>
-        </table>
-      </div>
-    </section>
+      <section class="panel" style="margin-bottom:18px;">
+        <h2>Milestone / Budget Snapshot</h2>
+        <p class="note">Exceptions shown by default — switch to "All" to see the full portfolio.</p>
+        <div class="filter-row">
+          <label for="statusFilter">View</label>
+          <select id="statusFilter" aria-label="Filter milestones by status">
+            <option value="Exceptions">Exceptions only (At Risk / Watch)</option>
+            <option value="All">All milestones</option>
+            <option value="On Track">On Track</option>
+            <option value="Watch">Watch</option>
+            <option value="At Risk">At Risk</option>
+            <option value="Complete">Complete</option>
+          </select>
+          <div id="filterCount" style="font-size:13px;color:var(--muted);"></div>
+        </div>
+        <div style="overflow:auto;">
+          <table>
+            <thead>
+              <tr>
+                <th>Milestone</th>
+                <th>Status</th>
+                <th>Budget</th>
+                <th>YTD Actual</th>
+                <th>Projected Overrun</th>
+                <th>Narrative / Note</th>
+              </tr>
+            </thead>
+            <tbody id="milestoneRows"></tbody>
+          </table>
+        </div>
+      </section>
 
-    
-    <div class="panel" style="margin-top:18px;"><h2>Story Points &amp; Velocity</h2><div style="display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:14px;"><div style="background:rgba(124,58,237,0.06);border:1px solid rgba(124,58,237,0.18);border-radius:14px;padding:12px 16px;"><div style="font-size:12px;color:#51627d;text-transform:uppercase;letter-spacing:.06em;">Total Points</div><div style="font-size:22px;font-weight:800;margin-top:4px;">2,400</div></div><div style="background:rgba(124,58,237,0.06);border:1px solid rgba(124,58,237,0.18);border-radius:14px;padding:12px 16px;"><div style="font-size:12px;color:#51627d;text-transform:uppercase;letter-spacing:.06em;">Milestones</div><div style="font-size:22px;font-weight:800;margin-top:4px;">505</div></div></div><div style="font-size:13px;font-weight:700;margin-bottom:8px;">Points by milestone</div><div style="margin-bottom:10px;"><div style="display:flex;justify-content:space-between;font-size:12px;margin-bottom:3px;"><span><strong>M4</strong></span><span style="font-weight:700;">146 pts</span></div><div style="height:6px;background:rgba(15,23,42,0.08);border-radius:3px;overflow:hidden;"><div style="width:100%;height:100%;background:#7c3aed;border-radius:3px;"></div></div></div><div style="margin-bottom:10px;"><div style="display:flex;justify-content:space-between;font-size:12px;margin-bottom:3px;"><span><strong>M3</strong></span><span style="font-weight:700;">144 pts</span></div><div style="height:6px;background:rgba(15,23,42,0.08);border-radius:3px;overflow:hidden;"><div style="width:99%;height:100%;background:#7c3aed;border-radius:3px;"></div></div></div><div style="margin-bottom:10px;"><div style="display:flex;justify-content:space-between;font-size:12px;margin-bottom:3px;"><span><strong>M1</strong></span><span style="font-weight:700;">144 pts</span></div><div style="height:6px;background:rgba(15,23,42,0.08);border-radius:3px;overflow:hidden;"><div style="width:99%;height:100%;background:#7c3aed;border-radius:3px;"></div></div></div><div style="margin-bottom:10px;"><div style="display:flex;justify-content:space-between;font-size:12px;margin-bottom:3px;"><span><strong>M2</strong></span><span style="font-weight:700;">123 pts</span></div><div style="height:6px;background:rgba(15,23,42,0.08);border-radius:3px;overflow:hidden;"><div style="width:84%;height:100%;background:#7c3aed;border-radius:3px;"></div></div></div><div style="margin-bottom:10px;"><div style="display:flex;justify-content:space-between;font-size:12px;margin-bottom:3px;"><span><strong>M5</strong></span><span style="font-weight:700;">69 pts</span></div><div style="height:6px;background:rgba(15,23,42,0.08);border-radius:3px;overflow:hidden;"><div style="width:47%;height:100%;background:#7c3aed;border-radius:3px;"></div></div></div><div style="margin-bottom:10px;"><div style="display:flex;justify-content:space-between;font-size:12px;margin-bottom:3px;"><span><strong>M360</strong></span><span style="font-weight:700;">51 pts</span></div><div style="height:6px;background:rgba(15,23,42,0.08);border-radius:3px;overflow:hidden;"><div style="width:35%;height:100%;background:#7c3aed;border-radius:3px;"></div></div></div><div style="margin-bottom:10px;"><div style="display:flex;justify-content:space-between;font-size:12px;margin-bottom:3px;"><span><strong>M11</strong></span><span style="font-weight:700;">30 pts</span></div><div style="height:6px;background:rgba(15,23,42,0.08);border-radius:3px;overflow:hidden;"><div style="width:21%;height:100%;background:#7c3aed;border-radius:3px;"></div></div></div><div style="margin-bottom:10px;"><div style="display:flex;justify-content:space-between;font-size:12px;margin-bottom:3px;"><span><strong>M6</strong></span><span style="font-weight:700;">26 pts</span></div><div style="height:6px;background:rgba(15,23,42,0.08);border-radius:3px;overflow:hidden;"><div style="width:18%;height:100%;background:#7c3aed;border-radius:3px;"></div></div></div><div style="margin-bottom:10px;"><div style="display:flex;justify-content:space-between;font-size:12px;margin-bottom:3px;"><span><strong>M7</strong></span><span style="font-weight:700;">26 pts</span></div><div style="height:6px;background:rgba(15,23,42,0.08);border-radius:3px;overflow:hidden;"><div style="width:18%;height:100%;background:#7c3aed;border-radius:3px;"></div></div></div><div style="margin-bottom:10px;"><div style="display:flex;justify-content:space-between;font-size:12px;margin-bottom:3px;"><span><strong>M2026</strong></span><span style="font-weight:700;">24 pts</span></div><div style="height:6px;background:rgba(15,23,42,0.08);border-radius:3px;overflow:hidden;"><div style="width:16%;height:100%;background:#7c3aed;border-radius:3px;"></div></div></div><div style="margin-bottom:10px;"><div style="display:flex;justify-content:space-between;font-size:12px;margin-bottom:3px;"><span><strong>M0</strong></span><span style="font-weight:700;">23 pts</span></div><div style="height:6px;background:rgba(15,23,42,0.08);border-radius:3px;overflow:hidden;"><div style="width:16%;height:100%;background:#7c3aed;border-radius:3px;"></div></div></div><div style="margin-bottom:10px;"><div style="display:flex;justify-content:space-between;font-size:12px;margin-bottom:3px;"><span><strong>Monitor and Retrigger Integration Log Failures</strong></span><span style="font-weight:700;">23 pts</span></div><div style="height:6px;background:rgba(15,23,42,0.08);border-radius:3px;overflow:hidden;"><div style="width:16%;height:100%;background:#7c3aed;border-radius:3px;"></div></div></div></div>
-    <div class="footer">Generated May 13, 2026 19:17 · Source: April 2026 workbook · Award(s): OT2OD036464</div>
+      <section class="two-col">
+        <div class="panel">
+          <h2>Operational Highlights</h2>
+          <p class="note">Credits, spend spikes, and notable activity this period.</p>
+          <div class="bullets"><div class="bullet"><div class="dot good"></div><div><strong>Credit received — M53 – Licenses:</strong> $222,515 credit posted this month. This offsets portfolio spend and improves estimated balance.</div></div>
+<div class="bullet"><div class="dot good"></div><div><strong>Credit received — M54 – Directorate and Management:</strong> $50,473 credit posted this month. This offsets portfolio spend and improves estimated balance.</div></div>
+<div class="bullet"><div class="dot warn"></div><div><strong>Spend spike — M51 – Data Process and Protocol Automation:</strong> $274,578 this month (42.7% of annual budget in a single period). Verify invoices are correctly period-coded.</div></div>
+<div class="bullet"><div class="dot warn"></div><div><strong>Spend spike — M44 – Directorate:</strong> $140,833 this month (35.0% of annual budget in a single period). Verify invoices are correctly period-coded.</div></div></div>
+        </div>
+        <div class="panel">
+          <div class="decision-box">
+            <h2 style="font-size:16px;color:#1e293b;">Decisions Needed</h2>
+            <ul style="padding-left:20px;margin-top:10px;font-size:13px;line-height:1.8;color:#334155;">
+              <li>No immediate milestone decisions are required.</li>
+              <li>Budget used is 55.1% versus 33.3% of the year elapsed.</li>
+              <li>Confirm whether any front-loaded milestones should remain excluded from pace alerts.</li>
+            </ul>
+          </div>
+        </div>
+      </section>
+
+      <section class="two-col" style="margin-bottom:18px;">
+        <div class="panel">
+          <h2>Top 5 by Personnel</h2>
+          <table class="sortable">
+            <thead><tr><th>Milestone</th><th style="text-align:right;">Staff Count</th></tr></thead>
+            <tbody id="topPeopleRows"></tbody>
+          </table>
+        </div>
+        <div class="panel">
+          <h2>Top 5 by Total Hours</h2>
+          <table class="sortable">
+            <thead><tr><th>Milestone</th><th style="text-align:right;">Total Hours</th></tr></thead>
+            <tbody id="topHoursRows"></tbody>
+          </table>
+        </div>
+      </section>
+
+      
+<section class="panel" style="margin-bottom:18px;">
+  <h2>NORC People &amp; Hours — April 2026</h2>
+  <p class="note">Direct labor charged by labor category across all active milestones (NORC staff only).</p>
+  <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-bottom:16px;">
+    <div class="card" style="min-height:auto;padding:14px;">
+      <div class="label">Staff charged</div>
+      <div class="value">42</div>
+      <div class="delta">unique LCATs billing this period</div>
+    </div>
+    <div class="card" style="min-height:auto;padding:14px;">
+      <div class="label">Total hours</div>
+      <div class="value">6,711</div>
+      <div class="delta">across all milestones</div>
+    </div>
+    <div class="card" style="min-height:auto;padding:14px;">
+      <div class="label">Active milestones</div>
+      <div class="value">19</div>
+      <div class="delta">with hours charged</div>
+    </div>
+  </div>
+  <div style="display:grid;grid-template-columns:1fr 1fr;gap:18px;margin-bottom:16px;">
+    <div>
+      <div style="font-size:13px;font-weight:700;margin-bottom:8px;">Top milestones by hours</div>
+      <div style="display:flex;align-items:center;gap:8px;margin-bottom:6px;font-size:12px;"><div style="width:140px;flex:none;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;color:#51627d;" title="M59">M59</div><div style="flex:1;height:8px;background:rgba(15,23,42,0.08);border-radius:4px;overflow:hidden;"><div style="width:100%;height:100%;background:#2563eb;border-radius:4px;"></div></div><div style="width:52px;text-align:right;color:#51627d;">2,939.5</div></div><div style="display:flex;align-items:center;gap:8px;margin-bottom:6px;font-size:12px;"><div style="width:140px;flex:none;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;color:#51627d;" title="M55">M55</div><div style="flex:1;height:8px;background:rgba(15,23,42,0.08);border-radius:4px;overflow:hidden;"><div style="width:39%;height:100%;background:#2563eb;border-radius:4px;"></div></div><div style="width:52px;text-align:right;color:#51627d;">1,151.6</div></div><div style="display:flex;align-items:center;gap:8px;margin-bottom:6px;font-size:12px;"><div style="width:140px;flex:none;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;color:#51627d;" title="M57">M57</div><div style="flex:1;height:8px;background:rgba(15,23,42,0.08);border-radius:4px;overflow:hidden;"><div style="width:27%;height:100%;background:#2563eb;border-radius:4px;"></div></div><div style="width:52px;text-align:right;color:#51627d;">794.2</div></div><div style="display:flex;align-items:center;gap:8px;margin-bottom:6px;font-size:12px;"><div style="width:140px;flex:none;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;color:#51627d;" title="M49">M49</div><div style="flex:1;height:8px;background:rgba(15,23,42,0.08);border-radius:4px;overflow:hidden;"><div style="width:22%;height:100%;background:#2563eb;border-radius:4px;"></div></div><div style="width:52px;text-align:right;color:#51627d;">655.6</div></div><div style="display:flex;align-items:center;gap:8px;margin-bottom:6px;font-size:12px;"><div style="width:140px;flex:none;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;color:#51627d;" title="M56">M56</div><div style="flex:1;height:8px;background:rgba(15,23,42,0.08);border-radius:4px;overflow:hidden;"><div style="width:13%;height:100%;background:#2563eb;border-radius:4px;"></div></div><div style="width:52px;text-align:right;color:#51627d;">375.0</div></div><div style="display:flex;align-items:center;gap:8px;margin-bottom:6px;font-size:12px;"><div style="width:140px;flex:none;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;color:#51627d;" title="M50">M50</div><div style="flex:1;height:8px;background:rgba(15,23,42,0.08);border-radius:4px;overflow:hidden;"><div style="width:10%;height:100%;background:#2563eb;border-radius:4px;"></div></div><div style="width:52px;text-align:right;color:#51627d;">295.8</div></div><div style="display:flex;align-items:center;gap:8px;margin-bottom:6px;font-size:12px;"><div style="width:140px;flex:none;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;color:#51627d;" title="M48">M48</div><div style="flex:1;height:8px;background:rgba(15,23,42,0.08);border-radius:4px;overflow:hidden;"><div style="width:10%;height:100%;background:#2563eb;border-radius:4px;"></div></div><div style="width:52px;text-align:right;color:#51627d;">286.0</div></div><div style="display:flex;align-items:center;gap:8px;margin-bottom:6px;font-size:12px;"><div style="width:140px;flex:none;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;color:#51627d;" title="M13">M13</div><div style="flex:1;height:8px;background:rgba(15,23,42,0.08);border-radius:4px;overflow:hidden;"><div style="width:6%;height:100%;background:#2563eb;border-radius:4px;"></div></div><div style="width:52px;text-align:right;color:#51627d;">174.0</div></div>
+    </div>
+    <div>
+      <div style="font-size:13px;font-weight:700;margin-bottom:8px;">Top labor categories by hours</div>
+      <div style="display:flex;align-items:center;gap:8px;margin-bottom:6px;font-size:12px;"><div style="width:140px;flex:none;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;color:#51627d;" title="TELEPHONE INTERVIEWER">TELEPHONE INTERVIEWER</div><div style="flex:1;height:8px;background:rgba(15,23,42,0.08);border-radius:4px;overflow:hidden;"><div style="width:100%;height:100%;background:#059669;border-radius:4px;"></div></div><div style="width:52px;text-align:right;color:#51627d;">1,665.8</div></div><div style="display:flex;align-items:center;gap:8px;margin-bottom:6px;font-size:12px;"><div style="width:140px;flex:none;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;color:#51627d;" title="Sr Research Director II">Sr Research Director II</div><div style="flex:1;height:8px;background:rgba(15,23,42,0.08);border-radius:4px;overflow:hidden;"><div style="width:33%;height:100%;background:#059669;border-radius:4px;"></div></div><div style="width:52px;text-align:right;color:#51627d;">544.5</div></div><div style="display:flex;align-items:center;gap:8px;margin-bottom:6px;font-size:12px;"><div style="width:140px;flex:none;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;color:#51627d;" title="Sr Research Associate I">Sr Research Associate I</div><div style="flex:1;height:8px;background:rgba(15,23,42,0.08);border-radius:4px;overflow:hidden;"><div style="width:30%;height:100%;background:#059669;border-radius:4px;"></div></div><div style="width:52px;text-align:right;color:#51627d;">500.2</div></div><div style="display:flex;align-items:center;gap:8px;margin-bottom:6px;font-size:12px;"><div style="width:140px;flex:none;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;color:#51627d;" title="Research Associate II">Research Associate II</div><div style="flex:1;height:8px;background:rgba(15,23,42,0.08);border-radius:4px;overflow:hidden;"><div style="width:29%;height:100%;background:#059669;border-radius:4px;"></div></div><div style="width:52px;text-align:right;color:#51627d;">482.0</div></div><div style="display:flex;align-items:center;gap:8px;margin-bottom:6px;font-size:12px;"><div style="width:140px;flex:none;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;color:#51627d;" title="SUPERVISOR">SUPERVISOR</div><div style="flex:1;height:8px;background:rgba(15,23,42,0.08);border-radius:4px;overflow:hidden;"><div style="width:21%;height:100%;background:#059669;border-radius:4px;"></div></div><div style="width:52px;text-align:right;color:#51627d;">354.2</div></div><div style="display:flex;align-items:center;gap:8px;margin-bottom:6px;font-size:12px;"><div style="width:140px;flex:none;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;color:#51627d;" title="Sr Research Associate II">Sr Research Associate II</div><div style="flex:1;height:8px;background:rgba(15,23,42,0.08);border-radius:4px;overflow:hidden;"><div style="width:16%;height:100%;background:#059669;border-radius:4px;"></div></div><div style="width:52px;text-align:right;color:#51627d;">258.5</div></div><div style="display:flex;align-items:center;gap:8px;margin-bottom:6px;font-size:12px;"><div style="width:140px;flex:none;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;color:#51627d;" title="Sr Data Scientist II">Sr Data Scientist II</div><div style="flex:1;height:8px;background:rgba(15,23,42,0.08);border-radius:4px;overflow:hidden;"><div style="width:14%;height:100%;background:#059669;border-radius:4px;"></div></div><div style="width:52px;text-align:right;color:#51627d;">238.0</div></div><div style="display:flex;align-items:center;gap:8px;margin-bottom:6px;font-size:12px;"><div style="width:140px;flex:none;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;color:#51627d;" title="SR PROJ MGR CADC">SR PROJ MGR CADC</div><div style="flex:1;height:8px;background:rgba(15,23,42,0.08);border-radius:4px;overflow:hidden;"><div style="width:14%;height:100%;background:#059669;border-radius:4px;"></div></div><div style="width:52px;text-align:right;color:#51627d;">230.0</div></div>
+    </div>
+  </div>
+  <div style="display:flex;gap:10px;align-items:center;flex-wrap:wrap;margin-bottom:10px;">
+    <div style="font-size:13px;font-weight:700;">All milestones — hours breakdown</div>
+    <label for="hoursSort" style="font-size:13px;color:#51627d;font-weight:600;">Sort</label>
+    <select id="hoursSort" aria-label="Sort hours table" style="padding:8px 10px;border-radius:10px;border:1px solid rgba(15,23,42,0.14);background:#fff;color:#10203a;font:inherit;">
+      <option value="hours_desc">Hours (high to low)</option>
+      <option value="hours_asc">Hours (low to high)</option>
+      <option value="milestone_az">Milestone A-Z</option>
+      <option value="code_az">Code A-Z</option>
+    </select>
+  </div>
+  <div style="overflow-x:auto;">
+    <table class="sortable" style="width:100%;border-collapse:collapse;">
+      <thead><tr style="border-bottom:1px solid rgba(15,23,42,0.10);">
+        <th style="text-align:left;padding:8px;font-size:11px;color:#51627d;font-weight:400;text-transform:uppercase;letter-spacing:.06em;">Milestone</th>
+        <th style="text-align:left;padding:8px;font-size:11px;color:#51627d;font-weight:400;text-transform:uppercase;letter-spacing:.06em;">Code</th>
+        <th style="text-align:right;padding:8px;font-size:11px;color:#51627d;font-weight:400;text-transform:uppercase;letter-spacing:.06em;">Hours</th>
+        <th style="text-align:right;padding:8px;font-size:11px;color:#51627d;font-weight:400;text-transform:uppercase;letter-spacing:.06em;">% of total</th>
+      </tr></thead>
+      <tbody id="hoursRows"><tr style="border-bottom:1px solid rgba(15,23,42,0.06);" data-milestone="M59" data-code="9877.26.59" data-hours="2939.53"><td style="padding:7px 8px;font-size:12px;">M59</td><td style="padding:7px 8px;font-size:12px;color:#51627d;">9877.26.59</td><td style="padding:7px 8px;font-size:12px;text-align:right;font-weight:600;">2,939.5</td><td style="padding:7px 8px;font-size:12px;text-align:right;color:#51627d;">43.8%</td></tr><tr style="border-bottom:1px solid rgba(15,23,42,0.06);" data-milestone="M55" data-code="9877.26.55" data-hours="1151.63"><td style="padding:7px 8px;font-size:12px;">M55</td><td style="padding:7px 8px;font-size:12px;color:#51627d;">9877.26.55</td><td style="padding:7px 8px;font-size:12px;text-align:right;font-weight:600;">1,151.6</td><td style="padding:7px 8px;font-size:12px;text-align:right;color:#51627d;">17.2%</td></tr><tr style="border-bottom:1px solid rgba(15,23,42,0.06);" data-milestone="M57" data-code="9877.26.57" data-hours="794.25"><td style="padding:7px 8px;font-size:12px;">M57</td><td style="padding:7px 8px;font-size:12px;color:#51627d;">9877.26.57</td><td style="padding:7px 8px;font-size:12px;text-align:right;font-weight:600;">794.2</td><td style="padding:7px 8px;font-size:12px;text-align:right;color:#51627d;">11.8%</td></tr><tr style="border-bottom:1px solid rgba(15,23,42,0.06);" data-milestone="M49" data-code="9877.26.49" data-hours="655.6"><td style="padding:7px 8px;font-size:12px;">M49</td><td style="padding:7px 8px;font-size:12px;color:#51627d;">9877.26.49</td><td style="padding:7px 8px;font-size:12px;text-align:right;font-weight:600;">655.6</td><td style="padding:7px 8px;font-size:12px;text-align:right;color:#51627d;">9.8%</td></tr><tr style="border-bottom:1px solid rgba(15,23,42,0.06);" data-milestone="M56" data-code="9877.26.56" data-hours="375.0"><td style="padding:7px 8px;font-size:12px;">M56</td><td style="padding:7px 8px;font-size:12px;color:#51627d;">9877.26.56</td><td style="padding:7px 8px;font-size:12px;text-align:right;font-weight:600;">375.0</td><td style="padding:7px 8px;font-size:12px;text-align:right;color:#51627d;">5.6%</td></tr><tr style="border-bottom:1px solid rgba(15,23,42,0.06);" data-milestone="M50" data-code="9877.26.50" data-hours="295.75"><td style="padding:7px 8px;font-size:12px;">M50</td><td style="padding:7px 8px;font-size:12px;color:#51627d;">9877.26.50</td><td style="padding:7px 8px;font-size:12px;text-align:right;font-weight:600;">295.8</td><td style="padding:7px 8px;font-size:12px;text-align:right;color:#51627d;">4.4%</td></tr><tr style="border-bottom:1px solid rgba(15,23,42,0.06);" data-milestone="M48" data-code="9877.26.48" data-hours="286.0"><td style="padding:7px 8px;font-size:12px;">M48</td><td style="padding:7px 8px;font-size:12px;color:#51627d;">9877.26.48</td><td style="padding:7px 8px;font-size:12px;text-align:right;font-weight:600;">286.0</td><td style="padding:7px 8px;font-size:12px;text-align:right;color:#51627d;">4.3%</td></tr><tr style="border-bottom:1px solid rgba(15,23,42,0.06);" data-milestone="M13" data-code="9877.25.13" data-hours="174.0"><td style="padding:7px 8px;font-size:12px;">M13</td><td style="padding:7px 8px;font-size:12px;color:#51627d;">9877.25.13</td><td style="padding:7px 8px;font-size:12px;text-align:right;font-weight:600;">174.0</td><td style="padding:7px 8px;font-size:12px;text-align:right;color:#51627d;">2.6%</td></tr><tr style="border-bottom:1px solid rgba(15,23,42,0.06);" data-milestone="M52" data-code="9877.26.52" data-hours="122.5"><td style="padding:7px 8px;font-size:12px;">M52</td><td style="padding:7px 8px;font-size:12px;color:#51627d;">9877.26.52</td><td style="padding:7px 8px;font-size:12px;text-align:right;font-weight:600;">122.5</td><td style="padding:7px 8px;font-size:12px;text-align:right;color:#51627d;">1.8%</td></tr><tr style="border-bottom:1px solid rgba(15,23,42,0.06);" data-milestone="M38" data-code="9877.25.38" data-hours="121.25"><td style="padding:7px 8px;font-size:12px;">M38</td><td style="padding:7px 8px;font-size:12px;color:#51627d;">9877.25.38</td><td style="padding:7px 8px;font-size:12px;text-align:right;font-weight:600;">121.2</td><td style="padding:7px 8px;font-size:12px;text-align:right;color:#51627d;">1.8%</td></tr><tr style="border-bottom:1px solid rgba(15,23,42,0.06);" data-milestone="M58" data-code="9877.26.58" data-hours="98.4"><td style="padding:7px 8px;font-size:12px;">M58</td><td style="padding:7px 8px;font-size:12px;color:#51627d;">9877.26.58</td><td style="padding:7px 8px;font-size:12px;text-align:right;font-weight:600;">98.4</td><td style="padding:7px 8px;font-size:12px;text-align:right;color:#51627d;">1.5%</td></tr><tr style="border-bottom:1px solid rgba(15,23,42,0.06);" data-milestone="M44" data-code="9877.26.44" data-hours="93.25"><td style="padding:7px 8px;font-size:12px;">M44</td><td style="padding:7px 8px;font-size:12px;color:#51627d;">9877.26.44</td><td style="padding:7px 8px;font-size:12px;text-align:right;font-weight:600;">93.2</td><td style="padding:7px 8px;font-size:12px;text-align:right;color:#51627d;">1.4%</td></tr><tr style="border-bottom:1px solid rgba(15,23,42,0.06);" data-milestone="M51" data-code="9877.26.51" data-hours="46.0"><td style="padding:7px 8px;font-size:12px;">M51</td><td style="padding:7px 8px;font-size:12px;color:#51627d;">9877.26.51</td><td style="padding:7px 8px;font-size:12px;text-align:right;font-weight:600;">46.0</td><td style="padding:7px 8px;font-size:12px;text-align:right;color:#51627d;">0.7%</td></tr><tr style="border-bottom:1px solid rgba(15,23,42,0.06);" data-milestone="M45" data-code="9877.26.45" data-hours="35.5"><td style="padding:7px 8px;font-size:12px;">M45</td><td style="padding:7px 8px;font-size:12px;color:#51627d;">9877.26.45</td><td style="padding:7px 8px;font-size:12px;text-align:right;font-weight:600;">35.5</td><td style="padding:7px 8px;font-size:12px;text-align:right;color:#51627d;">0.5%</td></tr><tr style="border-bottom:1px solid rgba(15,23,42,0.06);" data-milestone="M12" data-code="9877.25.12" data-hours="11.0"><td style="padding:7px 8px;font-size:12px;">M12</td><td style="padding:7px 8px;font-size:12px;color:#51627d;">9877.25.12</td><td style="padding:7px 8px;font-size:12px;text-align:right;font-weight:600;">11.0</td><td style="padding:7px 8px;font-size:12px;text-align:right;color:#51627d;">0.2%</td></tr><tr style="border-bottom:1px solid rgba(15,23,42,0.06);" data-milestone="M15" data-code="9877.25.15" data-hours="5.0"><td style="padding:7px 8px;font-size:12px;">M15</td><td style="padding:7px 8px;font-size:12px;color:#51627d;">9877.25.15</td><td style="padding:7px 8px;font-size:12px;text-align:right;font-weight:600;">5.0</td><td style="padding:7px 8px;font-size:12px;text-align:right;color:#51627d;">0.1%</td></tr><tr style="border-bottom:1px solid rgba(15,23,42,0.06);" data-milestone="M31" data-code="9877.25.31" data-hours="5.0"><td style="padding:7px 8px;font-size:12px;">M31</td><td style="padding:7px 8px;font-size:12px;color:#51627d;">9877.25.31</td><td style="padding:7px 8px;font-size:12px;text-align:right;font-weight:600;">5.0</td><td style="padding:7px 8px;font-size:12px;text-align:right;color:#51627d;">0.1%</td></tr><tr style="border-bottom:1px solid rgba(15,23,42,0.06);" data-milestone="M42" data-code="9877.25.42" data-hours="3.0"><td style="padding:7px 8px;font-size:12px;">M42</td><td style="padding:7px 8px;font-size:12px;color:#51627d;">9877.25.42</td><td style="padding:7px 8px;font-size:12px;text-align:right;font-weight:600;">3.0</td><td style="padding:7px 8px;font-size:12px;text-align:right;color:#51627d;">0.0%</td></tr><tr style="border-bottom:1px solid rgba(15,23,42,0.06);" data-milestone="M53" data-code="9877.26.53" data-hours="1.0"><td style="padding:7px 8px;font-size:12px;">M53</td><td style="padding:7px 8px;font-size:12px;color:#51627d;">9877.26.53</td><td style="padding:7px 8px;font-size:12px;text-align:right;font-weight:600;">1.0</td><td style="padding:7px 8px;font-size:12px;text-align:right;color:#51627d;">0.0%</td></tr><tr style="border-bottom:1px solid rgba(15,23,42,0.06);" data-milestone="M35" data-code="9877.25.35" data-hours="-3.38"><td style="padding:7px 8px;font-size:12px;">M35</td><td style="padding:7px 8px;font-size:12px;color:#51627d;">9877.25.35</td><td style="padding:7px 8px;font-size:12px;text-align:right;font-weight:600;">-3.4</td><td style="padding:7px 8px;font-size:12px;text-align:right;color:#51627d;">-0.1%</td></tr><tr style="border-bottom:1px solid rgba(15,23,42,0.06);" data-milestone="M54" data-code="9877.26.54" data-hours="-499.13"><td style="padding:7px 8px;font-size:12px;">M54</td><td style="padding:7px 8px;font-size:12px;color:#51627d;">9877.26.54</td><td style="padding:7px 8px;font-size:12px;text-align:right;font-weight:600;">-499.1</td><td style="padding:7px 8px;font-size:12px;text-align:right;color:#51627d;">-7.4%</td></tr></tbody>
+    </table>
+  </div>
+</section>
+<script>
+(function() {
+  var sel   = document.getElementById('hoursSort');
+  var tbody = document.getElementById('hoursRows');
+  if (!sel || !tbody) return;
+
+  function parseNum(text) {
+    var n = parseFloat(String(text || '').replace(/[%$,]/g, ''));
+    return isNaN(n) ? 0 : n;
+  }
+
+  function sortRows(mode) {
+    var rows = Array.prototype.slice.call(tbody.querySelectorAll('tr'));
+    rows.sort(function(a, b) {
+      var aMil   = (a.dataset.milestone || '').toLowerCase();
+      var bMil   = (b.dataset.milestone || '').toLowerCase();
+      var aCode  = (a.dataset.code      || '').toLowerCase();
+      var bCode  = (b.dataset.code      || '').toLowerCase();
+      var aHours = parseNum(a.dataset.hours);
+      var bHours = parseNum(b.dataset.hours);
+
+      if (mode === 'hours_asc')    return aHours - bHours;
+      if (mode === 'milestone_az') return aMil.localeCompare(bMil);
+      if (mode === 'code_az')      return aCode.localeCompare(bCode);
+      return bHours - aHours;
+    });
+    rows.forEach(function(row) { tbody.appendChild(row); });
+  }
+
+  sel.addEventListener('change', function() { sortRows(sel.value); });
+  sortRows(sel.value);
+})();
+</script>
+
+      <section class="panel" style="margin-bottom:18px;"><h2>User Stories &amp; Story Points</h2><p class="note">No stories file found. Add a file matching <em>*Points*Milestone*.xlsx</em> to the data/ folder.</p></section>
+
+    </div>
+    <div class="footer">Generated May 13, 2026 11:22 · Source: April 2026 workbook · Award OT2OD036464</div>
   </div>
 </div>
 
 <script>
-  const monthlyData = [{"month": "Jan", "value": 0.0, "forecast_val": null, "is_forecast": false, "value_pct": 0.0}, {"month": "Feb", "value": 11787301.55, "forecast_val": 11787301.55, "is_forecast": false, "value_pct": 17.4}, {"month": "Mar", "value": 2692098.19, "forecast_val": 2692098.19, "is_forecast": false, "value_pct": 4.0}, {"month": "Apr", "value": 4099160.98, "forecast_val": 2562981.95, "is_forecast": false, "value_pct": 6.0}, {"month": "May", "value": 2629214.67, "forecast_val": 2688381.16, "is_forecast": true, "value_pct": 3.9}, {"month": "Jun", "value": 2384619.02, "forecast_val": 2455792.22, "is_forecast": true, "value_pct": 3.5}, {"month": "Jul", "value": 2534941.62, "forecast_val": 2636672.07, "is_forecast": true, "value_pct": 3.7}, {"month": "Aug", "value": 2574573.87, "forecast_val": 3719269.39, "is_forecast": true, "value_pct": 3.8}, {"month": "Sep", "value": 3028015.84, "forecast_val": 3734471.42, "is_forecast": true, "value_pct": 4.5}, {"month": "Oct", "value": 612057.55, "forecast_val": 606803.87, "is_forecast": true, "value_pct": 0.9}, {"month": "Nov", "value": 594751.7, "forecast_val": 554438.26, "is_forecast": true, "value_pct": 0.9}, {"month": "Dec", "value": 771229.58, "forecast_val": 729684.64, "is_forecast": true, "value_pct": 1.1}];
-  const milestones = [{"milestone_id": "M44", "title": "M44 \u2014 Directorate", "raw_title": "Directorate", "award_number": "OT2OD036464", "status": "On Track", "budget": 427822.45, "monthly_spend": 65201.079999999994, "percent_spent": 28.8, "labor_actual": 21102.589999999997, "travel_actual": 1058.29, "odc_actual": 27281.149999999998, "ytd_actual": 0.0, "total_forecast": 123289.915, "est_total_spend": 309985.0897061808, "est_balance": 433275.00470618077, "expected_spend": 106955.61, "burn_rate_status": "Behind", "pace_variance": -106955.61, "projected_overrun": -117837.36, "exception_note": "", "people_count": 0, "total_hours": 0.0, "story_points": 0.0, "workstreams": [{"name": "Labor", "val": 21102.589999999997, "ytd": 0.0, "budget": 105005.0}, {"name": "Travel", "val": 1058.29, "ytd": 0.0, "budget": 0.0}, {"name": "ODC", "val": 27281.149999999998, "ytd": 0.0, "budget": 211119.0}]}, {"milestone_id": "M45", "title": "M45 \u2014 Product Implementation", "raw_title": "Product Implementation", "award_number": "OT2OD036464", "status": "On Track", "budget": 2335517.05, "monthly_spend": 230678.4375, "percent_spent": 11.3, "labor_actual": 14057.41, "travel_actual": 0.0, "odc_actual": 193074.22, "ytd_actual": 0.0, "total_forecast": 263945.8185, "est_total_spend": 2057338.2117842485, "est_balance": 2321284.0302842488, "expected_spend": 583879.26, "burn_rate_status": "Behind", "pace_variance": -583879.26, "projected_overrun": -278178.84, "exception_note": "", "people_count": 0, "total_hours": 0.0, "story_points": 0.0, "workstreams": [{"name": "Labor", "val": 14057.41, "ytd": 0.0, "budget": 40321.0}, {"name": "Travel", "val": 0.0, "ytd": 0.0, "budget": 0.0}, {"name": "ODC", "val": 193074.22, "ytd": 0.0, "budget": 2135256.0}]}, {"milestone_id": "M46", "title": "M46 \u2014 Website Maintenance", "raw_title": "Website Maintenance", "award_number": "OT2OD036464", "status": "On Track", "budget": 1100033.55, "monthly_spend": 110024.25, "percent_spent": 14.4, "labor_actual": 281.37, "travel_actual": 0.0, "odc_actual": 102181.51000000001, "ytd_actual": 0.0, "total_forecast": 158080.314, "est_total_spend": 937728.7802839867, "est_balance": 1095809.0942839868, "expected_spend": 275008.39, "burn_rate_status": "Behind", "pace_variance": -275008.39, "projected_overrun": -162304.77, "exception_note": "", "people_count": 0, "total_hours": 0.0, "story_points": 0.0, "workstreams": [{"name": "Labor", "val": 281.37, "ytd": 0.0, "budget": 5251.0}, {"name": "Travel", "val": 0.0, "ytd": 0.0, "budget": 0.0}, {"name": "ODC", "val": 102181.51000000001, "ytd": 0.0, "budget": 1016309.0}]}, {"milestone_id": "M47", "title": "M47 \u2014 Communications Delivery", "raw_title": "Communications Delivery", "award_number": "OT2OD036464", "status": "On Track", "budget": 1682690.1, "monthly_spend": 208957.20299999998, "percent_spent": 14.0, "labor_actual": 9799.86, "travel_actual": 0.0, "odc_actual": 179961.0, "ytd_actual": 0.0, "total_forecast": 236417.1285, "est_total_spend": 1484782.589164875, "est_balance": 1721199.7176648749, "expected_spend": 420672.53, "burn_rate_status": "Behind", "pace_variance": -420672.53, "projected_overrun": -197907.51, "exception_note": "", "people_count": 0, "total_hours": 0.0, "story_points": 0.0, "workstreams": [{"name": "Labor", "val": 9799.86, "ytd": 0.0, "budget": 5251.0}, {"name": "Travel", "val": 0.0, "ytd": 0.0, "budget": 0.0}, {"name": "ODC", "val": 179961.0, "ytd": 0.0, "budget": 1583575.0}]}, {"milestone_id": "M48", "title": "M48 \u2014 Data Quality & Platform analytics", "raw_title": "Data Quality & Platform analytics", "award_number": "OT2OD036464", "status": "On Track", "budget": 960378.3, "monthly_spend": 87399.78, "percent_spent": 18.1, "labor_actual": 28522.26, "travel_actual": 0.0, "odc_actual": 32835.149999999994, "ytd_actual": 0.0, "total_forecast": 174174.2475, "est_total_spend": 764695.3015731436, "est_balance": 938869.5490731436, "expected_spend": 240094.58, "burn_rate_status": "Behind", "pace_variance": -240094.58, "projected_overrun": -195683.0, "exception_note": "", "people_count": 0, "total_hours": 0.0, "story_points": 0.0, "workstreams": [{"name": "Labor", "val": 28522.26, "ytd": 0.0, "budget": 222458.0}, {"name": "Travel", "val": 0.0, "ytd": 0.0, "budget": 0.0}, {"name": "ODC", "val": 32835.149999999994, "ytd": 0.0, "budget": 498039.0}]}, {"milestone_id": "M49", "title": "M49 \u2014 Tier 2&3 support", "raw_title": "Tier 2&3 support", "award_number": "OT2OD036464", "status": "On Track", "budget": 843742.2, "monthly_spend": 102825.07200000001, "percent_spent": 37.4, "labor_actual": 37077.0, "travel_actual": 0.0, "odc_actual": 30258.91, "ytd_actual": 0.0, "total_forecast": 315892.87799999997, "est_total_spend": 509678.6822742899, "est_balance": 825571.5602742899, "expected_spend": 210935.55, "burn_rate_status": "Behind", "pace_variance": -210935.55, "projected_overrun": -334063.52, "exception_note": "", "people_count": 0, "total_hours": 0.0, "story_points": 0.0, "workstreams": [{"name": "Labor", "val": 37077.0, "ytd": 0.0, "budget": 324033.0}, {"name": "Travel", "val": 0.0, "ytd": 0.0, "budget": 0.0}, {"name": "ODC", "val": 30258.91, "ytd": 0.0, "budget": 195136.0}]}, {"milestone_id": "M50", "title": "M50 \u2014 Development + Operations & Maintenance", "raw_title": "Development + Operations & Maintenance", "award_number": "OT2OD036464", "status": "On Track", "budget": 7460577.6, "monthly_spend": 719798.9399999998, "percent_spent": 12.5, "labor_actual": 47679.17, "travel_actual": 0.0, "odc_actual": 591729.88, "ytd_actual": 0.0, "total_forecast": 933766.1654999997, "est_total_spend": 6479991.589557808, "est_balance": 7413757.755057807, "expected_spend": 1865144.4, "burn_rate_status": "Behind", "pace_variance": -1865144.4, "projected_overrun": -980586.01, "exception_note": "", "people_count": 0, "total_hours": 0.0, "story_points": 0.0, "workstreams": [{"name": "Labor", "val": 47679.17, "ytd": 0.0, "budget": 216764.0}, {"name": "Travel", "val": 0.0, "ytd": 0.0, "budget": 0.0}, {"name": "ODC", "val": 591729.88, "ytd": 0.0, "budget": 6626937.0}]}, {"milestone_id": "M51", "title": "M51 \u2014 Data. Process amd protocol automation", "raw_title": "Data. Process amd protocol automation", "award_number": "OT2OD036464", "status": "On Track", "budget": 642997.95, "monthly_spend": 116460.75, "percent_spent": 18.8, "labor_actual": 3204.91, "travel_actual": 0.0, "odc_actual": 104456.44, "ytd_actual": 0.0, "total_forecast": 121123.0545, "est_total_spend": 508037.6435706658, "est_balance": 629160.6980706658, "expected_spend": 160749.49, "burn_rate_status": "Behind", "pace_variance": -160749.49, "projected_overrun": -134960.31, "exception_note": "", "people_count": 0, "total_hours": 0.0, "story_points": 0.0, "workstreams": [{"name": "Labor", "val": 3204.91, "ytd": 0.0, "budget": 77316.0}, {"name": "Travel", "val": 0.0, "ytd": 0.0, "budget": 0.0}, {"name": "ODC", "val": 104456.44, "ytd": 0.0, "budget": 465865.0}]}, {"milestone_id": "M52", "title": "M52 \u2014 Security", "raw_title": "Security", "award_number": "OT2OD036464", "status": "On Track", "budget": 532005.6, "monthly_spend": 45181.9305, "percent_spent": 22.3, "labor_actual": 19297.8, "travel_actual": 0.0, "odc_actual": 6952.1, "ytd_actual": 0.0, "total_forecast": 118375.43549999999, "est_total_spend": 410536.99969876243, "est_balance": 528912.4351987623, "expected_spend": 133001.4, "burn_rate_status": "Behind", "pace_variance": -133001.4, "projected_overrun": -121468.6, "exception_note": "", "people_count": 0, "total_hours": 0.0, "story_points": 0.0, "workstreams": [{"name": "Labor", "val": 19297.8, "ytd": 0.0, "budget": 118945.0}, {"name": "Travel", "val": 0.0, "ytd": 0.0, "budget": 0.0}, {"name": "ODC", "val": 6952.1, "ytd": 0.0, "budget": 260251.0}]}, {"milestone_id": "M53", "title": "M53 \u2014 Licenses", "raw_title": "Licenses", "award_number": "OT2OD036464", "status": "On Track", "budget": 9214479.75, "monthly_spend": 13570.7145, "percent_spent": 1.0, "labor_actual": 0.0, "travel_actual": 0.0, "odc_actual": 10550.6, "ytd_actual": 0.0, "total_forecast": 9594737.355, "est_total_spend": 0.0, "est_balance": 9594737.355, "expected_spend": 2303619.94, "burn_rate_status": "Behind", "pace_variance": -2303619.94, "projected_overrun": -9214479.75, "exception_note": "Annual license fees paid upfront in February \u2014 no further spend expected.", "people_count": 0, "total_hours": 0.0, "story_points": 0.0, "workstreams": [{"name": "Labor", "val": 0.0, "ytd": 0.0, "budget": 0.0}, {"name": "Travel", "val": 0.0, "ytd": 0.0, "budget": 0.0}, {"name": "ODC", "val": 10550.6, "ytd": 0.0, "budget": 7313079.0}]}, {"milestone_id": "M54", "title": "M54 \u2014 Directorate and Management", "raw_title": "Directorate and Management", "award_number": "OT2OD036464", "status": "On Track", "budget": 500886.7, "monthly_spend": 66124.38, "percent_spent": 48.3, "labor_actual": 36131.270000000004, "travel_actual": 0.0, "odc_actual": 2569.65, "ytd_actual": 0.0, "total_forecast": 241746.09900000002, "est_total_spend": 267705.4498200674, "est_balance": 509451.54882006743, "expected_spend": 125221.68, "burn_rate_status": "Behind", "pace_variance": -125221.68, "projected_overrun": -233181.25, "exception_note": "", "people_count": 0, "total_hours": 0.0, "story_points": 0.0, "workstreams": [{"name": "Labor", "val": 36131.270000000004, "ytd": 0.0, "budget": 245233.0}, {"name": "Travel", "val": 0.0, "ytd": 0.0, "budget": 0.0}, {"name": "ODC", "val": 2569.65, "ytd": 0.0, "budget": 19869.0}]}, {"milestone_id": "M55", "title": "M55 \u2014 Protocol Compliance", "raw_title": "Protocol Compliance", "award_number": "OT2OD036464", "status": "On Track", "budget": 957727.05, "monthly_spend": 122648.7885, "percent_spent": 21.3, "labor_actual": 50095.6, "travel_actual": 0.0, "odc_actual": 22214.2, "ytd_actual": 0.0, "total_forecast": 204320.3505, "est_total_spend": 762746.1304263519, "est_balance": 967066.480926352, "expected_spend": 239431.76, "burn_rate_status": "Behind", "pace_variance": -239431.76, "projected_overrun": -194980.92, "exception_note": "", "people_count": 0, "total_hours": 0.0, "story_points": 0.0, "workstreams": [{"name": "Labor", "val": 50095.6, "ytd": 0.0, "budget": 304440.0}, {"name": "Travel", "val": 0.0, "ytd": 0.0, "budget": 0.0}, {"name": "ODC", "val": 22214.2, "ytd": 0.0, "budget": 303363.0}]}, {"milestone_id": "M56", "title": "M56 \u2014 Partner and Participant Coordination", "raw_title": "Partner and Participant Coordination", "award_number": "OT2OD036464", "status": "On Track", "budget": 600671.4, "monthly_spend": 77976.15, "percent_spent": 36.6, "labor_actual": 38922.36, "travel_actual": 0.0, "odc_actual": 3796.2, "ytd_actual": 0.0, "total_forecast": 219973.13100000002, "est_total_spend": 368059.4938208984, "est_balance": 588032.6248208984, "expected_spend": 150167.85, "burn_rate_status": "Behind", "pace_variance": -150167.85, "projected_overrun": -232611.91, "exception_note": "", "people_count": 0, "total_hours": 0.0, "story_points": 0.0, "workstreams": [{"name": "Labor", "val": 38922.36, "ytd": 0.0, "budget": 289921.0}, {"name": "Travel", "val": 0.0, "ytd": 0.0, "budget": 0.0}, {"name": "ODC", "val": 3796.2, "ytd": 0.0, "budget": 30244.0}]}, {"milestone_id": "M57", "title": "M57 \u2014 Data Governance and Delivery", "raw_title": "Data Governance and Delivery", "award_number": "OT2OD036464", "status": "On Track", "budget": 1264051.95, "monthly_spend": 192456.7575, "percent_spent": 46.9, "labor_actual": 97299.93, "travel_actual": 0.0, "odc_actual": 7568.35, "ytd_actual": 0.0, "total_forecast": 593354.328, "est_total_spend": 670449.2719218336, "est_balance": 1263803.5999218335, "expected_spend": 316012.99, "burn_rate_status": "Behind", "pace_variance": -316012.99, "projected_overrun": -593602.68, "exception_note": "", "people_count": 0, "total_hours": 0.0, "story_points": 0.0, "workstreams": [{"name": "Labor", "val": 97299.93, "ytd": 0.0, "budget": 621709.0}, {"name": "Travel", "val": 0.0, "ytd": 0.0, "budget": 0.0}, {"name": "ODC", "val": 7568.35, "ytd": 0.0, "budget": 45784.0}]}, {"milestone_id": "M58", "title": "M58 \u2014 TEP", "raw_title": "TEP", "award_number": "OT2OD036464", "status": "On Track", "budget": 599478.6, "monthly_spend": 19625.3715, "percent_spent": 10.3, "labor_actual": 9797.23, "travel_actual": 0.0, "odc_actual": 953.86, "ytd_actual": 0.0, "total_forecast": 62001.8805, "est_total_spend": 522742.9440569674, "est_balance": 584744.8245569675, "expected_spend": 149869.65, "burn_rate_status": "Behind", "pace_variance": -149869.65, "projected_overrun": -76735.66, "exception_note": "", "people_count": 0, "total_hours": 0.0, "story_points": 0.0, "workstreams": [{"name": "Labor", "val": 9797.23, "ytd": 0.0, "budget": 113021.0}, {"name": "Travel", "val": 0.0, "ytd": 0.0, "budget": 0.0}, {"name": "ODC", "val": 953.86, "ytd": 0.0, "budget": 301725.0}]}, {"milestone_id": "M59", "title": "M59 \u2014 Support Center", "raw_title": "Support Center", "award_number": "OT2OD036464", "status": "On Track", "budget": 4999895.4, "monthly_spend": 513168.58949999994, "percent_spent": 22.4, "labor_actual": 266967.1, "travel_actual": 0.0, "odc_actual": 49089.22, "ytd_actual": 0.0, "total_forecast": 1118201.6475, "est_total_spend": 3634016.8098718585, "est_balance": 4752218.457371858, "expected_spend": 1249973.85, "burn_rate_status": "Behind", "pace_variance": -1249973.85, "projected_overrun": -1365878.59, "exception_note": "", "people_count": 0, "total_hours": 0.0, "story_points": 0.0, "workstreams": [{"name": "Labor", "val": 266967.1, "ytd": 0.0, "budget": 2561305.0}, {"name": "Travel", "val": 0.0, "ytd": 0.0, "budget": 0.0}, {"name": "ODC", "val": 49089.22, "ytd": 0.0, "budget": 624501.0}]}, {"milestone_id": "M44", "title": "M44 \u2014 Directorate", "raw_title": "Directorate", "award_number": "OT2OD036464", "status": "At Risk", "budget": 402821.6875, "monthly_spend": 140832.825, "percent_spent": 14.4, "labor_actual": 11151.79, "travel_actual": 0.0, "odc_actual": 113168.59, "ytd_actual": 264122.74, "total_forecast": 150242.3251612878, "est_total_spend": 414365.0651612878, "est_balance": -11543.37766128776, "expected_spend": 134273.9, "burn_rate_status": "Ahead", "pace_variance": 129848.84, "projected_overrun": 11543.38, "exception_note": "", "people_count": 0, "total_hours": 0.0, "story_points": 0.0, "workstreams": [{"name": "Labor", "val": 11151.79, "ytd": 59708.799999999996, "budget": 92122.0}, {"name": "Travel", "val": 0.0, "ytd": 4510.0599999999995, "budget": 0.0}, {"name": "ODC", "val": 113168.59, "ytd": 142075.88999999998, "budget": 211119.0}]}, {"milestone_id": "M45", "title": "M45 \u2014 Product Implementation", "raw_title": "Product Implementation", "award_number": "OT2OD036464", "status": "Watch", "budget": 2335517.05, "monthly_spend": 525222.831, "percent_spent": 1.4, "labor_actual": 3326.92, "travel_actual": 0.0, "odc_actual": 490987.01, "ytd_actual": 789168.6494999999, "total_forecast": 1549185.9420100797, "est_total_spend": 2338354.5915100793, "est_balance": -2838.5415100798054, "expected_spend": 778505.68, "burn_rate_status": "On Pace", "pace_variance": 10662.97, "projected_overrun": 2837.54, "exception_note": "", "people_count": 0, "total_hours": 0.0, "story_points": 0.0, "workstreams": [{"name": "Labor", "val": 3326.92, "ytd": 29657.339999999997, "budget": 40321.0}, {"name": "Travel", "val": 0.0, "ytd": 0.0, "budget": 0.0}, {"name": "ODC", "val": 490987.01, "ytd": 692001.48, "budget": 2135256.0}]}, {"milestone_id": "M46", "title": "M46 \u2014 Website Maintenance", "raw_title": "Website Maintenance", "award_number": "OT2OD036464", "status": "On Track", "budget": 1100033.55, "monthly_spend": 259459.4205, "percent_spent": 4.4, "labor_actual": 0.0, "travel_actual": 0.0, "odc_actual": 244079.29, "ytd_actual": 417539.7345, "total_forecast": 679303.3655136183, "est_total_spend": 1096843.1000136184, "est_balance": 3190.4499863816654, "expected_spend": 366677.85, "burn_rate_status": "On Pace", "pace_variance": 50861.88, "projected_overrun": -3190.45, "exception_note": "", "people_count": 0, "total_hours": 0.0, "story_points": 0.0, "workstreams": [{"name": "Labor", "val": 0.0, "ytd": 14992.160000000002, "budget": 5251.0}, {"name": "Travel", "val": 0.0, "ytd": 0.0, "budget": 0.0}, {"name": "ODC", "val": 244079.29, "ytd": 362144.4, "budget": 1016309.0}]}, {"milestone_id": "M47", "title": "M47 \u2014 Communications Delivery", "raw_title": "Communications Delivery", "award_number": "OT2OD036464", "status": "Watch", "budget": 1682690.1, "monthly_spend": 333497.388, "percent_spent": 1.6, "labor_actual": 0.0, "travel_actual": 0.0, "odc_actual": 315548.64, "ytd_actual": 569914.5165, "total_forecast": 1151285.2086986252, "est_total_spend": 1721199.7251986254, "est_balance": -38509.6251986252, "expected_spend": 560896.7, "burn_rate_status": "On Pace", "pace_variance": 9017.82, "projected_overrun": 38509.63, "exception_note": "", "people_count": 0, "total_hours": 0.0, "story_points": 0.0, "workstreams": [{"name": "Labor", "val": 0.0, "ytd": 22775.5, "budget": 5251.0}, {"name": "Travel", "val": 0.0, "ytd": 0.0, "budget": 0.0}, {"name": "ODC", "val": 315548.64, "ytd": 497914.04000000004, "budget": 1583575.0}]}, {"milestone_id": "M48", "title": "M48 \u2014 Data Quality & Platform analytics", "raw_title": "Data Quality & Platform analytics", "award_number": "OT2OD036464", "status": "Watch", "budget": 934901.2365, "monthly_spend": 219096.864, "percent_spent": 9.3, "labor_actual": 23388.64, "travel_actual": 0.0, "odc_actual": 165838.92, "ytd_actual": 393271.11149999994, "total_forecast": 525944.9116417399, "est_total_spend": 919216.0231417399, "est_balance": 15685.213358260116, "expected_spend": 311633.75, "burn_rate_status": "Ahead", "pace_variance": 81637.36, "projected_overrun": -15685.21, "exception_note": "", "people_count": 0, "total_hours": 0.0, "story_points": 0.0, "workstreams": [{"name": "Labor", "val": 23388.64, "ytd": 93436.64, "budget": 209328.21}, {"name": "Travel", "val": 0.0, "ytd": 0.0, "budget": 0.0}, {"name": "ODC", "val": 165838.92, "ytd": 205902.92, "budget": 498039.0}]}, {"milestone_id": "M49", "title": "M49 \u2014 Tier 2&3 support", "raw_title": "Tier 2&3 support", "award_number": "OT2OD036464", "status": "Watch", "budget": 818740.125, "monthly_spend": 121836.6555, "percent_spent": 26.0, "labor_actual": 35894.48, "travel_actual": 0.0, "odc_actual": 50325.7, "ytd_actual": 437729.5335000001, "total_forecast": 376360.1813361626, "est_total_spend": 814089.7148361626, "est_balance": 4650.410163837369, "expected_spend": 272913.38, "burn_rate_status": "Ahead", "pace_variance": 164816.15, "projected_overrun": -4650.41, "exception_note": "", "people_count": 0, "total_hours": 0.0, "story_points": 0.0, "workstreams": [{"name": "Labor", "val": 35894.48, "ytd": 177068.80000000002, "budget": 311149.28}, {"name": "Travel", "val": 0.0, "ytd": 0.0, "budget": 0.0}, {"name": "ODC", "val": 50325.7, "ytd": 94252.88, "budget": 195136.0}]}, {"milestone_id": "M50", "title": "M50 \u2014 Development + Operations & Maintenance", "raw_title": "Development + Operations & Maintenance", "award_number": "OT2OD036464", "status": "On Track", "budget": 7460577.6, "monthly_spend": 1709166.3015, "percent_spent": 2.9, "labor_actual": 30408.82, "travel_actual": 0.0, "odc_actual": 1558955.97, "ytd_actual": 2642932.4669999997, "total_forecast": 4767530.733541277, "est_total_spend": 7410463.200541276, "est_balance": 50114.39945872387, "expected_spend": 2486859.2, "burn_rate_status": "On Pace", "pace_variance": 156073.27, "projected_overrun": -50114.4, "exception_note": "", "people_count": 0, "total_hours": 0.0, "story_points": 0.0, "workstreams": [{"name": "Labor", "val": 30408.82, "ytd": 154490.76, "budget": 216764.0}, {"name": "Travel", "val": 0.0, "ytd": 0.0, "budget": 0.0}, {"name": "ODC", "val": 1558955.97, "ytd": 2205487.4299999997, "budget": 6626937.0}]}, {"milestone_id": "M51", "title": "M51 \u2014 Data Process and Protocol Automation", "raw_title": "Data Process and Protocol Automation", "award_number": "OT2OD036464", "status": "Watch", "budget": 642997.95, "monthly_spend": 274578.108, "percent_spent": 0.7, "labor_actual": 5850.18, "travel_actual": 0.0, "odc_actual": 249331.57, "ytd_actual": 395701.1625, "total_forecast": 226619.50633860083, "est_total_spend": 622320.668838601, "est_balance": 20677.281161399093, "expected_spend": 214332.65, "burn_rate_status": "Ahead", "pace_variance": 181368.51, "projected_overrun": -20677.28, "exception_note": "", "people_count": 0, "total_hours": 0.0, "story_points": 0.0, "workstreams": [{"name": "Labor", "val": 5850.18, "ytd": 11436.41, "budget": 77316.0}, {"name": "Travel", "val": 0.0, "ytd": 0.0, "budget": 0.0}, {"name": "ODC", "val": 249331.57, "ytd": 353936.01, "budget": 465865.0}]}, {"milestone_id": "M52", "title": "M52 \u2014 Security", "raw_title": "Security", "award_number": "OT2OD036464", "status": "Watch", "budget": 507006.8115, "monthly_spend": 85315.73399999998, "percent_spent": 14.4, "labor_actual": 12969.06, "travel_actual": 0.0, "odc_actual": 56466.2, "ytd_actual": 203691.1695, "total_forecast": 302964.56721175753, "est_total_spend": 506655.73671175755, "est_balance": 351.07478824245845, "expected_spend": 169002.27, "burn_rate_status": "Ahead", "pace_variance": 34688.9, "projected_overrun": -351.07, "exception_note": "", "people_count": 0, "total_hours": 0.0, "story_points": 0.0, "workstreams": [{"name": "Labor", "val": 12969.06, "ytd": 68120.73999999999, "budget": 106061.27}, {"name": "Travel", "val": 0.0, "ytd": 0.0, "budget": 0.0}, {"name": "ODC", "val": 56466.2, "ytd": 67976.2, "budget": 260251.0}]}, {"milestone_id": "M53", "title": "M53 \u2014 Licenses", "raw_title": "Licenses", "award_number": "OT2OD036464", "status": "On Track", "budget": 9214479.75, "monthly_spend": -222515.23949999997, "percent_spent": 1.0, "labor_actual": 133.76, "travel_actual": 0.0, "odc_actual": 60045.53, "ytd_actual": 9372222.1155, "total_forecast": 0.0, "est_total_spend": 9372222.1155, "est_balance": -157742.36550000036, "expected_spend": 3071493.25, "burn_rate_status": "Ahead", "pace_variance": 6300728.87, "projected_overrun": 157742.37, "exception_note": "Annual license fees paid upfront in February \u2014 no further spend expected.", "people_count": 0, "total_hours": 0.0, "story_points": 0.0, "workstreams": [{"name": "Labor", "val": 133.76, "ytd": 942224.87, "budget": 0.0}, {"name": "Travel", "val": 0.0, "ytd": 0.0, "budget": 0.0}, {"name": "ODC", "val": 60045.53, "ytd": 6577419.78, "budget": 7313079.0}]}, {"milestone_id": "M54", "title": "M54 \u2014 Directorate and Management", "raw_title": "Directorate and Management", "award_number": "OT2OD036464", "status": "Watch", "budget": 450886.078, "monthly_spend": -50473.248, "percent_spent": 39.0, "labor_actual": -24285.22, "travel_actual": 0.0, "odc_actual": -3784.21, "ytd_actual": 191272.85100000002, "total_forecast": 255913.1811882881, "est_total_spend": 447186.0321882881, "est_balance": 3699.0458117119033, "expected_spend": 150295.36, "burn_rate_status": "Ahead", "pace_variance": 40977.49, "projected_overrun": -3700.05, "exception_note": "", "people_count": 0, "total_hours": 0.0, "story_points": 0.0, "workstreams": [{"name": "Labor", "val": -24285.22, "ytd": 99107.02, "budget": 219465.26}, {"name": "Travel", "val": 0.0, "ytd": 1030.92, "budget": 0.0}, {"name": "ODC", "val": -3784.21, "ytd": 6891.250000000001, "budget": 19869.0}]}, {"milestone_id": "M55", "title": "M55 \u2014 Protocol Compliance", "raw_title": "Protocol Compliance", "award_number": "OT2OD036464", "status": "At Risk", "budget": 917727.489, "monthly_spend": 199417.386, "percent_spent": 8.9, "labor_actual": 86979.52, "travel_actual": 0.0, "odc_actual": 28047.71, "ytd_actual": 403737.7365, "total_forecast": 514073.949834249, "est_total_spend": 917811.6863342489, "est_balance": -84.19733424895821, "expected_spend": 305909.16, "burn_rate_status": "Ahead", "pace_variance": 97828.58, "projected_overrun": 84.2, "exception_note": "", "people_count": 0, "total_hours": 0.0, "story_points": 0.0, "workstreams": [{"name": "Labor", "val": 86979.52, "ytd": 170991.12, "budget": 283826.13}, {"name": "Travel", "val": 0.0, "ytd": 0.0, "budget": 0.0}, {"name": "ODC", "val": 28047.71, "ytd": 64240.409999999996, "budget": 303363.0}]}, {"milestone_id": "M56", "title": "M56 \u2014 Partner and Participant Coordination", "raw_title": "Partner and Participant Coordination", "award_number": "OT2OD036464", "status": "Watch", "budget": 600671.4, "monthly_spend": 54957.903, "percent_spent": 23.6, "labor_actual": 27364.54, "travel_actual": 0.0, "odc_actual": 2775.0, "ytd_actual": 274931.03400000004, "total_forecast": 314350.41087441024, "est_total_spend": 589281.4448744104, "est_balance": 11389.955125589728, "expected_spend": 200223.8, "burn_rate_status": "Ahead", "pace_variance": 74707.23, "projected_overrun": -11389.96, "exception_note": "", "people_count": 0, "total_hours": 0.0, "story_points": 0.0, "workstreams": [{"name": "Labor", "val": 27364.54, "ytd": 135103.59, "budget": 289921.0}, {"name": "Travel", "val": 0.0, "ytd": 2833.27, "budget": 0.0}, {"name": "ODC", "val": 2775.0, "ytd": 13661.64, "budget": 30244.0}]}, {"milestone_id": "M57", "title": "M57 \u2014 Data Governance and Delivery", "raw_title": "Data Governance and Delivery", "award_number": "OT2OD036464", "status": "Watch", "budget": 1214051.412, "monthly_spend": 153997.557, "percent_spent": 33.0, "labor_actual": 77978.45, "travel_actual": 0.0, "odc_actual": 5877.45, "ytd_actual": 747351.885, "total_forecast": 450737.576233191, "est_total_spend": 1198089.461233191, "est_balance": 15961.950766808994, "expected_spend": 404683.8, "burn_rate_status": "Ahead", "pace_variance": 342668.09, "projected_overrun": -15961.95, "exception_note": "", "people_count": 0, "total_hours": 0.0, "story_points": 0.0, "workstreams": [{"name": "Labor", "val": 77978.45, "ytd": 377465.29, "budget": 595940.98}, {"name": "Travel", "val": 0.0, "ytd": 0.0, "budget": 0.0}, {"name": "ODC", "val": 5877.45, "ytd": 29932.26, "budget": 45783.75}]}, {"milestone_id": "M58", "title": "M58 \u2014 TEP", "raw_title": "TEP", "award_number": "OT2OD036464", "status": "On Track", "budget": 574478.2784999999, "monthly_spend": 15267.3045, "percent_spent": 7.4, "labor_actual": 7631.14, "travel_actual": 0.0, "odc_actual": 728.16, "ytd_actual": 77269.185, "total_forecast": 492502.746126033, "est_total_spend": 569771.931126033, "est_balance": 4706.347373966997, "expected_spend": 191492.76, "burn_rate_status": "Behind", "pace_variance": -114223.58, "projected_overrun": -4706.35, "exception_note": "", "people_count": 0, "total_hours": 0.0, "story_points": 0.0, "workstreams": [{"name": "Labor", "val": 7631.14, "ytd": 38472.14, "budget": 100135.97}, {"name": "Travel", "val": 0.0, "ytd": 0.0, "budget": 0.0}, {"name": "ODC", "val": 728.16, "ytd": 3903.87, "budget": 301725.0}]}, {"milestone_id": "M59", "title": "M59 \u2014 Support Center", "raw_title": "Support Center", "award_number": "OT2OD036464", "status": "On Track", "budget": 4849897.8915, "monthly_spend": 279503.1855, "percent_spent": 12.5, "labor_actual": 127769.13, "travel_actual": 0.0, "odc_actual": 46136.6, "ytd_actual": 1397704.8329999999, "total_forecast": 3372389.2491714894, "est_total_spend": 4770094.0821714895, "est_balance": 79806.80932851016, "expected_spend": 1616632.63, "burn_rate_status": "On Pace", "pace_variance": -218927.8, "projected_overrun": -79803.81, "exception_note": "", "people_count": 0, "total_hours": 0.0, "story_points": 0.0, "workstreams": [{"name": "Labor", "val": 127769.13, "ytd": 711138.61, "budget": 2449996.01}, {"name": "Travel", "val": 0.0, "ytd": 0.0, "budget": 0.0}, {"name": "ODC", "val": 46136.6, "ytd": 133692.3, "budget": 624501.0}]}];
-  const fmt = new Intl.NumberFormat('en-US', {style:'currency',currency:'USD',maximumFractionDigits:0});
+  const monthlyData  = [{"month": "Jan", "value": 0.0, "is_forecast": false, "forecast_val": 0.0}, {"month": "Feb", "value": 11787301.55, "is_forecast": false, "forecast_val": 11787301.55}, {"month": "Mar", "value": 2692098.19, "is_forecast": false, "forecast_val": 2692098.19}, {"month": "Apr", "value": 4099160.98, "is_forecast": false, "forecast_val": 4099160.98}, {"month": "May", "value": 2629214.67, "is_forecast": true, "forecast_val": 2629214.67}, {"month": "Jun", "value": 2384619.02, "is_forecast": true, "forecast_val": 2384619.02}, {"month": "Jul", "value": 2534941.62, "is_forecast": true, "forecast_val": 2534941.62}, {"month": "Aug", "value": 2574573.87, "is_forecast": true, "forecast_val": 2574573.87}, {"month": "Sep", "value": 3028015.84, "is_forecast": true, "forecast_val": 3028015.84}, {"month": "Oct", "value": 612057.55, "is_forecast": true, "forecast_val": 612057.55}, {"month": "Nov", "value": 594751.7, "is_forecast": true, "forecast_val": 594751.7}, {"month": "Dec", "value": 771229.58, "is_forecast": true, "forecast_val": 771229.58}, {"month": "YTD", "value": 18578560.72, "label": "$18.6M", "is_forecast": false, "forecast_val": 11235826.14, "is_ytd": true}];
+  const milestones   = [{"milestone_id": "M44", "title": "M44 \u2013 Directorate", "status": "At Risk", "budget": 402821.6875, "monthly_spend": 140832.825, "percent_spent": 14.42, "ytd_actual": 264122.74, "expected_spend": 134273.9, "burn_rate_status": "Ahead", "pace_variance": 129848.84, "projected_overrun": 11543.38, "est_balance": -11543.37766128776, "exception_note": "", "people_count": 4, "workstreams": [{"name": "Labor", "val": 11151.79}, {"name": "Travel", "val": 0.0}, {"name": "ODC", "val": 113168.59}]}, {"milestone_id": "M45", "title": "M45 \u2013 Product Implementation", "status": "Watch", "budget": 2335517.05, "monthly_spend": 525222.831, "percent_spent": 1.42, "ytd_actual": 789168.6494999999, "expected_spend": 778505.68, "burn_rate_status": "On Pace", "pace_variance": 10662.97, "projected_overrun": 2837.54, "est_balance": -2838.5415100798054, "exception_note": "", "people_count": 2, "workstreams": [{"name": "Labor", "val": 3326.92}, {"name": "Travel", "val": 0.0}, {"name": "ODC", "val": 490987.01}]}, {"milestone_id": "M46", "title": "M46 \u2013 Website Maintenance", "status": "On Track", "budget": 1100033.55, "monthly_spend": 259459.4205, "percent_spent": 4.37, "ytd_actual": 417539.7345, "expected_spend": 366677.85, "burn_rate_status": "On Pace", "pace_variance": 50861.88, "projected_overrun": -3190.45, "est_balance": 3190.4499863816654, "exception_note": "", "people_count": 0, "workstreams": [{"name": "Labor", "val": 0.0}, {"name": "Travel", "val": 0.0}, {"name": "ODC", "val": 244079.29}]}, {"milestone_id": "M47", "title": "M47 \u2013 Communications Delivery", "status": "Watch", "budget": 1682690.1, "monthly_spend": 333497.388, "percent_spent": 1.63, "ytd_actual": 569914.5165, "expected_spend": 560896.7, "burn_rate_status": "On Pace", "pace_variance": 9017.82, "projected_overrun": 38509.63, "est_balance": -38509.6251986252, "exception_note": "", "people_count": 0, "workstreams": [{"name": "Labor", "val": 0.0}, {"name": "Travel", "val": 0.0}, {"name": "ODC", "val": 315548.64}]}, {"milestone_id": "M48", "title": "M48 \u2013 Data Quality & Platform analytics", "status": "On Track", "budget": 934901.2365, "monthly_spend": 219096.864, "percent_spent": 9.28, "ytd_actual": 393271.11149999994, "expected_spend": 311633.75, "burn_rate_status": "On Pace", "pace_variance": 81637.36, "projected_overrun": -15685.21, "est_balance": 15685.213358260116, "exception_note": "", "people_count": 6, "workstreams": [{"name": "Labor", "val": 23388.64}, {"name": "Travel", "val": 0.0}, {"name": "ODC", "val": 165838.92}]}, {"milestone_id": "M49", "title": "M49 \u2013 Tier 2&3 support", "status": "Watch", "budget": 818740.125, "monthly_spend": 121836.6555, "percent_spent": 26.02, "ytd_actual": 437729.5335000001, "expected_spend": 272913.38, "burn_rate_status": "Ahead", "pace_variance": 164816.15, "projected_overrun": -4650.41, "est_balance": 4650.410163837369, "exception_note": "", "people_count": 5, "workstreams": [{"name": "Labor", "val": 35894.48}, {"name": "Travel", "val": 0.0}, {"name": "ODC", "val": 50325.7}]}, {"milestone_id": "M50", "title": "M50 \u2013 Development + Operations & Maintenance", "status": "On Track", "budget": 7460577.6, "monthly_spend": 1709166.3015, "percent_spent": 2.87, "ytd_actual": 2642932.4669999997, "expected_spend": 2486859.2, "burn_rate_status": "On Pace", "pace_variance": 156073.27, "projected_overrun": -50114.4, "est_balance": 50114.39945872387, "exception_note": "", "people_count": 7, "workstreams": [{"name": "Labor", "val": 30408.82}, {"name": "Travel", "val": 0.0}, {"name": "ODC", "val": 1558955.97}]}, {"milestone_id": "M51", "title": "M51 \u2013 Data Process and Protocol Automation", "status": "Watch", "budget": 642997.95, "monthly_spend": 274578.108, "percent_spent": 0.73, "ytd_actual": 395701.1625, "expected_spend": 214332.65, "burn_rate_status": "Ahead", "pace_variance": 181368.51, "projected_overrun": -20677.28, "est_balance": 20677.281161399093, "exception_note": "", "people_count": 2, "workstreams": [{"name": "Labor", "val": 5850.18}, {"name": "Travel", "val": 0.0}, {"name": "ODC", "val": 249331.57}]}, {"milestone_id": "M52", "title": "M52 \u2013 Security", "status": "On Track", "budget": 507006.8115, "monthly_spend": 85315.73399999998, "percent_spent": 14.44, "ytd_actual": 203691.1695, "expected_spend": 169002.27, "burn_rate_status": "On Pace", "pace_variance": 34688.9, "projected_overrun": -351.07, "est_balance": 351.07478824245845, "exception_note": "", "people_count": 3, "workstreams": [{"name": "Labor", "val": 12969.06}, {"name": "Travel", "val": 0.0}, {"name": "ODC", "val": 56466.2}]}, {"milestone_id": "M53", "title": "M53 \u2013 Licenses", "status": "On Track", "budget": 9214479.75, "monthly_spend": -222515.23949999997, "percent_spent": 103.98, "ytd_actual": 9372222.1155, "expected_spend": 3071493.25, "burn_rate_status": "Ahead", "pace_variance": 6300728.87, "projected_overrun": 157742.37, "est_balance": -157742.36550000036, "exception_note": "Annual license fees paid upfront in February \u2014 no further spend expected.", "people_count": 1, "workstreams": [{"name": "Labor", "val": 133.76}, {"name": "Travel", "val": 0.0}, {"name": "ODC", "val": 60045.53}]}, {"milestone_id": "M54", "title": "M54 \u2013 Directorate and Management", "status": "On Track", "budget": 450886.078, "monthly_spend": -50473.248, "percent_spent": 38.95, "ytd_actual": 191272.85100000002, "expected_spend": 150295.36, "burn_rate_status": "On Pace", "pace_variance": 40977.49, "projected_overrun": -3700.05, "est_balance": 3699.0458117119033, "exception_note": "", "people_count": 4, "workstreams": [{"name": "Labor", "val": -24285.22}, {"name": "Travel", "val": 0.0}, {"name": "ODC", "val": -3784.21}]}, {"milestone_id": "M55", "title": "M55 \u2013 Protocol Compliance", "status": "Watch", "budget": 917727.489, "monthly_spend": 199417.386, "percent_spent": 8.9, "ytd_actual": 403737.7365, "expected_spend": 305909.16, "burn_rate_status": "On Pace", "pace_variance": 97828.58, "projected_overrun": 84.2, "est_balance": -84.19733424895821, "exception_note": "", "people_count": 12, "workstreams": [{"name": "Labor", "val": 86979.52}, {"name": "Travel", "val": 0.0}, {"name": "ODC", "val": 28047.71}]}, {"milestone_id": "M56", "title": "M56 \u2013 Partner and Participant Coordination", "status": "On Track", "budget": 600671.4, "monthly_spend": 54957.903, "percent_spent": 23.64, "ytd_actual": 274931.03400000004, "expected_spend": 200223.8, "burn_rate_status": "On Pace", "pace_variance": 74707.23, "projected_overrun": -11389.96, "est_balance": 11389.955125589728, "exception_note": "", "people_count": 3, "workstreams": [{"name": "Labor", "val": 27364.54}, {"name": "Travel", "val": 0.0}, {"name": "ODC", "val": 2775.0}]}, {"milestone_id": "M57", "title": "M57 \u2013 Data Governance and Delivery", "status": "Watch", "budget": 1214051.412, "monthly_spend": 153997.557, "percent_spent": 33.02, "ytd_actual": 747351.885, "expected_spend": 404683.8, "burn_rate_status": "Ahead", "pace_variance": 342668.09, "projected_overrun": -15961.95, "est_balance": 15961.950766808994, "exception_note": "", "people_count": 7, "workstreams": [{"name": "Labor", "val": 77978.45}, {"name": "Travel", "val": 0.0}, {"name": "ODC", "val": 5877.45}]}, {"milestone_id": "M58", "title": "M58 \u2013 TEP", "status": "On Track", "budget": 574478.2784999999, "monthly_spend": 15267.3045, "percent_spent": 7.38, "ytd_actual": 77269.185, "expected_spend": 191492.76, "burn_rate_status": "Behind", "pace_variance": -114223.58, "projected_overrun": -4706.35, "est_balance": 4706.347373966997, "exception_note": "", "people_count": 3, "workstreams": [{"name": "Labor", "val": 7631.14}, {"name": "Travel", "val": 0.0}, {"name": "ODC", "val": 728.16}]}, {"milestone_id": "M59", "title": "M59 \u2013 Support Center", "status": "On Track", "budget": 4849897.8915, "monthly_spend": 279503.1855, "percent_spent": 12.48, "ytd_actual": 1397704.8329999999, "expected_spend": 1616632.63, "burn_rate_status": "On Pace", "pace_variance": -218927.8, "projected_overrun": -79803.81, "est_balance": 79806.80932851016, "exception_note": "", "people_count": 15, "workstreams": [{"name": "Labor", "val": 127769.13}, {"name": "Travel", "val": 0.0}, {"name": "ODC", "val": 46136.6}]}];
+  const fmt          = new Intl.NumberFormat('en-US', {style:'currency',currency:'USD',maximumFractionDigits:0});
+  const rows         = document.getElementById('milestoneRows');
+  const statusFilter = document.getElementById('statusFilter');
+  const filterCount  = document.getElementById('filterCount');
 
-  // Initialization
   (function() {
-    document.getElementById('budgetFill').style.width = "27.4%";
-    document.getElementById('yearMarker').style.left = "33.3%";
-    
-    const healthEl = document.getElementById('healthCards');
-    const stats = [
-      { label:'On Pace', value: milestones.filter(m => m.burn_rate_status === 'On Pace').length, cls:'' },
-      { label:'Ahead', value: milestones.filter(m => m.burn_rate_status === 'Ahead').length, cls:'' },
-      { label:'Behind', value: milestones.filter(m => m.burn_rate_status === 'Behind').length, cls:'' },
-      { label:'Overrun', value: fmt.format(milestones.reduce((s,m) => s + Math.max(0, m.projected_overrun), 0)), cls:'' }
-    ];
-    stats.forEach(s => {
-      healthEl.innerHTML += `<div class="status-chip"><div class="txt">${s.label}</div><div class="num">${s.value}</div></div>`;
-    });
+    var budgetPct = parseFloat("55.1") || 0;
+    var yearPct   = parseFloat("33.3") || 0;
+    var fill   = document.getElementById('budgetFill');
+    var marker = document.getElementById('yearMarker');
+    if (fill)   fill.style.width  = Math.min(budgetPct, 100) + '%';
+    if (marker) marker.style.left = Math.min(yearPct,   100) + '%';
+    var balEl = document.getElementById('balanceVal');
+    if (balEl) {
+      var estBal = milestones.reduce(function(s,m){ return s+(m.est_balance||0); }, 0);
+      balEl.style.color = estBal < 0 ? 'var(--risk)' : 'var(--good)';
+    }
   })();
 
-  function renderRows() {
-    const rows = document.getElementById('milestoneRows');
-    const filter = document.getElementById('statusFilter').value;
-    rows.innerHTML = '';
-    
-    milestones.filter(m => filter === 'All' || m.status === 'At Risk' || m.status === 'Watch').forEach(m => {
-      const statusCls = m.status === 'At Risk' ? 'risk' : m.status === 'Watch' ? 'warn' : 'good';
-      rows.innerHTML += `
-        <tr>
-          <td><strong>${m.title}</strong></td>
-          <td><span class="pill ${statusCls}">${m.status}</span></td>
-          <td>${fmt.format(m.budget)}</td>
-          <td>${fmt.format(m.ytd_actual)}</td>
-          <td><span class="pill ${m.projected_overrun > 0 ? 'risk' : 'good'}">${fmt.format(m.projected_overrun)}</span></td>
-        </tr>`;
-    });
+  var healthEl    = document.getElementById('healthCards');
+  var onPaceCount = milestones.filter(function(m){ return m.burn_rate_status === 'On Pace'; }).length;
+  var aheadCount  = milestones.filter(function(m){ return m.burn_rate_status === 'Ahead'; }).length;
+  var behindCount = milestones.filter(function(m){ return m.burn_rate_status === 'Behind'; }).length;
+  var atRiskCount = milestones.filter(function(m){ return m.status === 'At Risk'; }).length;
+  var totalOverrun = milestones.reduce(function(s,m){ return s + (m.projected_overrun > 0 ? m.projected_overrun : 0); }, 0);
 
-    // Populate Top 5s
-    const topP = [...milestones].sort((a,b) => (b.people_count||0) - (a.people_count||0)).slice(0,5);
-    const topH = [...milestones].sort((a,b) => (b.total_hours||0) - (a.total_hours||0)).slice(0,5);
-    
-    document.getElementById('topPeopleRows').innerHTML = topP.map(m => `<tr><td>${m.title}</td><td align="right">${m.people_count||0}</td></tr>`).join('');
-    document.getElementById('topHoursRows').innerHTML = topH.map(m => `<tr><td>${m.title}</td><td align="right">${(m.total_hours||0).toLocaleString()}</td></tr>`).join('');
+  [
+    { label:'On Pace',             value: onPaceCount + ' of ' + milestones.length, cls:'status-good' },
+    { label:'Ahead of Plan',       value: aheadCount,                               cls:'status-warn' },
+    { label:'Behind Plan',         value: behindCount,                              cls:'status-neutral' },
+    { label:'Total Proj. Overrun', value: fmt.format(totalOverrun),                 cls: atRiskCount > 0 ? 'status-risk' : 'status-good' },
+  ].forEach(function(c) {
+    healthEl.innerHTML += '<div class="status-chip ' + c.cls + '"><div class="txt">' + c.label + '</div><div class="num">' + c.value + '</div></div>';
+  });
+
+  function toggleRow(id) {
+    var el = document.getElementById(id);
+    el.style.display = (el.style.display === 'none') ? 'table-row' : 'none';
   }
 
-  document.getElementById('statusFilter').onchange = renderRows;
+  // FIX 6 & 7: statusClass/varCls/varSign now defined; workstreams guarded
+  function renderRows() {
+    rows.innerHTML = '';
+    var sv = statusFilter.value;
+    var filtered = milestones.filter(function(m) {
+      if (sv === 'All')        return true;
+      if (sv === 'Exceptions') return m.status === 'At Risk' || m.status === 'Watch';
+      return m.status.toLowerCase() === sv.toLowerCase();
+    });
+
+    filtered.forEach(function(m) {
+      var statusClass = m.status === 'At Risk'  ? 'risk'
+                      : m.status === 'Watch'    ? 'warn'
+                      : m.status === 'Complete' ? 'neutral'
+                      : 'good';
+      var varCls  = m.projected_overrun > 0 ? 'risk' : 'good';
+      var varSign = m.projected_overrun > 0 ? '+' : '';
+
+      var tr = document.createElement('tr');
+      tr.style.cursor = 'pointer';
+      tr.onclick = function() { toggleRow('details-' + m.milestone_id); };
+      tr.innerHTML =
+        '<td><strong>' + m.title + '</strong><br><small>👥 ' + (m.people_count || 0) + ' Staff</small></td>' +
+        '<td><span class="pill ' + statusClass + '">' + m.status + '</span></td>' +
+        '<td>' + fmt.format(m.budget) + '</td>' +
+        '<td>' + fmt.format(m.ytd_actual) + '</td>' +
+        '<td><span class="pill ' + varCls + '">' + varSign + fmt.format(m.projected_overrun) + '</span></td>' +
+        '<td style="font-size:12px;">' + (m.exception_note || '—') + '</td>';
+      rows.appendChild(tr);
+
+      var detailTr = document.createElement('tr');
+      detailTr.id = 'details-' + m.milestone_id;
+      detailTr.style.display = 'none';
+      detailTr.style.background = '#f9fafb';
+      var ws = Array.isArray(m.workstreams) ? m.workstreams : [];
+      var wsHtml = ws.map(function(w) {
+        return '<li>' + w.name + ': ' + fmt.format(w.val) + '</li>';
+      }).join('');
+      detailTr.innerHTML = '<td colspan="6" style="padding:15px 30px;"><strong>Workstream Breakdown:</strong><ul>' +
+        (wsHtml || '<li>No data</li>') + '</ul></td>';
+      rows.appendChild(detailTr);
+    });
+
+    var topPeople = milestones.slice().sort(function(a,b){ return (b.people_count||0) - (a.people_count||0); }).slice(0,5);
+    var topHours  = milestones.slice().sort(function(a,b){ return b.ytd_actual - a.ytd_actual; }).slice(0,5);
+
+    document.getElementById('topPeopleRows').innerHTML = topPeople.map(function(m) {
+      return '<tr><td>' + m.milestone_id + '</td><td style="text-align:right;">' + (m.people_count||0) + '</td></tr>';
+    }).join('');
+    document.getElementById('topHoursRows').innerHTML = topHours.map(function(m) {
+      return '<tr><td>' + m.milestone_id + '</td><td style="text-align:right;">' + fmt.format(m.ytd_actual) + '</td></tr>';
+    }).join('');
+
+    filterCount.textContent = filtered.length + ' milestone' + (filtered.length === 1 ? '' : 's') + ' shown';
+  }
+
+  statusFilter.addEventListener('change', renderRows);
   renderRows();
 
-  // Charting Logic
-  (function() {
-    const bars = document.getElementById('bars');
-    const maxVal = Math.max(...monthlyData.map(d => Math.max(d.value||0, d.forecast_val||0, 1)));
-    
-    monthlyData.filter(d => d.month !== 'YTD').forEach(d => {
-      const col = document.createElement('div'); col.className = 'bar-col';
-      const wrap = document.createElement('div'); wrap.className = 'bar-wrap';
-      const pair = document.createElement('div'); pair.className = 'bar-pair';
+  var bars   = document.getElementById('bars');
+  var maxVal = 1;
+  monthlyData.forEach(function(d) {
+    if (d.month === 'YTD') return;
+    var actualVal   = d.is_forecast ? null : (d.value || null);
+    var forecastVal = (d.forecast_val !== null && d.forecast_val !== undefined) ? d.forecast_val : null;
+    if (actualVal   !== null && actualVal   > maxVal) maxVal = actualVal;
+    if (forecastVal !== null && forecastVal > maxVal) maxVal = forecastVal;
+  });
+  monthlyData.forEach(function(d) {
+    if (d.month === 'YTD') return;
+    var actualVal   = d.is_forecast ? null : (d.value || null);
+    var forecastVal = (d.forecast_val !== null && d.forecast_val !== undefined) ? d.forecast_val : null;
+    var col  = document.createElement('div'); col.className  = 'bar-col';
+    var wrap = document.createElement('div'); wrap.className = 'bar-wrap';
+    var pair = document.createElement('div'); pair.className = 'bar-pair';
 
-      if (d.value) {
-        const bar = document.createElement('div'); bar.className = 'bar-mini';
-        bar.style.height = (d.value/maxVal * 100) + '%';
-        bar.style.background = 'var(--accent)';
-        bar.innerHTML = `<span>$${Math.round(d.value/1000)}k</span>`;
-        pair.appendChild(bar);
-      }
-
-      if (d.forecast_val) {
-        const dot = document.createElement('div');
-        dot.className = 'forecast-dot';
-        dot.style.bottom = (d.forecast_val/maxVal * 100) + '%';
-        pair.appendChild(dot);
-      }
-      
-      wrap.appendChild(pair);
-      col.innerHTML = `<div class="bar-label">${d.month}</div>`;
-      col.prepend(wrap);
-      bars.appendChild(col);
-    });
-  })();
+    if (actualVal !== null) {
+      var actual = document.createElement('div'); actual.className = 'bar-mini';
+      actual.style.height     = Math.max((actualVal / maxVal) * 100, 1) + '%';
+      actual.style.background = 'linear-gradient(180deg,rgba(37,99,235,0.92),rgba(124,58,237,0.92))';
+      actual.style.boxShadow  = '0 10px 20px rgba(37,99,235,0.14)';
+      actual.innerHTML = '<span>' + (d.valueLabel || '$' + Math.round(actualVal).toLocaleString()) + '</span>';
+      actual.title = d.month + ' actual';
+      pair.appendChild(actual);
+    }
+    if (forecastVal !== null) {
+      var forecast = document.createElement('div'); forecast.className = 'bar-mini';
+      forecast.style.height     = Math.max((forecastVal / maxVal) * 100, 1) + '%';
+      forecast.style.background = 'linear-gradient(180deg,rgba(156,163,175,0.8),rgba(107,114,128,0.8))';
+      forecast.style.boxShadow  = 'none';
+      forecast.innerHTML = '<span>$' + Math.round(forecastVal).toLocaleString() + '</span>';
+      forecast.title = d.month + ' planned spend';
+      pair.appendChild(forecast);
+    }
+    wrap.appendChild(pair);
+    var label = document.createElement('div'); label.className = 'bar-label';
+    label.textContent = d.month;
+    col.appendChild(wrap); col.appendChild(label);
+    bars.appendChild(col);
+  });
 </script>
 
 <script>/*! For license information please see html2pdf.bundle.min.js.LICENSE.txt */
@@ -383,13 +697,216 @@
 
 <script>
 function exportPDF() {
-  // Shared PDF Export Logic
-  const win = window.open('','_blank','width=1200,height=900');
-  const now = new Date().toLocaleString();
-  const html = `<html><body style="font-family:sans-serif;"><h1>Executive Summary - April 2026</h1><p>Generated: ${now}</p>... (Simplified for space, uses current logic)</body></html>`;
-  win.document.write(html);
-  win.print();
+  var month    = "April 2026";
+  var award    = "OT2OD036464";
+  var filename = 'PPSC_Executive_Summary_' + month.replace(/\s+/g,'_') + '.pdf';
+
+  var fmtUsd = function(v) {
+    return new Intl.NumberFormat('en-US',{style:'currency',currency:'USD',maximumFractionDigits:0}).format(v);
+  };
+  var fmtShort = function(v) {
+    var av = Math.abs(v), sign = v < 0 ? '-' : '';
+    if (av >= 1000000) return sign+'$'+(av/1000000).toFixed(1)+'M';
+    if (av >= 1000)    return sign+'$'+(av/1000).toFixed(0)+'k';
+    return sign+'$'+av.toFixed(0);
+  };
+
+  var atRisk       = milestones.filter(function(m){ return m.status==='At Risk'; });
+  var onWatch      = milestones.filter(function(m){ return m.status==='Watch'; });
+  var onPaceList   = milestones.filter(function(m){ return m.burn_rate_status==='On Pace'; });
+  var aheadList    = milestones.filter(function(m){ return m.burn_rate_status==='Ahead'; });
+  var behindList   = milestones.filter(function(m){ return m.burn_rate_status==='Behind'; });
+  var totalOverrun = milestones.reduce(function(s,m){ return s+Math.max(m.projected_overrun,0); },0);
+  var estBal       = milestones.reduce(function(s,m){ return s+(m.est_balance||0); },0);
+  var ytdTotal     = milestones.reduce(function(s,m){ return s+(m.ytd_actual||0); },0);
+  var monthTotal   = milestones.reduce(function(s,m){ return s+(m.monthly_spend||0); },0);
+  var budgetTotal  = milestones.reduce(function(s,m){ return s+(m.budget||0); },0);
+  var balColor     = estBal < 0 ? '#dc2626' : '#059669';
+
+  var riskScore = function(m) {
+    return Math.abs(m.projected_overrun)/Math.max(m.budget,1)*50
+      + (m.burn_rate_status==='Ahead'?30:0)
+      + (m.status==='At Risk'?20:0);
+  };
+
+  var watchlist = milestones.slice()
+    .filter(function(m){ return !m.exception_note; })
+    .sort(function(a,b){ return riskScore(b)-riskScore(a); })
+    .slice(0,8);
+
+  var tableRows = watchlist.map(function(m) {
+    var rowBg    = m.status==='At Risk'?'#fff5f5':m.status==='Watch'?'#fffbeb':'#ffffff';
+    var varColor = m.projected_overrun>0?'#dc2626':'#059669';
+    var varArrow = m.projected_overrun>0?'▲':'▼';
+    var sColor   = m.status==='At Risk'?'#dc2626':m.status==='Watch'?'#92400e':'#059669';
+    return '<tr style="background:'+rowBg+';page-break-inside:avoid;">'
+      +'<td style="font-weight:600">'+m.title+'</td>'
+      +'<td style="color:'+sColor+';font-weight:700">'+m.status+'</td>'
+      +'<td>'+fmtUsd(m.budget)+'</td>'
+      +'<td>'+fmtUsd(m.ytd_actual)+'</td>'
+      +'<td style="color:'+varColor+';font-weight:600">'+varArrow+' '+fmtShort(Math.abs(m.projected_overrun))+'</td>'
+      +'<td style="font-size:8px;color:#51627d;max-width:180px;">'+(m.exception_note||'—')+'</td>'
+      +'</tr>';
+  }).join('');
+
+  var findings = [];
+  findings.push(estBal<0
+    ? '⚠️ Portfolio balance is <b>negative ('+fmtUsd(estBal)+')</b> — budget review required.'
+    : '✅ Portfolio is on budget (<b>'+fmtUsd(estBal)+'</b> variance). Balance is tight — monitor closely.');
+  atRisk.slice(0,4).forEach(function(m) {
+    var pct  = m.budget>0?Math.round(Math.abs(m.projected_overrun)/m.budget*100):0;
+    var note = m.exception_note ? ' — '+m.exception_note : '';
+    findings.push('⚠️ <b>'+m.title+' ('+fmtShort(Math.abs(m.projected_overrun))+' overrun, '+pct+'%)</b>'+note+'. Action: Revised spend plan due by end of next month.');
+  });
+  onWatch.slice(0,2).forEach(function(m) {
+    findings.push('👁 <b>'+m.title+'</b>: balance tightening ('+fmtUsd(m.est_balance)+' remaining). Monitor next month actuals.');
+  });
+  milestones.filter(function(m){ return m.exception_note; }).forEach(function(m) {
+    findings.push('ⓘ <b>'+m.title+'</b>: '+m.exception_note);
+  });
+
+  var now = new Date().toLocaleString('en-US',{month:'long',day:'numeric',year:'numeric',hour:'2-digit',minute:'2-digit'});
+
+  var kpiCells = [
+    ['Award Budget',  fmtUsd(budgetTotal), '#10203a'],
+    ['Monthly Spend', fmtUsd(monthTotal),  '#10203a'],
+    ['YTD Spend',     fmtUsd(ytdTotal),    '#10203a'],
+    ['Est. Balance',  fmtUsd(estBal),      balColor],
+  ].map(function(x,i) {
+    return (i>0?'<td style="width:10px"></td>':'')
+      +'<td class="kpi"><div class="kpi-lbl">'+x[0]+'</div>'
+      +'<div class="kpi-val" style="color:'+x[2]+'">'+x[1]+'</div></td>';
+  }).join('');
+
+  var paceSummary = [
+    ['On Pace', onPaceList.length,  '#059669','#f0fdf4'],
+    ['Ahead',   aheadList.length,   '#d97706','#fffbeb'],
+    ['Behind',  behindList.length,  '#2563eb','#eff6ff'],
+    ['At Risk', atRisk.length,      '#dc2626','#fff5f5'],
+  ].map(function(x,i) {
+    return (i>0?'<td style="width:6px"></td>':'')
+      +'<td style="background:'+x[3]+';border-radius:6px;padding:6px;text-align:center;">'
+      +'<div style="font-size:16px;font-weight:800;color:'+x[2]+'">'+x[1]+'</div>'
+      +'<div style="font-size:7px;text-transform:uppercase;color:'+x[2]+';margin-top:1px;">'+x[0]+'</div>'
+      +'</td>';
+  }).join('');
+
+  var findingsHtml = findings.map(function(f){ return '<div class="finding">'+f+'</div>'; }).join('');
+
+  var html = '<!DOCTYPE html><html><head><meta charset="UTF-8"><style>'
+    +'@page{size:landscape;margin:0.55in 0.5in 0.45in 0.5in;}'
+    +'*{box-sizing:border-box;margin:0;padding:0;-webkit-print-color-adjust:exact;print-color-adjust:exact;}'
+    +'body{font-family:Arial,sans-serif;font-size:9.5px;color:#10203a;background:white;}'
+    +'table{border-collapse:collapse;width:100%;}td,th{vertical-align:top;}'
+    +'.hdr{background:linear-gradient(135deg,#2563eb,#7c3aed)!important;color:white!important;border-radius:7px;padding:10px 16px;margin-bottom:10px;}'
+    +'.hdr-title{font-size:16px;font-weight:800;}'
+    +'.hdr-sub{font-size:9px;opacity:0.85;margin-top:3px;}'
+    +'.kpi{border:1px solid #e2e8f0;border-radius:7px;padding:8px 12px;text-align:center;}'
+    +'.kpi-lbl{font-size:7.5px;text-transform:uppercase;color:#51627d;letter-spacing:.05em;}'
+    +'.kpi-val{font-size:14px;font-weight:800;margin-top:3px;}'
+    +'.sec-label{font-size:10px;font-weight:700;padding-bottom:5px;color:#10203a;}'
+    +'.ms-table th{background:#f6f8fc!important;padding:5px 8px;font-size:8px;text-transform:uppercase;color:#51627d;border-bottom:1px solid #e2e8f0;text-align:left;}'
+    +'.ms-table td{padding:5px 8px;border-bottom:1px solid #f1f5f9;font-size:8.5px;line-height:1.4;}'
+    +'.finding{font-size:9px;line-height:1.55;padding:4px 0;border-bottom:1px solid #f1f5f9;}'
+    +'.notes{font-size:8px;color:#51627d;line-height:1.7;}'
+    +'.footer{font-size:8px;color:#94a3b8;text-align:center;border-top:1px solid #f1f5f9;padding-top:6px;margin-top:9px;}'
+    +'</style></head><body>'
+    +'<table style="margin-bottom:10px;"><tr><td class="hdr">'
+    +'<div class="hdr-title">PPSC Financial Executive Summary</div>'
+    +'<div class="hdr-sub">'+month+' &nbsp;·&nbsp; Award '+award+' &nbsp;·&nbsp; '+now+'</div>'
+    +'</td></tr></table>'
+    +'<table style="margin-bottom:12px;table-layout:fixed;"><tr>'+kpiCells+'</tr></table>'
+    +'<table style="table-layout:fixed;margin-bottom:0;"><tr valign="top">'
+    +'<td style="width:62%">'
+    +'<div class="sec-label">Milestone Risk Ranking <span style="font-weight:400;color:#51627d;font-size:8px;">(top 8, exceptions excluded)</span></div>'
+    +'<table class="ms-table" style="margin-top:4px;"><thead><tr>'
+    +'<th style="width:24%">Milestone</th><th style="width:9%">Status</th>'
+    +'<th style="width:13%">Budget</th><th style="width:13%">YTD Actual</th>'
+    +'<th style="width:12%">Overrun</th><th style="width:29%">Narrative</th>'
+    +'</tr></thead><tbody>'+tableRows+'</tbody></table>'
+    +'</td>'
+    +'<td style="width:14px"></td>'
+    +'<td style="width:37%">'
+    +'<div class="sec-label" style="margin-bottom:6px;">Portfolio Pace Summary</div>'
+    +'<table style="margin-bottom:10px;table-layout:fixed;width:100%;"><tr>'+paceSummary+'</tr></table>'
+    +'<div style="padding:5px 8px;border-radius:6px;text-align:center;margin-bottom:7px;'
+    +'background:'+(totalOverrun>0?'#fff5f5':'#f0fdf4')+';color:'+(totalOverrun>0?'#dc2626':'#059669')+';"> '
+    +'<div style="font-size:7px;text-transform:uppercase;letter-spacing:.05em;">Total Projected Overrun</div>'
+    +'<div style="font-size:13px;font-weight:800;margin-top:2px;">'+(totalOverrun>0?fmtUsd(totalOverrun):'None')+'</div>'
+    +'</div>'
+    +'<div class="sec-label" style="margin-bottom:5px;">Key Findings &amp; Actions</div>'
+    +findingsHtml
+    +'<div class="notes" style="margin-top:8px;padding:7px 9px;border:1px solid #e2e8f0;border-radius:7px;">'
+    +'<b style="color:#10203a;">Budget Status</b><br>'
+    +'On Track = projected within budget &nbsp;·&nbsp; Watch = balance tightening &nbsp;·&nbsp; At Risk = ahead of plan<br>'
+    +'<b style="color:#10203a;margin-top:4px;display:block;">Pace Threshold</b>'
+    +'Ahead = avg monthly &gt;150% of 1/12 budget &nbsp;·&nbsp; On Pace = 80–150% &nbsp;·&nbsp; Behind &lt;80%<br>'
+    +'<b style="color:#10203a;margin-top:4px;display:block;">Projected Overrun</b>'
+    +'Est. total spend minus award budget'
+    +'</div>'
+    +'</td></tr></table>'
+    +'<div class="footer">PPSC Financial Automation &nbsp;·&nbsp; '+month+' &nbsp;·&nbsp; Award '+award+' &nbsp;·&nbsp; '+now+'</div>'
+    +'<script>window.onload=function(){setTimeout(function(){window.print();window.onafterprint=function(){window.close();};},300);};<\/script>'
+    +'</body></html>';
+
+  var win = window.open('','_blank','width=1200,height=900');
+  if (!win) {
+    alert('Pop-up blocked! Click the pop-up icon in your address bar, choose "Always allow", then try again.');
+    return;
+  }
+  win.document.open(); win.document.write(html); win.document.close();
 }
+</script>
+
+<script>
+(async function() {
+  var body         = document.body;
+  var currentFile  = body.dataset.currentFile;
+  var manifestPath = "https://hoangay-ops.github.io/ppsc-dashboard/archive/months.json";
+  var baseUrl      = "https://hoangay-ops.github.io/ppsc-dashboard/";
+  var archiveUrl   = "https://hoangay-ops.github.io/ppsc-dashboard/archive/";
+  var months = [];
+  try {
+    var res = await fetch(manifestPath, {cache:"no-store"});
+    months  = await res.json();
+  } catch(e) { console.warn("Could not load archive manifest:", e); }
+  var cf  = currentFile.replace("archive/","");
+  var idx = months.findIndex(function(x){ return x.file === cf; });
+  var prev = idx > 0                           ? months[idx-1] : null;
+  var next = idx >= 0 && idx < months.length-1 ? months[idx+1] : null;
+  var nav  = document.getElementById("siteNav");
+  if (!nav) return;
+  nav.innerHTML =
+    '<div style="display:flex;gap:6px;align-items:center;flex-wrap:wrap;">'
+    +'<a href="'+baseUrl+'" style="text-decoration:none;padding:8px;border-radius:6px;border:1px solid #cbd5e1;background:#fff;font-size:12px;">Latest</a>'
+    +'<a href="'+archiveUrl+'" style="text-decoration:none;padding:8px;border-radius:6px;border:1px solid #cbd5e1;background:#fff;font-size:12px;">Archive</a>'
+    +(prev?'<a href="'+archiveUrl+prev.file+'" style="text-decoration:none;padding:8px;border-radius:6px;border:1px solid #cbd5e1;background:#fff;font-size:12px;">← Previous</a>':'')
+    +(next?'<a href="'+archiveUrl+next.file+'" style="text-decoration:none;padding:8px;border-radius:6px;border:1px solid #cbd5e1;background:#fff;font-size:12px;">Next →</a>':'')
+    +'</div>';
+})();
+</script>
+
+<script>
+document.addEventListener('click', function(e) {
+  var target = e.target;
+  if (target.tagName !== 'TH') return;
+  var table = target.closest('table.sortable');
+  if (!table) return;
+  var index = Array.prototype.indexOf.call(target.parentNode.children, target);
+  var tbody = table.querySelector('tbody') || table;
+  var rows  = Array.prototype.slice.call(tbody.querySelectorAll('tr'));
+  if (tbody.tagName === 'TABLE') rows.shift();
+  var ascending = table.dataset.sortOrder !== 'asc';
+  rows.sort(function(a, b) {
+    var cellA = (a.children[index] ? a.children[index].innerText : "").replace(/[%$,]/g, '');
+    var cellB = (b.children[index] ? b.children[index].innerText : "").replace(/[%$,]/g, '');
+    var valA  = isNaN(parseFloat(cellA)) ? cellA.toLowerCase() : parseFloat(cellA);
+    var valB  = isNaN(parseFloat(cellB)) ? cellB.toLowerCase() : parseFloat(cellB);
+    return (valA < valB ? -1 : 1) * (ascending ? 1 : -1);
+  });
+  table.dataset.sortOrder = ascending ? 'asc' : 'desc';
+  rows.forEach(function(row) { tbody.appendChild(row); });
+});
 </script>
 </body>
 </html>
