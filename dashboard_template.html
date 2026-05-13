@@ -1,0 +1,766 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>PPSC Monthly Dashboard</title>
+  <style>
+    :root {
+      --text: #10203a; --muted: #51627d; --accent: #2563eb;
+      --good: #059669; --warn: #d97706; --risk: #dc2626;
+      --shadow: 0 18px 40px rgba(15,23,42,0.10); --radius: 22px;
+    }
+    * { box-sizing: border-box; }
+
+    .health-matrix {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+      gap: 12px;
+      margin-top: 10px;
+    }
+    .matrix-tile {
+      padding: 12px;
+      border-radius: 14px;
+      text-align: center;
+      border: 1px solid rgba(0,0,0,0.05);
+      transition: transform 0.2s;
+    }
+    .matrix-tile:hover { transform: translateY(-2px); }
+    .matrix-tile.risk { background: #fee2e2; color: #991b1b; }
+    .matrix-tile.warn { background: #fef9c3; color: #854d0e; }
+    .matrix-tile.good { background: #dcfce7; color: #166534; }
+    .tile-id   { font-size: 11px; font-weight: 800; opacity: 0.8; }
+    .tile-name { font-size: 12px; font-weight: 600; display: block; margin: 4px 0;
+                 white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    .tile-val  { font-size: 13px; font-weight: 700; }
+
+    .progress-container {
+      width: 100%; height: 8px; background: #e2e8f0;
+      border-radius: 4px; margin: 8px 0; position: relative;
+    }
+    .progress-fill   { height: 100%; background: var(--accent); border-radius: 4px; }
+    .progress-marker {
+      position: absolute; top: -4px; width: 2px; height: 16px;
+      background: #ef4444; z-index: 10;
+    }
+
+    .decision-box {
+      background: #f1f5f9; border-radius: 12px;
+      padding: 16px; margin-top: 12px;
+    }
+
+    body {
+      margin: 0;
+      font-family: Inter, ui-sans-serif, system-ui, -apple-system, sans-serif;
+      color: var(--text);
+      background:
+        radial-gradient(circle at top left, rgba(59,130,246,0.10), transparent 28%),
+        radial-gradient(circle at top right, rgba(168,85,247,0.08), transparent 26%),
+        linear-gradient(180deg, #ffffff 0%, #f6f8fc 52%, #eef3fb 100%);
+      min-height: 100vh;
+    }
+    .wrap { max-width: 1300px; margin: 0 auto; padding: 14px; }
+
+    .header-bar { display:flex; justify-content:flex-end; align-items:center; margin-bottom:12px; padding:0 10px; }
+    .header-actions { display:flex; gap:10px; align-items:center; flex-wrap:wrap; }
+    .header-actions a, .header-actions button {
+      font-size:12px; line-height:1; padding:8px 12px; border-radius:6px; text-decoration:none;
+    }
+    #exportBtn { border:1px solid #cbd5e1; background:#2563eb; color:#fff; cursor:pointer; }
+    #exportBtn:hover { background:#1d4ed8; }
+
+    .hero, .panel, .card {
+      background: linear-gradient(180deg, rgba(255,255,255,0.96), rgba(248,250,252,0.98));
+      border: 1px solid rgba(15,23,42,0.10);
+      box-shadow: var(--shadow); border-radius: var(--radius); backdrop-filter: blur(14px);
+    }
+    .hero { display:grid; grid-template-columns:1.8fr 1fr; gap:18px; margin-bottom:18px; padding:26px; }
+    .eyebrow {
+      display:inline-flex; gap:8px; align-items:center; padding:8px 12px; border-radius:999px;
+      background:rgba(37,99,235,0.08); color:#1d4ed8; font-size:12px;
+      letter-spacing:0.08em; text-transform:uppercase; margin-bottom:14px;
+    }
+    h1 { margin:0; font-size:clamp(16px,2vw,22px); line-height:1.15; }
+    .subtitle { margin-top:10px; color:var(--muted); max-width:900px; font-size:15px; line-height:1.6; }
+    .meta { margin-top:18px; display:flex; flex-wrap:wrap; gap:10px; color:#51627d; font-size:13px; }
+    .meta span { padding:8px 12px; border-radius:999px; background:rgba(15,23,42,0.04); border:1px solid rgba(15,23,42,0.08); }
+    .hero-side { display:grid; gap:12px; align-content:start; }
+    .mini-title { font-weight:700; font-size:14px; color:#10203a; margin-bottom:6px; }
+    .mini-copy  { color:var(--muted); font-size:13px; line-height:1.5; }
+
+    .tension-box {
+      background: linear-gradient(135deg, rgba(37,99,235,0.06), rgba(124,58,237,0.06));
+      border: 1px solid rgba(37,99,235,0.18); border-radius: 14px;
+      padding: 14px 18px; margin-bottom: 18px;
+      display: flex; align-items: flex-start; gap: 14px;
+    }
+    .tension-icon  { font-size: 24px; flex: none; margin-top: 2px; }
+    .tension-label { font-size:11px; font-weight:700; color:#1d4ed8; text-transform:uppercase; letter-spacing:.08em; margin-bottom:4px; }
+    .tension-text  { font-size:14px; color:#10203a; line-height:1.6; }
+
+    .kpis { display:grid; grid-template-columns:repeat(4,1fr); gap:14px; margin:18px 0; }
+    .card { padding:18px; min-height:110px; }
+    .label { color:var(--muted); font-size:12px; text-transform:uppercase; letter-spacing:.08em; }
+    .value { font-size:clamp(14px,1.6vw,20px); font-weight:800; margin-top:8px; }
+    .delta { margin-top:8px; font-size:13px; color:var(--muted); }
+    .kpi-bar-wrap { height:4px; background:rgba(15,23,42,0.10); border-radius:2px; margin-top:8px; }
+    .kpi-bar      { height:4px; border-radius:2px; background:var(--accent); }
+
+    .health-grid { display:grid; grid-template-columns:repeat(4,1fr); gap:14px; margin-top:12px; }
+
+    .grid    { display:grid; grid-template-columns:1.35fr 1fr; gap:18px; margin-bottom:18px; }
+    .two-col { display:grid; grid-template-columns:1fr 1fr; gap:18px; margin-bottom:18px; }
+    .panel    { padding:20px; }
+    .panel h2 { margin:0 0 8px; font-size:18px; }
+    .panel p.note { margin:0 0 16px; color:var(--muted); font-size:13px; line-height:1.5; }
+
+    .status-row  { display:grid; grid-template-columns:repeat(3,1fr); gap:10px; margin-top:10px; }
+    .status-chip { border-radius:16px; padding:14px; background:rgba(15,23,42,0.03); border:1px solid rgba(15,23,42,0.08); }
+    .status-chip .num { font-size:18px; font-weight:800; margin-top:4px; }
+    .status-chip .txt { color:var(--muted); font-size:12px; text-transform:uppercase; letter-spacing:.06em; }
+    .status-good .num    { color:var(--good); }
+    .status-warn .num    { color:#b45309; }
+    .status-watch        { background:#fefce8; border:1px solid #fde68a; }
+    .status-watch .num   { color:#92400e; }
+    .status-watch .txt   { color:#92400e; }
+    .status-risk .num    { color:var(--risk); }
+    .status-neutral .num { color:var(--accent); }
+
+    table { width:100%; border-collapse:collapse; margin-top:8px; }
+    thead th {
+      text-align:left; font-size:12px; color:var(--muted); padding:12px 10px;
+      border-bottom:1px solid rgba(15,23,42,0.10); text-transform:uppercase; letter-spacing:.06em;
+    }
+    tbody td { padding:12px 10px; border-bottom:1px solid rgba(15,23,42,0.06); font-size:14px; vertical-align:top; }
+    tbody tr:hover { background:rgba(37,99,235,0.03); }
+    .pill { display:inline-flex; align-items:center; padding:6px 10px; border-radius:999px; font-size:12px; font-weight:700; }
+    .pill.good     { background:rgba(5,150,105,0.10);  color:#047857; }
+    .pill.warn     { background:rgba(217,119,6,0.10);  color:#b45309; }
+    .pill.watch    { background:rgba(217,119,6,0.10);  color:#b45309; }
+    .pill.risk     { background:rgba(220,38,38,0.10);  color:#b91c1c; }
+    .pill.neutral  { background:rgba(37,99,235,0.10);  color:#1d4ed8; }
+    .pill.complete { background:rgba(37,99,235,0.10);  color:#1d4ed8; }
+
+    .bullets { display:grid; gap:10px; margin-top:10px; }
+    .bullet  { display:flex; gap:12px; padding:12px; border-radius:16px; background:rgba(15,23,42,0.03); border:1px solid rgba(15,23,42,0.07); color:#10203a; font-size:14px; line-height:1.5; }
+    .dot { width:10px; height:10px; border-radius:50%; margin-top:7px; flex:none; background:var(--accent); box-shadow:0 0 0 5px rgba(37,99,235,0.10); }
+    .dot.risk { background:var(--risk); box-shadow:0 0 0 5px rgba(220,38,38,0.10); }
+    .dot.warn { background:var(--warn); box-shadow:0 0 0 5px rgba(217,119,6,0.10); }
+    .dot.good { background:var(--good); box-shadow:0 0 0 5px rgba(5,150,105,0.10); }
+
+    .footer { color:var(--muted); font-size:12px; margin-top:12px; line-height:1.5; }
+
+    .filter-row { display:flex; gap:12px; flex-wrap:wrap; margin:8px 0 14px; align-items:center; }
+    .filter-row label  { font-size:13px; color:var(--muted); font-weight:600; }
+    .filter-row select { padding:10px 12px; border-radius:12px; border:1px solid rgba(15,23,42,0.14); background:#fff; color:#10203a; font:inherit; }
+
+    .bars { display:grid; grid-template-columns:repeat(10,1fr); gap:10px; align-items:end; height:340px; padding-top:14px; }
+    .bar-col  { display:flex; flex-direction:column; align-items:center; gap:8px; height:100%; justify-content:end; }
+    .bar-wrap { width:100%; height:100%; display:flex; align-items:end; justify-content:center; padding-bottom:4px; }
+    .bar { width:72%; min-width:28px; border-radius:16px 16px 8px 8px;
+           background:linear-gradient(180deg,rgba(37,99,235,0.92),rgba(124,58,237,0.92));
+           box-shadow:0 10px 20px rgba(37,99,235,0.14); position:relative;
+           display:flex; align-items:flex-end; justify-content:center; }
+    .bar span { position:absolute; top:-22px; font-size:11px; color:#1d4ed8; white-space:nowrap; }
+    .bar-label { font-size:12px; color:#51627d; text-align:center; line-height:1.2; }
+    .bar-pair { width:100%; height:100%; display:flex; align-items:end; justify-content:center; gap:6px; padding-bottom:4px; }
+    .bar-mini { width:42%; min-width:12px; border-radius:12px 12px 6px 6px; position:relative; display:flex; align-items:flex-end; justify-content:center; }
+    .bar-mini span { position:absolute; top:-22px; font-size:10px; color:#51627d; white-space:nowrap; }
+
+    @media (max-width:1100px) {
+      .hero, .grid, .two-col { grid-template-columns:1fr; }
+      .kpis, .health-grid { grid-template-columns:repeat(2,1fr); }
+      .status-row { grid-template-columns:repeat(2,1fr); }
+      .bars { grid-template-columns:repeat(5,1fr); height:420px; }
+    }
+    @media (max-width:700px) {
+      .wrap { padding:16px; }
+      .kpis, .status-row, .health-grid { grid-template-columns:1fr; }
+      .bars { grid-template-columns:repeat(2,1fr); height:auto; }
+      .bar-col { min-height:170px; }
+    }
+    @media print {
+      body { background:white !important; }
+      .panel { box-shadow:none !important; border:1px solid #ddd !important; }
+      #exportBtn, button { display:none !important; }
+    }
+    table.sortable th { cursor: pointer; position: relative; padding-right: 20px; }
+    table.sortable th:after {
+      content: ' \2195';
+      position: absolute;
+      right: 5px;
+      opacity: 0.3;
+      font-size: 0.8em;
+    }.forecast-dot {
+  width: 10px;
+  height: 10px;
+  background: #d97706; /* High-contrast Orange */
+  border-radius: 50%;
+  position: absolute;
+  left: 50%;
+  transform: translate(-50%, 50%); /* Centers the dot on the height value */
+  z-index: 10;
+  border: 2px solid #fff;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+}
+  </style>
+</head>
+<body data-current-file="__CURRENT_FILE__">
+<div id="dashboardContent">
+  <div class="wrap">
+    <div id="execSummary">
+
+      <div class="header-bar">
+        <div class="header-actions">
+          <div id="siteNav"></div>
+          <button id="exportBtn" onclick="exportPDF()">Export to PDF</button>
+        </div>
+      </div>
+
+      <section class="hero">
+        <div>
+          <div class="eyebrow">PPSC / __MONTH__ Dashboard</div>
+          <h1>__TITLE__</h1>
+          <div class="subtitle">__SUBTITLE__</div>
+          <div class="meta">
+            <span>Report period: __MONTH__</span>
+            <span>Award: __AWARD__</span>
+            <span>Milestones __MILESTONE_SPAN__</span>
+          </div>
+        </div>
+        <div class="hero-side">
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;">
+            <div style="background:rgba(37,99,235,0.06);border:1px solid rgba(37,99,235,0.14);border-radius:14px;padding:12px 14px;">
+              <div class="label">Award budget</div>
+              <div style="font-size:18px;font-weight:800;margin-top:4px;">__AWARD_BUDGET__</div>
+            </div>
+            <div style="background:rgba(37,99,235,0.06);border:1px solid rgba(37,99,235,0.14);border-radius:14px;padding:12px 14px;">
+              <div class="label">YTD spent</div>
+              <div style="font-size:18px;font-weight:800;margin-top:4px;">__YTD_SPEND_TOTAL__</div>
+            </div>
+            <div style="background:rgba(37,99,235,0.06);border:1px solid rgba(37,99,235,0.14);border-radius:14px;padding:12px 14px;">
+              <div class="label">Est. balance</div>
+              <div style="font-size:18px;font-weight:800;margin-top:4px;color:__BALANCE_COLOR__;">__PORTFOLIO_BALANCE__</div>
+            </div>
+            <div style="background:rgba(37,99,235,0.06);border:1px solid rgba(37,99,235,0.14);border-radius:14px;padding:12px 14px;">
+              <div class="label">This month</div>
+              <div style="font-size:18px;font-weight:800;margin-top:4px;">__MONTHLY_SPEND__</div>
+            </div>
+          </div>
+          <div style="margin-top:10px;font-size:12px;color:var(--muted);line-height:1.6;">
+            __BUDGET_USED_PCT__% of budget used · __YEAR_ELAPSED_PCT__% of year elapsed
+          </div>
+        </div>
+      </section>
+
+      <div class="tension-box">
+        <div class="tension-icon">📊</div>
+        <div>
+          <div class="tension-label">Executive Insight</div>
+          <div class="tension-text">__AT_A_GLANCE__</div>
+        </div>
+      </div>
+
+      <section class="kpis">
+        <div class="card">
+          <div class="label">Budget Utilization</div>
+          <div class="value" id="budgetUtilVal">__BUDGET_USED_PCT__%</div>
+          <div class="progress-container">
+            <div class="progress-fill" id="budgetFill"></div>
+            <div class="progress-marker" id="yearMarker" title="Year elapsed"></div>
+          </div>
+          <div class="delta">__YEAR_ELAPSED_PCT__% of year elapsed · __BUDGET_PACE_GAP__pp gap</div>
+        </div>
+        <div class="card">
+          <div class="label">Monthly Spend</div>
+          <div class="value">__MONTHLY_SPEND__ <span style="font-size:13px;color:__TREND_COLOR__;font-weight:600;">__TREND_ARROW__ __TREND_PCT__%</span></div>
+          <div class="delta">__TREND_TEXT__</div>
+        </div>
+        <div class="card">
+          <div class="label">Milestone Flags</div>
+          <div class="value">__FLAGGED_COUNT__ flagged</div>
+          <div class="delta">__FLAGGED_SUMMARY__</div>
+        </div>
+        <div class="card">
+          <div class="label">Portfolio Balance</div>
+          <div class="value" id="balanceVal">__PORTFOLIO_BALANCE__</div>
+          <div class="delta">Estimated end-of-year balance</div>
+        </div>
+      </section>
+
+      <section class="panel" style="margin-bottom:18px;">
+        <h2>Portfolio Health</h2>
+        <p class="note">How milestones track against their monthly spend allowance — only true outliers flag red.</p>
+        <div class="health-grid" id="healthCards"></div>
+      </section>
+
+      <section class="grid">
+        <div class="panel">
+          <h2>Monthly Spend Trend</h2>
+          <p class="note">__TREND_NOTE__</p>
+          <div style="display:flex;gap:16px;margin-bottom:8px;font-size:12px;color:#51627d;">
+            <span style="display:flex;align-items:center;gap:4px;"><span style="width:10px;height:10px;border-radius:2px;background:#2563eb;display:inline-block;"></span>Actual</span>
+            <span style="display:flex;align-items:center;gap:4px;"><span style="width:10px;height:10px;border-radius:2px;background:#9ca3af;display:inline-block;"></span>Prior forecast</span>
+          </div>
+<div class="bars" id="bars"></div>
+          <div class="footer">__TREND_FOOTER__</div>
+        </div>
+        <div class="panel">
+          <h2>Status Mix</h2>
+          <p class="note">__STATUS_NOTE__</p>
+          <div class="status-row">
+            <div class="status-chip status-good"><div class="txt">On Track</div><div class="num">__COUNT_ON_TRACK__</div></div>
+            <div class="status-chip status-watch"><div class="txt">Watch</div><div class="num">__COUNT_AWAITING__</div></div>
+            <div class="status-chip status-risk"><div class="txt">At Risk</div><div class="num">__COUNT_AT_RISK__</div></div>
+          </div>
+          <h2 style="margin-top:18px;">Priority Watchlist</h2>
+          <div class="bullets">__WATCHLIST_HTML__</div>
+        </div>
+      </section>
+
+      <section class="panel" style="margin-bottom:18px;">
+        <h2>Milestone Budget Snapshot</h2>
+        <p class="note">Exceptions shown by default — switch to "All" to see the full portfolio.</p>
+        <div class="filter-row">
+          <label for="statusFilter">View</label>
+          <select id="statusFilter" aria-label="Filter milestones by status">
+            <option value="Exceptions">Exceptions only (At Risk / Watch)</option>
+            <option value="All">All milestones</option>
+            <option value="On Track">On Track</option>
+            <option value="Watch">Watch</option>
+            <option value="At Risk">At Risk</option>
+            <option value="Complete">Complete</option>
+          </select>
+          <div id="filterCount" style="font-size:13px;color:var(--muted);"></div>
+        </div>
+        <div style="overflow:auto;">
+          <table>
+            <thead>
+              <tr>
+                <th>Milestone</th>
+                <th>Status</th>
+                <th>Budget</th>
+                <th>YTD Actual</th>
+                <th>% Spent</th>
+                <th>Projected Overrun</th>
+                <th>Note</th>
+              </tr>
+            </thead>
+            <tbody id="milestoneRows"></tbody>
+          </table>
+        </div>
+      </section>
+
+      <section class="two-col">
+        <div class="panel">
+          <h2>Operational Highlights</h2>
+          <p class="note">Credits, spend spikes, and notable activity this period.</p>
+          <div class="bullets">__OPERATIONAL_HTML__</div>
+        </div>
+        <div class="panel">
+          <div class="decision-box">
+            <h2 style="font-size:16px;color:#1e293b;">Decisions Needed</h2>
+            <ul style="padding-left:20px;margin-top:10px;font-size:13px;line-height:1.8;color:#334155;">
+              <li>__DECISION_1__</li>
+              <li>__DECISION_2__</li>
+              <li>__DECISION_3__</li>
+            </ul>
+          </div>
+        </div>
+      </section>
+
+      <section class="two-col" style="margin-bottom:18px;">
+        <div class="panel">
+          <h2>Top 5 by Personnel</h2>
+          <table class="sortable">
+            <thead><tr><th>Milestone</th><th style="text-align:right;">Staff Count</th></tr></thead>
+            <tbody id="topPeopleRows"></tbody>
+          </table>
+        </div>
+        <div class="panel">
+          <h2>Top 5 by Total Hours</h2>
+          <table class="sortable">
+            <thead><tr><th>Milestone</th><th style="text-align:right;">Total Hours</th></tr></thead>
+            <tbody id="topHoursRows"></tbody>
+          </table>
+        </div>
+      </section>
+
+      __HOURS_PANEL__
+      __STORIES_PANEL__
+
+    </div>
+    <div class="footer">__FOOTER__</div>
+  </div>
+</div>
+
+<script>
+  const monthlyData  = __MONTHLY_DATA_JSON__;
+  const milestones   = __MILESTONES_JSON__;
+  const fmt          = new Intl.NumberFormat('en-US', {style:'currency',currency:'USD',maximumFractionDigits:0});
+  const rows         = document.getElementById('milestoneRows');
+  const statusFilter = document.getElementById('statusFilter');
+  const filterCount  = document.getElementById('filterCount');
+
+  (function() {
+    var budgetPct = parseFloat("__BUDGET_USED_PCT__") || 0;
+    var yearPct   = parseFloat("__YEAR_ELAPSED_PCT__") || 0;
+    var fill   = document.getElementById('budgetFill');
+    var marker = document.getElementById('yearMarker');
+    if (fill)   fill.style.width  = Math.min(budgetPct, 100) + '%';
+    if (marker) marker.style.left = Math.min(yearPct,   100) + '%';
+    var balEl = document.getElementById('balanceVal');
+    if (balEl) {
+      var estBal = milestones.reduce(function(s,m){ return s+(m.est_balance||0); }, 0);
+      balEl.style.color = estBal < 0 ? 'var(--risk)' : 'var(--good)';
+    }
+  })();
+
+  var healthEl    = document.getElementById('healthCards');
+  var onPaceCount = milestones.filter(function(m){ return m.burn_rate_status === 'On Pace'; }).length;
+  var aheadCount  = milestones.filter(function(m){ return m.burn_rate_status === 'Ahead'; }).length;
+  var behindCount = milestones.filter(function(m){ return m.burn_rate_status === 'Behind'; }).length;
+  var atRiskCount = milestones.filter(function(m){ return m.status === 'At Risk'; }).length;
+  var totalOverrun = milestones.reduce(function(s,m){ return s + (m.projected_overrun > 0 ? m.projected_overrun : 0); }, 0);
+
+  [
+    { label:'On Pace',             value: onPaceCount + ' of ' + milestones.length, cls:'status-good' },
+    { label:'Ahead of Plan',       value: aheadCount,                               cls:'status-warn' },
+    { label:'Behind Plan',         value: behindCount,                              cls:'status-neutral' },
+    { label:'Total Proj. Overrun', value: fmt.format(totalOverrun),                 cls: atRiskCount > 0 ? 'status-risk' : 'status-good' },
+  ].forEach(function(c) {
+    healthEl.innerHTML += '<div class="status-chip ' + c.cls + '"><div class="txt">' + c.label + '</div><div class="num">' + c.value + '</div></div>';
+  });
+
+  function toggleRow(id) {
+    var el = document.getElementById(id);
+    el.style.display = (el.style.display === 'none') ? 'table-row' : 'none';
+  }
+
+  // FIX 6 & 7: statusClass/varCls/varSign now defined; workstreams guarded
+  function renderRows() {
+    rows.innerHTML = '';
+    var sv = statusFilter.value;
+    var filtered = milestones.filter(function(m) {
+      if (sv === 'All')        return true;
+      if (sv === 'Exceptions') return m.status === 'At Risk' || m.status === 'Watch';
+      return m.status.toLowerCase() === sv.toLowerCase();
+    });
+
+    filtered.forEach(function(m) {
+      var statusClass = m.status === 'At Risk'  ? 'risk'
+                      : m.status === 'Watch'    ? 'warn'
+                      : m.status === 'Complete' ? 'neutral'
+                      : 'good';
+      var varCls  = m.projected_overrun > 0 ? 'risk' : 'good';
+      var varSign = m.projected_overrun > 0 ? '+' : '';
+
+      var tr = document.createElement('tr');
+      tr.style.cursor = 'pointer';
+      tr.onclick = function() { toggleRow('details-' + m.milestone_id); };
+      // Inside renderRows() function in dashboard_template.html
+      // Inside renderRows in dashboard_template.html
+tr.innerHTML =
+  '<td><strong>' + m.title + '</strong><br><small>👥 ' + (m.people_count || 0) + ' Staff</small></td>' +
+  '<td><span class="pill ' + statusClass + '">' + m.status + '</span></td>' +
+  '<td>' + fmt.format(m.budget) + '</td>' +
+  '<td>' + fmt.format(m.ytd_actual) + '</td>' +
+  '<td>' + (m.percent_spent || 0) + '%</td>' + 
+  '<td><span class="pill ' + varCls + '">' + varSign + fmt.format(m.projected_overrun) + '</span></td>' +
+  '<td style="font-size:12px;">' + (m.exception_note || '—') + '</td>';
+      rows.appendChild(tr);
+
+      var detailTr = document.createElement('tr');
+      detailTr.id = 'details-' + m.milestone_id;
+      detailTr.style.display = 'none';
+      detailTr.style.background = '#f9fafb';
+      var ws = Array.isArray(m.workstreams) ? m.workstreams : [];
+      var wsHtml = ws.map(function(w) {
+        return '<li>' + w.name + ': ' + fmt.format(w.val) + '</li>';
+      }).join('');
+      detailTr.innerHTML = '<td colspan="6" style="padding:15px 30px;"><strong>Workstream Breakdown:</strong><ul>' +
+        (wsHtml || '<li>No data</li>') + '</ul></td>';
+      rows.appendChild(detailTr);
+    });
+
+    // Top 5 by Personnel
+var topPeople = milestones.slice().sort(function(a,b){ 
+    return (b.people_count || 0) - (a.people_count || 0); 
+}).slice(0,5);
+
+// Top 5 by Total Hours
+var topHours = milestones.slice().sort(function(a,b){ 
+    return (b.total_hours || 0) - (a.total_hours || 0); 
+}).slice(0,5);
+
+    document.getElementById('topPeopleRows').innerHTML = topPeople.map(function(m) {
+      return '<tr><td>' + (m.title || m.milestone_id) + '</td><td style="text-align:right;">' + (m.people_count||0) + '</td></tr>';
+    }).join('');
+
+    document.getElementById('topHoursRows').innerHTML = topHours.map(function(m) {
+  return '<tr><td>' + (m.title || m.milestone_id) + '</td><td style="text-align:right;">' + (m.total_hours || 0).toLocaleString() + '</td></tr>';
+}).join('');
+
+    filterCount.textContent = filtered.length + ' milestone' + (filtered.length === 1 ? '' : 's') + ' shown';
+  }
+
+  statusFilter.addEventListener('change', renderRows);
+  renderRows();
+
+  var bars   = document.getElementById('bars');
+  var maxVal = 1;
+  
+monthlyData.forEach(function(d) {
+    if (d.month === 'YTD') return;
+    
+    var actualVal   = d.is_forecast ? null : (d.value || null);
+    var forecastVal = (d.forecast_val !== null) ? d.forecast_val : null;
+
+    var col  = document.createElement('div'); col.className  = 'bar-col';
+    var wrap = document.createElement('div'); wrap.className = 'bar-wrap';
+    var pair = document.createElement('div'); pair.className = 'bar-pair'; // Container for relative positioning
+
+    // Render Blue Bar (Actuals)
+    if (actualVal !== null) {
+      var actual = document.createElement('div'); 
+      actual.className = 'bar-mini';
+      actual.style.height = Math.max((actualVal / maxVal) * 100, 1) + '%';
+      actual.style.width = '80%'; // Make bar wider for better visibility
+      pair.appendChild(actual);
+    }
+
+    // Render Orange Dot (Prior Forecast)
+    if (forecastVal !== null && forecastVal > 0) {
+      var dot = document.createElement('div');
+      dot.className = 'forecast-dot';
+      // Set the vertical position based on the forecast value
+      dot.style.bottom = (forecastVal / maxVal * 100) + '%';
+      dot.title = 'Prior Forecast for ' + d.month + ': $' + Math.round(forecastVal).toLocaleString();
+      pair.appendChild(dot);
+    }
+
+    wrap.appendChild(pair);
+    var label = document.createElement('div'); label.className = 'bar-label';
+    label.textContent = d.month;
+    col.appendChild(wrap); col.appendChild(label);
+    bars.appendChild(col);
+});
+</script>
+
+__HTML2PDF_JS__
+
+<script>
+function exportPDF() {
+  var month    = "__MONTH__";
+  var award    = "__AWARD__";
+  var filename = 'PPSC_Executive_Summary_' + month.replace(/\s+/g,'_') + '.pdf';
+
+  var fmtUsd = function(v) {
+    return new Intl.NumberFormat('en-US',{style:'currency',currency:'USD',maximumFractionDigits:0}).format(v);
+  };
+  var fmtShort = function(v) {
+    var av = Math.abs(v), sign = v < 0 ? '-' : '';
+    if (av >= 1000000) return sign+'$'+(av/1000000).toFixed(1)+'M';
+    if (av >= 1000)    return sign+'$'+(av/1000).toFixed(0)+'k';
+    return sign+'$'+av.toFixed(0);
+  };
+
+  var atRisk       = milestones.filter(function(m){ return m.status==='At Risk'; });
+  var onWatch      = milestones.filter(function(m){ return m.status==='Watch'; });
+  var onPaceList   = milestones.filter(function(m){ return m.burn_rate_status==='On Pace'; });
+  var aheadList    = milestones.filter(function(m){ return m.burn_rate_status==='Ahead'; });
+  var behindList   = milestones.filter(function(m){ return m.burn_rate_status==='Behind'; });
+  var totalOverrun = milestones.reduce(function(s,m){ return s+Math.max(m.projected_overrun,0); },0);
+  var estBal       = milestones.reduce(function(s,m){ return s+(m.est_balance||0); },0);
+  var ytdTotal     = milestones.reduce(function(s,m){ return s+(m.ytd_actual||0); },0);
+  var monthTotal   = milestones.reduce(function(s,m){ return s+(m.monthly_spend||0); },0);
+  var budgetTotal  = milestones.reduce(function(s,m){ return s+(m.budget||0); },0);
+  var balColor     = estBal < 0 ? '#dc2626' : '#059669';
+
+  var riskScore = function(m) {
+    return Math.abs(m.projected_overrun)/Math.max(m.budget,1)*50
+      + (m.burn_rate_status==='Ahead'?30:0)
+      + (m.status==='At Risk'?20:0);
+  };
+
+  var watchlist = milestones.slice()
+    .filter(function(m){ return !m.exception_note; })
+    .sort(function(a,b){ return riskScore(b)-riskScore(a); })
+    .slice(0,8);
+
+  var tableRows = watchlist.map(function(m) {
+    var rowBg    = m.status==='At Risk'?'#fff5f5':m.status==='Watch'?'#fffbeb':'#ffffff';
+    var varColor = m.projected_overrun>0?'#dc2626':'#059669';
+    var varArrow = m.projected_overrun>0?'▲':'▼';
+    var sColor   = m.status==='At Risk'?'#dc2626':m.status==='Watch'?'#92400e':'#059669';
+    return '<tr style="background:'+rowBg+';page-break-inside:avoid;">'
+      +'<td style="font-weight:600">'+m.title+'</td>'
+      +'<td style="color:'+sColor+';font-weight:700">'+m.status+'</td>'
+      +'<td>'+fmtUsd(m.budget)+'</td>'
+      +'<td>'+fmtUsd(m.ytd_actual)+'</td>'
+      +'<td style="color:'+varColor+';font-weight:600">'+varArrow+' '+fmtShort(Math.abs(m.projected_overrun))+'</td>'
+      +'<td style="font-size:8px;color:#51627d;max-width:180px;">'+(m.exception_note||'—')+'</td>'
+      +'</tr>';
+  }).join('');
+
+  var findings = [];
+  findings.push(estBal<0
+    ? '⚠️ Portfolio balance is <b>negative ('+fmtUsd(estBal)+')</b> — budget review required.'
+    : '✅ Portfolio is on budget (<b>'+fmtUsd(estBal)+'</b> variance). Balance is tight — monitor closely.');
+  atRisk.slice(0,4).forEach(function(m) {
+    var pct  = m.budget>0?Math.round(Math.abs(m.projected_overrun)/m.budget*100):0;
+    var note = m.exception_note ? ' — '+m.exception_note : '';
+    findings.push('⚠️ <b>'+m.title+' ('+fmtShort(Math.abs(m.projected_overrun))+' overrun, '+pct+'%)</b>'+note+'. Action: Revised spend plan due by end of next month.');
+  });
+  onWatch.slice(0,2).forEach(function(m) {
+    findings.push('👁 <b>'+m.title+'</b>: balance tightening ('+fmtUsd(m.est_balance)+' remaining). Monitor next month actuals.');
+  });
+  milestones.filter(function(m){ return m.exception_note; }).forEach(function(m) {
+    findings.push('ⓘ <b>'+m.title+'</b>: '+m.exception_note);
+  });
+
+  var now = new Date().toLocaleString('en-US',{month:'long',day:'numeric',year:'numeric',hour:'2-digit',minute:'2-digit'});
+
+  var kpiCells = [
+    ['Award Budget',  fmtUsd(budgetTotal), '#10203a'],
+    ['Monthly Spend', fmtUsd(monthTotal),  '#10203a'],
+    ['YTD Spend',     fmtUsd(ytdTotal),    '#10203a'],
+    ['Est. Balance',  fmtUsd(estBal),      balColor],
+  ].map(function(x,i) {
+    return (i>0?'<td style="width:10px"></td>':'')
+      +'<td class="kpi"><div class="kpi-lbl">'+x[0]+'</div>'
+      +'<div class="kpi-val" style="color:'+x[2]+'">'+x[1]+'</div></td>';
+  }).join('');
+
+  var paceSummary = [
+    ['On Pace', onPaceList.length,  '#059669','#f0fdf4'],
+    ['Ahead',   aheadList.length,   '#d97706','#fffbeb'],
+    ['Behind',  behindList.length,  '#2563eb','#eff6ff'],
+    ['At Risk', atRisk.length,      '#dc2626','#fff5f5'],
+  ].map(function(x,i) {
+    return (i>0?'<td style="width:6px"></td>':'')
+      +'<td style="background:'+x[3]+';border-radius:6px;padding:6px;text-align:center;">'
+      +'<div style="font-size:16px;font-weight:800;color:'+x[2]+'">'+x[1]+'</div>'
+      +'<div style="font-size:7px;text-transform:uppercase;color:'+x[2]+';margin-top:1px;">'+x[0]+'</div>'
+      +'</td>';
+  }).join('');
+
+  var findingsHtml = findings.map(function(f){ return '<div class="finding">'+f+'</div>'; }).join('');
+
+  var html = '<!DOCTYPE html><html><head><meta charset="UTF-8"><style>'
+    +'@page{size:landscape;margin:0.55in 0.5in 0.45in 0.5in;}'
+    +'*{box-sizing:border-box;margin:0;padding:0;-webkit-print-color-adjust:exact;print-color-adjust:exact;}'
+    +'body{font-family:Arial,sans-serif;font-size:9.5px;color:#10203a;background:white;}'
+    +'table{border-collapse:collapse;width:100%;}td,th{vertical-align:top;}'
+    +'.hdr{background:linear-gradient(135deg,#2563eb,#7c3aed)!important;color:white!important;border-radius:7px;padding:10px 16px;margin-bottom:10px;}'
+    +'.hdr-title{font-size:16px;font-weight:800;}'
+    +'.hdr-sub{font-size:9px;opacity:0.85;margin-top:3px;}'
+    +'.kpi{border:1px solid #e2e8f0;border-radius:7px;padding:8px 12px;text-align:center;}'
+    +'.kpi-lbl{font-size:7.5px;text-transform:uppercase;color:#51627d;letter-spacing:.05em;}'
+    +'.kpi-val{font-size:14px;font-weight:800;margin-top:3px;}'
+    +'.sec-label{font-size:10px;font-weight:700;padding-bottom:5px;color:#10203a;}'
+    +'.ms-table th{background:#f6f8fc!important;padding:5px 8px;font-size:8px;text-transform:uppercase;color:#51627d;border-bottom:1px solid #e2e8f0;text-align:left;}'
+    +'.ms-table td{padding:5px 8px;border-bottom:1px solid #f1f5f9;font-size:8.5px;line-height:1.4;}'
+    +'.finding{font-size:9px;line-height:1.55;padding:4px 0;border-bottom:1px solid #f1f5f9;}'
+    +'.notes{font-size:8px;color:#51627d;line-height:1.7;}'
+    +'.footer{font-size:8px;color:#94a3b8;text-align:center;border-top:1px solid #f1f5f9;padding-top:6px;margin-top:9px;}'
+    +'</style></head><body>'
+    +'<table style="margin-bottom:10px;"><tr><td class="hdr">'
+    +'<div class="hdr-title">PPSC Financial Executive Summary</div>'
+    +'<div class="hdr-sub">'+month+' &nbsp;·&nbsp; Award '+award+' &nbsp;·&nbsp; '+now+'</div>'
+    +'</td></tr></table>'
+    +'<table style="margin-bottom:12px;table-layout:fixed;"><tr>'+kpiCells+'</tr></table>'
+    +'<table style="table-layout:fixed;margin-bottom:0;"><tr valign="top">'
+    +'<td style="width:62%">'
+    +'<div class="sec-label">Milestone Risk Ranking <span style="font-weight:400;color:#51627d;font-size:8px;">(top 8, exceptions excluded)</span></div>'
+    +'<table class="ms-table" style="margin-top:4px;"><thead><tr>'
+    +'<th style="width:24%">Milestone</th><th style="width:9%">Status</th>'
+    +'<th style="width:13%">Budget</th><th style="width:13%">YTD Actual</th>'
+    +'<th style="width:12%">Overrun</th><th style="width:29%">Narrative</th>'
+    +'</tr></thead><tbody>'+tableRows+'</tbody></table>'
+    +'</td>'
+    +'<td style="width:14px"></td>'
+    +'<td style="width:37%">'
+    +'<div class="sec-label" style="margin-bottom:6px;">Portfolio Pace Summary</div>'
+    +'<table style="margin-bottom:10px;table-layout:fixed;width:100%;"><tr>'+paceSummary+'</tr></table>'
+    +'<div style="padding:5px 8px;border-radius:6px;text-align:center;margin-bottom:7px;'
+    +'background:'+(totalOverrun>0?'#fff5f5':'#f0fdf4')+';color:'+(totalOverrun>0?'#dc2626':'#059669')+';"> '
+    +'<div style="font-size:7px;text-transform:uppercase;letter-spacing:.05em;">Total Projected Overrun</div>'
+    +'<div style="font-size:13px;font-weight:800;margin-top:2px;">'+(totalOverrun>0?fmtUsd(totalOverrun):'None')+'</div>'
+    +'</div>'
+    +'<div class="sec-label" style="margin-bottom:5px;">Key Findings &amp; Actions</div>'
+    +findingsHtml
+    +'<div class="notes" style="margin-top:8px;padding:7px 9px;border:1px solid #e2e8f0;border-radius:7px;">'
+    +'<b style="color:#10203a;">Budget Status</b><br>'
+    +'On Track = projected within budget &nbsp;·&nbsp; Watch = balance tightening &nbsp;·&nbsp; At Risk = ahead of plan<br>'
+    +'<b style="color:#10203a;margin-top:4px;display:block;">Pace Threshold</b>'
+    +'Ahead = avg monthly &gt;150% of 1/12 budget &nbsp;·&nbsp; On Pace = 80–150% &nbsp;·&nbsp; Behind &lt;80%<br>'
+    +'<b style="color:#10203a;margin-top:4px;display:block;">Projected Overrun</b>'
+    +'Est. total spend minus award budget'
+    +'</div>'
+    +'</td></tr></table>'
+    +'<div class="footer">PPSC Financial Automation &nbsp;·&nbsp; '+month+' &nbsp;·&nbsp; Award '+award+' &nbsp;·&nbsp; '+now+'</div>'
+    +'<script>window.onload=function(){setTimeout(function(){window.print();window.onafterprint=function(){window.close();};},300);};<\/script>'
+    +'</body></html>';
+
+  var win = window.open('','_blank','width=1200,height=900');
+  if (!win) {
+    alert('Pop-up blocked! Click the pop-up icon in your address bar, choose "Always allow", then try again.');
+    return;
+  }
+  win.document.open(); win.document.write(html); win.document.close();
+}
+</script>
+
+<script>
+(async function() {
+  var body         = document.body;
+  var currentFile  = body.dataset.currentFile;
+  var manifestPath = "__MONTHS_JSON_PATH__";
+  var baseUrl      = "__SITE_BASE_URL__";
+  var archiveUrl   = "__ARCHIVE_BASE_URL__";
+  var months = [];
+  try {
+    var res = await fetch(manifestPath, {cache:"no-store"});
+    months  = await res.json();
+  } catch(e) { console.warn("Could not load archive manifest:", e); }
+  var cf  = currentFile.replace("archive/","");
+  var idx = months.findIndex(function(x){ return x.file === cf; });
+  var prev = idx > 0                           ? months[idx-1] : null;
+  var next = idx >= 0 && idx < months.length-1 ? months[idx+1] : null;
+  var nav  = document.getElementById("siteNav");
+  if (!nav) return;
+  nav.innerHTML =
+    '<div style="display:flex;gap:6px;align-items:center;flex-wrap:wrap;">'
+    +'<a href="'+baseUrl+'" style="text-decoration:none;padding:8px;border-radius:6px;border:1px solid #cbd5e1;background:#fff;font-size:12px;">Latest</a>'
+    +'<a href="'+archiveUrl+'" style="text-decoration:none;padding:8px;border-radius:6px;border:1px solid #cbd5e1;background:#fff;font-size:12px;">Archive</a>'
+    +(prev?'<a href="'+archiveUrl+prev.file+'" style="text-decoration:none;padding:8px;border-radius:6px;border:1px solid #cbd5e1;background:#fff;font-size:12px;">← Previous</a>':'')
+    +(next?'<a href="'+archiveUrl+next.file+'" style="text-decoration:none;padding:8px;border-radius:6px;border:1px solid #cbd5e1;background:#fff;font-size:12px;">Next →</a>':'')
+    +'</div>';
+})();
+</script>
+
+<script>
+document.addEventListener('click', function(e) {
+  var target = e.target;
+  if (target.tagName !== 'TH') return;
+  var table = target.closest('table.sortable');
+  if (!table) return;
+  var index = Array.prototype.indexOf.call(target.parentNode.children, target);
+  var tbody = table.querySelector('tbody') || table;
+  var rows  = Array.prototype.slice.call(tbody.querySelectorAll('tr'));
+  if (tbody.tagName === 'TABLE') rows.shift();
+  var ascending = table.dataset.sortOrder !== 'asc';
+  rows.sort(function(a, b) {
+    var cellA = (a.children[index] ? a.children[index].innerText : "").replace(/[%$,]/g, '');
+    var cellB = (b.children[index] ? b.children[index].innerText : "").replace(/[%$,]/g, '');
+    var valA  = isNaN(parseFloat(cellA)) ? cellA.toLowerCase() : parseFloat(cellA);
+    var valB  = isNaN(parseFloat(cellB)) ? cellB.toLowerCase() : parseFloat(cellB);
+    return (valA < valB ? -1 : 1) * (ascending ? 1 : -1);
+  });
+  table.dataset.sortOrder = ascending ? 'asc' : 'desc';
+  rows.forEach(function(row) { tbody.appendChild(row); });
+});
+</script>
+</body>
+</html>
