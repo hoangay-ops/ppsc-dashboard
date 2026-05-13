@@ -220,38 +220,43 @@
       </div>
 
       <!-- Hero -->
-<section class="hero" style="grid-template-columns: 1.5fr 1.2fr;">
-  <div>
-    <div class="eyebrow">PPSC / April 2026 Status</div>
-    <h1>PPSC Dashboard - April 2026</h1>
-    <div class="subtitle">__SUBTITLE__</div>
-    
-    <div style="margin-top:20px; padding:15px; background:rgba(220,38,38,0.05); border-left:4px solid var(--risk); border-radius:8px;">
-      <span style="color:var(--risk); font-weight:800; font-size:12px; text-transform:uppercase;">Critical Alerts:</span>
-      <div style="margin-top:5px;"><div </div>
-    </div>
-  </div>
+      <section class="hero">
+        <div>
+          <div class="eyebrow">PPSC / April 2026 Dashboard</div>
+          <h1>PPSC Dashboard - April 2026</h1>
+          <div class="subtitle">__SUBTITLE__</div>
+          <div class="mini-copy" style="margin-top:8px;max-width:900px;">__WHAT_VISUALIZED__</div>
+          <div class="meta">
+            <span>Report period: April 2026</span>
+            <span>Award: __AWARD__</span>
+            <span>Milestones __MILESTONE_SPAN__</span>
+          </div>
+        </div>
+        <div class="hero-side">
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;">
+            <div style="background:rgba(37,99,235,0.06);border:1px solid rgba(37,99,235,0.14);border-radius:14px;padding:12px 14px;">
+              <div class="label">Award budget</div>
+              <div style="font-size:18px;font-weight:800;margin-top:4px;">$33,707,478</div>
+            </div>
+            <div style="background:rgba(37,99,235,0.06);border:1px solid rgba(37,99,235,0.14);border-radius:14px;padding:12px 14px;">
+              <div class="label">YTD spent</div>
+              <div style="font-size:18px;font-weight:800;margin-top:4px;">$18,578,561</div>
+            </div>
+            <div style="background:rgba(37,99,235,0.06);border:1px solid rgba(37,99,235,0.14);border-radius:14px;padding:12px 14px;">
+              <div class="label">Est. balance</div>
+              <div style="font-size:18px;font-weight:800;margin-top:4px;color:__BALANCE_COLOR__;">$-485</div>
+            </div>
+            <div style="background:rgba(37,99,235,0.06);border:1px solid rgba(37,99,235,0.14);border-radius:14px;padding:12px 14px;">
+              <div class="label">This month</div>
+              <div style="font-size:18px;font-weight:800;margin-top:4px;">$4,099,161</div>
+            </div>
+          </div>
+          <div style="margin-top:10px;font-size:12px;color:var(--muted);line-height:1.6;">
+            __BUDGET_USED_PCT__% of budget used · __YEAR_ELAPSED_PCT__% of year elapsed
+          </div>
+        </div>
+      </section>
 
-  <div class="hero-side">
-    <div class="card" style="margin-bottom:10px; background: #fff;">
-      <div class="label">Budget vs. Time Elapsed</div>
-      <div style="display:flex; justify-content:space-between; margin-top:10px; font-size:11px; font-weight:700;">
-        <span>BUDGET USED: __BUDGET_USED_PCT__%</span>
-        <span style="color:var(--muted);">YEAR ELAPSED: __YEAR_ELAPSED_PCT__%</span>
-      </div>
-      <div class="progress-container" style="height:12px;">
-        <div class="progress-fill" style="width: __BUDGET_USED_PCT__%; background: __TREND_COLOR__;"></div>
-        <div class="progress-marker" style="left: __YEAR_ELAPSED_PCT__%; height:20px; top:-4px; width:3px;"></div>
-      </div>
-      <div class="delta" style="text-align:center;">
-        Pace Gap: <strong style="color:__TREND_COLOR__;">__BUDGET_PACE_GAP__%</strong>
-      </div>
-    </div>
-    
-    <div style="display:grid; grid-template-columns:1fr 1fr; gap:10px;">
-       </div>
-  </div>
-</section>
       <!-- Headline tension -->
       <div class="tension-box">
         <div class="tension-icon">📊</div>
