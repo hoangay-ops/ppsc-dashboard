@@ -1,11 +1,11 @@
 {
   "summary": {
-    "reporting_month": "March 2026",
+    "reporting_month": "February 2026",
     "awards": "OT2OD036464",
     "budget_total": 34122955.65,
     "ytd_total": 0.0,
-    "month_total": 2692098.1944999998,
-    "bal_total": 34167894.73603194
+    "month_total": 11787301.554000003,
+    "bal_total": 34122113.74918355
   },
   "milestones": [
     {
@@ -15,19 +15,19 @@
       "award_number": "OT2OD036464",
       "status": "On Track",
       "budget": 427822.45,
-      "monthly_spend": 65201.079999999994,
+      "monthly_spend": 58088.835,
       "percent_spent": 0.0,
-      "labor_actual": 21102.589999999997,
-      "travel_actual": 1058.29,
-      "odc_actual": 27281.149999999998,
+      "labor_actual": 27454.42,
+      "travel_actual": 3451.77,
+      "odc_actual": 1626.15,
       "ytd_actual": 0.0,
-      "total_forecast": 123289.915,
-      "est_total_spend": 309985.0897061808,
-      "est_balance": 433275.00470618077,
-      "expected_spend": 71303.74,
+      "total_forecast": 58088.835,
+      "est_total_spend": 361477.9515538925,
+      "est_balance": 419566.78655389254,
+      "expected_spend": 35651.87,
       "burn_rate_status": "Behind",
-      "pace_variance": -71303.74,
-      "projected_overrun": -117837.36,
+      "pace_variance": -35651.87,
+      "projected_overrun": -66344.5,
       "exception_note": "",
       "people_count": 0,
       "total_hours": 0.0,
@@ -36,25 +36,25 @@
         {
           "name": "Labor",
           "budget": 105005.0,
-          "month": 21102.589999999997,
+          "month": 27454.42,
           "ytd": 0.0
         },
         {
           "name": "ODC",
           "budget": 211119.0,
-          "month": 27281.149999999998,
+          "month": 1626.15,
           "ytd": 0.0
         },
         {
           "name": "Indirect Costs",
           "budget": 91325.0,
-          "month": 17310.089999999997,
+          "month": 22790.36,
           "ytd": 0.0
         },
         {
           "name": "Fee costs",
           "budget": 20373.45,
-          "month": -1551.04,
+          "month": 2766.135,
           "ytd": 0.0
         }
       ]
@@ -66,19 +66,19 @@
       "award_number": "OT2OD036464",
       "status": "On Track",
       "budget": 2335517.05,
-      "monthly_spend": 230678.4375,
+      "monthly_spend": 33267.381,
       "percent_spent": 0.0,
-      "labor_actual": 14057.41,
+      "labor_actual": 12273.01,
       "travel_actual": 0.0,
-      "odc_actual": 193074.22,
+      "odc_actual": 7940.25,
       "ytd_actual": 0.0,
-      "total_forecast": 263945.8185,
-      "est_total_spend": 2057338.2117842485,
-      "est_balance": 2321284.0302842488,
-      "expected_spend": 389252.84,
+      "total_forecast": 33267.381,
+      "est_total_spend": 2286582.4327309206,
+      "est_balance": 2319849.81373092,
+      "expected_spend": 194626.42,
       "burn_rate_status": "Behind",
-      "pace_variance": -389252.84,
-      "projected_overrun": -278178.84,
+      "pace_variance": -194626.42,
+      "projected_overrun": -48934.62,
       "exception_note": "",
       "people_count": 0,
       "total_hours": 0.0,
@@ -87,25 +87,25 @@
         {
           "name": "Labor",
           "budget": 40321.0,
-          "month": 14057.41,
+          "month": 12273.01,
           "ytd": 0.0
         },
         {
           "name": "ODC",
           "budget": 2135256.0,
-          "month": 193074.22,
+          "month": 7940.25,
           "ytd": 0.0
         },
         {
           "name": "Indirect Costs",
           "budget": 48724.0,
-          "month": 12562.119999999999,
+          "month": 11469.96,
           "ytd": 0.0
         },
         {
           "name": "Fee costs",
           "budget": 111215.05,
-          "month": 10984.6875,
+          "month": 1584.161,
           "ytd": 0.0
         }
       ]
@@ -117,19 +117,19 @@
       "award_number": "OT2OD036464",
       "status": "On Track",
       "budget": 1100033.55,
-      "monthly_spend": 110024.25,
+      "monthly_spend": 48056.064,
       "percent_spent": 0.0,
-      "labor_actual": 281.37,
+      "labor_actual": 14710.79,
       "travel_actual": 0.0,
-      "odc_actual": 102181.51000000001,
+      "odc_actual": 15883.6,
       "ytd_actual": 0.0,
-      "total_forecast": 158080.314,
-      "est_total_spend": 937728.7802839867,
-      "est_balance": 1095809.0942839868,
-      "expected_spend": 183338.93,
+      "total_forecast": 48056.064,
+      "est_total_spend": 1047438.3820478214,
+      "est_balance": 1095494.4460478213,
+      "expected_spend": 91669.46,
       "burn_rate_status": "Behind",
-      "pace_variance": -183338.93,
-      "projected_overrun": -162304.77,
+      "pace_variance": -91669.46,
+      "projected_overrun": -52595.17,
       "exception_note": "",
       "people_count": 0,
       "total_hours": 0.0,
@@ -138,25 +138,25 @@
         {
           "name": "Labor",
           "budget": 5251.0,
-          "month": 281.37,
+          "month": 14710.79,
           "ytd": 0.0
         },
         {
           "name": "ODC",
           "budget": 1016309.0,
-          "month": 102181.51000000001,
+          "month": 15883.6,
           "ytd": 0.0
         },
         {
           "name": "Indirect Costs",
           "budget": 26091.0,
-          "month": 2322.12,
+          "month": 15173.29,
           "ytd": 0.0
         },
         {
           "name": "Fee costs",
           "budget": 52382.55,
-          "month": 5239.25,
+          "month": 2288.384,
           "ytd": 0.0
         }
       ]
@@ -168,19 +168,19 @@
       "award_number": "OT2OD036464",
       "status": "On Track",
       "budget": 1682690.1,
-      "monthly_spend": 208957.20299999998,
+      "monthly_spend": 27459.925499999998,
       "percent_spent": 0.0,
-      "labor_actual": 9799.86,
+      "labor_actual": 12975.64,
       "travel_actual": 0.0,
-      "odc_actual": 179961.0,
+      "odc_actual": 2404.4,
       "ytd_actual": 0.0,
-      "total_forecast": 236417.1285,
-      "est_total_spend": 1484782.589164875,
-      "est_balance": 1721199.7176648749,
-      "expected_spend": 280448.35,
+      "total_forecast": 27459.925499999998,
+      "est_total_spend": 1673337.5158500003,
+      "est_balance": 1700797.44135,
+      "expected_spend": 140224.18,
       "burn_rate_status": "Behind",
-      "pace_variance": -280448.35,
-      "projected_overrun": -197907.51,
+      "pace_variance": -140224.18,
+      "projected_overrun": -9352.58,
       "exception_note": "",
       "people_count": 0,
       "total_hours": 0.0,
@@ -189,25 +189,25 @@
         {
           "name": "Labor",
           "budget": 5251.0,
-          "month": 9799.86,
+          "month": 12975.64,
           "ytd": 0.0
         },
         {
           "name": "ODC",
           "budget": 1583575.0,
-          "month": 179961.0,
+          "month": 2404.4,
           "ytd": 0.0
         },
         {
           "name": "Indirect Costs",
           "budget": 13736.0,
-          "month": 9246.0,
+          "month": 10772.27,
           "ytd": 0.0
         },
         {
           "name": "Fee costs",
           "budget": 80128.1,
-          "month": 9950.343,
+          "month": 1307.6154999999999,
           "ytd": 0.0
         }
       ]
@@ -219,19 +219,19 @@
       "award_number": "OT2OD036464",
       "status": "On Track",
       "budget": 960378.3,
-      "monthly_spend": 87399.78,
+      "monthly_spend": 86774.4675,
       "percent_spent": 0.0,
-      "labor_actual": 28522.26,
+      "labor_actual": 41525.74,
       "travel_actual": 0.0,
-      "odc_actual": 32835.149999999994,
+      "odc_actual": 7228.85,
       "ytd_actual": 0.0,
-      "total_forecast": 174174.2475,
-      "est_total_spend": 764695.3015731436,
-      "est_balance": 938869.5490731436,
-      "expected_spend": 160063.05,
+      "total_forecast": 86774.4675,
+      "est_total_spend": 853229.4464074709,
+      "est_balance": 940003.913907471,
+      "expected_spend": 80031.53,
       "burn_rate_status": "Behind",
-      "pace_variance": -160063.05,
-      "projected_overrun": -195683.0,
+      "pace_variance": -80031.53,
+      "projected_overrun": -107148.85,
       "exception_note": "",
       "people_count": 0,
       "total_hours": 0.0,
@@ -240,25 +240,25 @@
         {
           "name": "Labor",
           "budget": 222458.0,
-          "month": 28522.26,
+          "month": 41525.74,
           "ytd": 0.0
         },
         {
           "name": "ODC",
           "budget": 498039.0,
-          "month": 32835.149999999994,
+          "month": 7228.85,
           "ytd": 0.0
         },
         {
           "name": "Indirect Costs",
           "budget": 194149.0,
-          "month": 22376.269999999997,
+          "month": 33887.76,
           "ytd": 0.0
         },
         {
           "name": "Fee costs",
           "budget": 45732.3,
-          "month": 3666.100000000003,
+          "month": 4132.1175,
           "ytd": 0.0
         }
       ]
@@ -270,19 +270,19 @@
       "award_number": "OT2OD036464",
       "status": "On Track",
       "budget": 843742.2,
-      "monthly_spend": 102825.07200000001,
+      "monthly_spend": 213067.80600000004,
       "percent_spent": 0.0,
-      "labor_actual": 37077.0,
+      "labor_actual": 104097.32,
       "travel_actual": 0.0,
-      "odc_actual": 30258.91,
+      "odc_actual": 13668.27,
       "ytd_actual": 0.0,
-      "total_forecast": 315892.87799999997,
-      "est_total_spend": 509678.6822742899,
-      "est_balance": 825571.5602742899,
-      "expected_spend": 140623.7,
+      "total_forecast": 213067.80600000004,
+      "est_total_spend": 612017.8643474196,
+      "est_balance": 825085.6703474196,
+      "expected_spend": 70311.85,
       "burn_rate_status": "Behind",
-      "pace_variance": -140623.7,
-      "projected_overrun": -334063.52,
+      "pace_variance": -70311.85,
+      "projected_overrun": -231724.34,
       "exception_note": "",
       "people_count": 0,
       "total_hours": 0.0,
@@ -291,25 +291,25 @@
         {
           "name": "Labor",
           "budget": 324033.0,
-          "month": 37077.0,
+          "month": 104097.32,
           "ytd": 0.0
         },
         {
           "name": "ODC",
           "budget": 195136.0,
-          "month": 30258.91,
+          "month": 13668.27,
           "ytd": 0.0
         },
         {
           "name": "Indirect Costs",
           "budget": 284395.0,
-          "month": 30592.730000000003,
+          "month": 85156.13,
           "ytd": 0.0
         },
         {
           "name": "Fee costs",
           "budget": 40178.200000000004,
-          "month": 4896.432000000001,
+          "month": 10146.086000000003,
           "ytd": 0.0
         }
       ]
@@ -321,19 +321,19 @@
       "award_number": "OT2OD036464",
       "status": "On Track",
       "budget": 7460577.6,
-      "monthly_spend": 719798.9399999998,
+      "monthly_spend": 213967.2255,
       "percent_spent": 0.0,
-      "labor_actual": 47679.17,
+      "labor_actual": 76402.77,
       "travel_actual": 0.0,
-      "odc_actual": 591729.88,
+      "odc_actual": 54801.58,
       "ytd_actual": 0.0,
-      "total_forecast": 933766.1654999997,
-      "est_total_spend": 6479991.589557808,
-      "est_balance": 7413757.755057807,
-      "expected_spend": 1243429.6,
+      "total_forecast": 213967.2255,
+      "est_total_spend": 7195952.60552743,
+      "est_balance": 7409919.8310274305,
+      "expected_spend": 621714.8,
       "burn_rate_status": "Behind",
-      "pace_variance": -1243429.6,
-      "projected_overrun": -980586.01,
+      "pace_variance": -621714.8,
+      "projected_overrun": -264624.99,
       "exception_note": "",
       "people_count": 0,
       "total_hours": 0.0,
@@ -342,25 +342,25 @@
         {
           "name": "Labor",
           "budget": 216764.0,
-          "month": 47679.17,
+          "month": 76402.77,
           "ytd": 0.0
         },
         {
           "name": "ODC",
           "budget": 6626937.0,
-          "month": 591729.88,
+          "month": 54801.58,
           "ytd": 0.0
         },
         {
           "name": "Indirect Costs",
           "budget": 261611.0,
-          "month": 46571.119999999995,
+          "month": 72573.96,
           "ytd": 0.0
         },
         {
           "name": "Fee costs",
           "budget": 355265.60000000003,
-          "month": 33818.7699999998,
+          "month": 10188.915500000001,
           "ytd": 0.0
         }
       ]
@@ -372,19 +372,19 @@
       "award_number": "OT2OD036464",
       "status": "On Track",
       "budget": 642997.95,
-      "monthly_spend": 116460.75,
+      "monthly_spend": 4662.3045,
       "percent_spent": 0.0,
-      "labor_actual": 3204.91,
+      "labor_actual": 2381.32,
       "travel_actual": 0.0,
-      "odc_actual": 104456.44,
+      "odc_actual": 148.0,
       "ytd_actual": 0.0,
-      "total_forecast": 121123.0545,
-      "est_total_spend": 508037.6435706658,
-      "est_balance": 629160.6980706658,
-      "expected_spend": 107166.32,
+      "total_forecast": 4662.3045,
+      "est_total_spend": 625091.5412597173,
+      "est_balance": 629753.8457597174,
+      "expected_spend": 53583.16,
       "burn_rate_status": "Behind",
-      "pace_variance": -107166.32,
-      "projected_overrun": -134960.31,
+      "pace_variance": -53583.16,
+      "projected_overrun": -17906.41,
       "exception_note": "",
       "people_count": 0,
       "total_hours": 0.0,
@@ -393,25 +393,25 @@
         {
           "name": "Labor",
           "budget": 77316.0,
-          "month": 3204.91,
+          "month": 2381.32,
           "ytd": 0.0
         },
         {
           "name": "ODC",
           "budget": 465865.0,
-          "month": 104456.44,
+          "month": 148.0,
           "ytd": 0.0
         },
         {
           "name": "Indirect Costs",
           "budget": 69198.0,
-          "month": 3253.6499999999996,
+          "month": 1910.97,
           "ytd": 0.0
         },
         {
           "name": "Fee costs",
           "budget": 30618.95,
-          "month": 5545.75,
+          "month": 222.0145,
           "ytd": 0.0
         }
       ]
@@ -423,19 +423,19 @@
       "award_number": "OT2OD036464",
       "status": "On Track",
       "budget": 532005.6,
-      "monthly_spend": 45181.9305,
+      "monthly_spend": 73193.505,
       "percent_spent": 0.0,
-      "labor_actual": 19297.8,
+      "labor_actual": 35853.88,
       "travel_actual": 0.0,
-      "odc_actual": 6952.1,
+      "odc_actual": 4557.9,
       "ytd_actual": 0.0,
-      "total_forecast": 118375.43549999999,
-      "est_total_spend": 410536.99969876243,
-      "est_balance": 528912.4351987623,
-      "expected_spend": 88667.6,
+      "total_forecast": 73193.505,
+      "est_total_spend": 455211.9995874465,
+      "est_balance": 528405.5045874465,
+      "expected_spend": 44333.8,
       "burn_rate_status": "Behind",
-      "pace_variance": -88667.6,
-      "projected_overrun": -121468.6,
+      "pace_variance": -44333.8,
+      "projected_overrun": -76793.6,
       "exception_note": "",
       "people_count": 0,
       "total_hours": 0.0,
@@ -444,25 +444,25 @@
         {
           "name": "Labor",
           "budget": 118945.0,
-          "month": 19297.8,
+          "month": 35853.88,
           "ytd": 0.0
         },
         {
           "name": "ODC",
           "budget": 260251.0,
-          "month": 6952.1,
+          "month": 4557.9,
           "ytd": 0.0
         },
         {
           "name": "Indirect Costs",
           "budget": 127476.0,
-          "month": 16780.51,
+          "month": 29296.32,
           "ytd": 0.0
         },
         {
           "name": "Fee costs",
           "budget": 25333.600000000002,
-          "month": 2151.5205,
+          "month": 3485.4050000000007,
           "ytd": 0.0
         }
       ]
@@ -474,18 +474,18 @@
       "award_number": "OT2OD036464",
       "status": "On Track",
       "budget": 9214479.75,
-      "monthly_spend": 13570.7145,
+      "monthly_spend": 9581166.640500002,
       "percent_spent": 0.0,
-      "labor_actual": 0.0,
+      "labor_actual": 942091.11,
       "travel_actual": 0.0,
-      "odc_actual": 10550.6,
+      "odc_actual": 6506823.65,
       "ytd_actual": 0.0,
-      "total_forecast": 9594737.355,
+      "total_forecast": 9581166.640500002,
       "est_total_spend": 0.0,
-      "est_balance": 9594737.355,
-      "expected_spend": 1535746.62,
+      "est_balance": 9581166.640500002,
+      "expected_spend": 767873.31,
       "burn_rate_status": "Behind",
-      "pace_variance": -1535746.62,
+      "pace_variance": -767873.31,
       "projected_overrun": -9214479.75,
       "exception_note": "Annual license fees paid upfront in February \u2014 no further spend expected.",
       "people_count": 0,
@@ -495,19 +495,19 @@
         {
           "name": "ODC",
           "budget": 7313079.0,
-          "month": 10550.6,
+          "month": 6506823.65,
           "ytd": 0.0
         },
         {
           "name": "Indirect Costs",
           "budget": 1462616.0,
-          "month": 2373.89,
+          "month": 1676005.85,
           "ytd": 0.0
         },
         {
           "name": "Fee costs",
           "budget": 438784.75,
-          "month": 646.2245,
+          "month": 456246.0305000001,
           "ytd": 0.0
         }
       ]
@@ -519,19 +519,19 @@
       "award_number": "OT2OD036464",
       "status": "On Track",
       "budget": 500886.7,
-      "monthly_spend": 66124.38,
+      "monthly_spend": 175621.719,
       "percent_spent": 0.0,
-      "labor_actual": 36131.270000000004,
-      "travel_actual": 0.0,
-      "odc_actual": 2569.65,
+      "labor_actual": 87260.97,
+      "travel_actual": 1030.92,
+      "odc_actual": 8105.81,
       "ytd_actual": 0.0,
-      "total_forecast": 241746.09900000002,
-      "est_total_spend": 267705.4498200674,
-      "est_balance": 509451.54882006743,
-      "expected_spend": 83481.12,
+      "total_forecast": 175621.719,
+      "est_total_spend": 297916.3637691565,
+      "est_balance": 473538.08276915655,
+      "expected_spend": 41740.56,
       "burn_rate_status": "Behind",
-      "pace_variance": -83481.12,
-      "projected_overrun": -233181.25,
+      "pace_variance": -41740.56,
+      "projected_overrun": -202970.34,
       "exception_note": "",
       "people_count": 0,
       "total_hours": 0.0,
@@ -540,25 +540,25 @@
         {
           "name": "Labor",
           "budget": 245233.0,
-          "month": 36131.270000000004,
+          "month": 87260.97,
           "ytd": 0.0
         },
         {
           "name": "ODC",
           "budget": 19869.0,
-          "month": 2569.65,
+          "month": 8105.81,
           "ytd": 0.0
         },
         {
           "name": "Indirect Costs",
           "budget": 211932.0,
-          "month": 29067.65,
+          "month": 70861.08,
           "ytd": 0.0
         },
         {
           "name": "Fee costs",
           "budget": 23851.7,
-          "month": -1644.1899999999953,
+          "month": 8362.939,
           "ytd": 0.0
         }
       ]
@@ -570,19 +570,19 @@
       "award_number": "OT2OD036464",
       "status": "On Track",
       "budget": 957727.05,
-      "monthly_spend": 122648.7885,
+      "monthly_spend": 81671.562,
       "percent_spent": 0.0,
-      "labor_actual": 50095.6,
+      "labor_actual": 33916.0,
       "travel_actual": 0.0,
-      "odc_actual": 22214.2,
+      "odc_actual": 13978.5,
       "ytd_actual": 0.0,
-      "total_forecast": 204320.3505,
-      "est_total_spend": 762746.1304263519,
-      "est_balance": 967066.480926352,
-      "expected_spend": 159621.18,
+      "total_forecast": 81671.562,
+      "est_total_spend": 832454.7021736247,
+      "est_balance": 914126.2641736246,
+      "expected_spend": 79810.59,
       "burn_rate_status": "Behind",
-      "pace_variance": -159621.18,
-      "projected_overrun": -194980.92,
+      "pace_variance": -79810.59,
+      "projected_overrun": -125272.35,
       "exception_note": "",
       "people_count": 0,
       "total_hours": 0.0,
@@ -591,25 +591,25 @@
         {
           "name": "Labor",
           "budget": 304440.0,
-          "month": 50095.6,
+          "month": 33916.0,
           "ytd": 0.0
         },
         {
           "name": "ODC",
           "budget": 303363.0,
-          "month": 22214.2,
+          "month": 13978.5,
           "ytd": 0.0
         },
         {
           "name": "Indirect Costs",
           "budget": 304318.0,
-          "month": 44498.57,
+          "month": 29887.94,
           "ytd": 0.0
         },
         {
           "name": "Fee costs",
           "budget": 45606.05,
-          "month": 5840.4185,
+          "month": 3889.1220000000003,
           "ytd": 0.0
         }
       ]
@@ -621,19 +621,19 @@
       "award_number": "OT2OD036464",
       "status": "On Track",
       "budget": 600671.4,
-      "monthly_spend": 77976.15,
+      "monthly_spend": 141996.981,
       "percent_spent": 0.0,
-      "labor_actual": 38922.36,
-      "travel_actual": 0.0,
-      "odc_actual": 3796.2,
+      "labor_actual": 68816.69,
+      "travel_actual": 2833.27,
+      "odc_actual": 7090.44,
       "ytd_actual": 0.0,
-      "total_forecast": 219973.13100000002,
-      "est_total_spend": 368059.4938208984,
-      "est_balance": 588032.6248208984,
-      "expected_spend": 100111.9,
+      "total_forecast": 141996.981,
+      "est_total_spend": 434178.29956479353,
+      "est_balance": 576175.2805647936,
+      "expected_spend": 50055.95,
       "burn_rate_status": "Behind",
-      "pace_variance": -100111.9,
-      "projected_overrun": -232611.91,
+      "pace_variance": -50055.95,
+      "projected_overrun": -166493.1,
       "exception_note": "",
       "people_count": 0,
       "total_hours": 0.0,
@@ -642,25 +642,25 @@
         {
           "name": "Labor",
           "budget": 289921.0,
-          "month": 38922.36,
+          "month": 68816.69,
           "ytd": 0.0
         },
         {
           "name": "ODC",
           "budget": 30244.0,
-          "month": 3796.2,
+          "month": 7090.44,
           "ytd": 0.0
         },
         {
           "name": "Indirect Costs",
           "budget": 251903.0,
-          "month": 31544.440000000002,
+          "month": 56494.82,
           "ytd": 0.0
         },
         {
           "name": "Fee costs",
           "budget": 28603.4,
-          "month": 3713.15,
+          "month": 6761.761,
           "ytd": 0.0
         }
       ]
@@ -672,19 +672,19 @@
       "award_number": "OT2OD036464",
       "status": "On Track",
       "budget": 1264051.95,
-      "monthly_spend": 192456.7575,
+      "monthly_spend": 400897.5705,
       "percent_spent": 0.0,
-      "labor_actual": 97299.93,
+      "labor_actual": 202186.90999999997,
       "travel_actual": 0.0,
-      "odc_actual": 7568.35,
+      "odc_actual": 16486.46,
       "ytd_actual": 0.0,
-      "total_forecast": 593354.328,
-      "est_total_spend": 670449.2719218336,
-      "est_balance": 1263803.5999218335,
-      "expected_spend": 210675.32,
+      "total_forecast": 400897.5705,
+      "est_total_spend": 836041.0646684769,
+      "est_balance": 1236938.6351684767,
+      "expected_spend": 105337.66,
       "burn_rate_status": "Behind",
-      "pace_variance": -210675.32,
-      "projected_overrun": -593602.68,
+      "pace_variance": -105337.66,
+      "projected_overrun": -428010.89,
       "exception_note": "",
       "people_count": 0,
       "total_hours": 0.0,
@@ -693,25 +693,25 @@
         {
           "name": "Labor",
           "budget": 621709.0,
-          "month": 97299.93,
+          "month": 202186.90999999997,
           "ytd": 0.0
         },
         {
           "name": "ODC",
           "budget": 45784.0,
-          "month": 7568.35,
+          "month": 16486.46,
           "ytd": 0.0
         },
         {
           "name": "Indirect Costs",
           "budget": 536366.0,
-          "month": 78423.87,
+          "month": 163133.84,
           "ytd": 0.0
         },
         {
           "name": "Fee costs",
           "budget": 60192.950000000004,
-          "month": 9164.6075,
+          "month": 19090.3605,
           "ytd": 0.0
         }
       ]
@@ -723,19 +723,19 @@
       "award_number": "OT2OD036464",
       "status": "On Track",
       "budget": 599478.6,
-      "monthly_spend": 19625.3715,
+      "monthly_spend": 42376.509000000005,
       "percent_spent": 0.0,
-      "labor_actual": 9797.23,
+      "labor_actual": 21043.77,
       "travel_actual": 0.0,
-      "odc_actual": 953.86,
+      "odc_actual": 2221.85,
       "ytd_actual": 0.0,
-      "total_forecast": 62001.8805,
-      "est_total_spend": 522742.9440569674,
-      "est_balance": 584744.8245569675,
-      "expected_spend": 99913.1,
+      "total_forecast": 42376.509000000005,
+      "est_total_spend": 554560.7452246922,
+      "est_balance": 596937.2542246922,
+      "expected_spend": 49956.55,
       "burn_rate_status": "Behind",
-      "pace_variance": -99913.1,
-      "projected_overrun": -76735.66,
+      "pace_variance": -49956.55,
+      "projected_overrun": -44917.85,
       "exception_note": "",
       "people_count": 0,
       "total_hours": 0.0,
@@ -744,25 +744,25 @@
         {
           "name": "Labor",
           "budget": 113021.0,
-          "month": 9797.23,
+          "month": 21043.77,
           "ytd": 0.0
         },
         {
           "name": "ODC",
           "budget": 301725.0,
-          "month": 953.86,
+          "month": 2221.85,
           "ytd": 0.0
         },
         {
           "name": "Indirect Costs",
           "budget": 156186.0,
-          "month": 7939.74,
+          "month": 17092.96,
           "ytd": 0.0
         },
         {
           "name": "Fee costs",
           "budget": 28546.600000000002,
-          "month": 934.5415000000002,
+          "month": 2017.929,
           "ytd": 0.0
         }
       ]
@@ -774,19 +774,19 @@
       "award_number": "OT2OD036464",
       "status": "On Track",
       "budget": 4999895.4,
-      "monthly_spend": 513168.58949999994,
+      "monthly_spend": 605033.058,
       "percent_spent": 0.0,
-      "labor_actual": 266967.1,
+      "labor_actual": 316402.38,
       "travel_actual": 0.0,
-      "odc_actual": 49089.22,
+      "odc_actual": 38466.479999999996,
       "ytd_actual": 0.0,
-      "total_forecast": 1118201.6475,
-      "est_total_spend": 3634016.8098718585,
-      "est_balance": 4752218.457371858,
-      "expected_spend": 833315.9,
+      "total_forecast": 605033.058,
+      "est_total_spend": 4269321.280470693,
+      "est_balance": 4874354.338470693,
+      "expected_spend": 416657.95,
       "burn_rate_status": "Behind",
-      "pace_variance": -833315.9,
-      "projected_overrun": -1365878.59,
+      "pace_variance": -416657.95,
+      "projected_overrun": -730574.12,
       "exception_note": "",
       "people_count": 0,
       "total_hours": 0.0,
@@ -795,25 +795,25 @@
         {
           "name": "Labor",
           "budget": 2561305.0,
-          "month": 266967.1,
+          "month": 316402.38,
           "ytd": 0.0
         },
         {
           "name": "ODC",
           "budget": 624501.0,
-          "month": 49089.22,
+          "month": 38466.479999999996,
           "ytd": 0.0
         },
         {
           "name": "Indirect Costs",
           "budget": 1576002.0,
-          "month": 172675.66999999998,
+          "month": 221353.1,
           "ytd": 0.0
         },
         {
           "name": "Fee costs",
           "budget": 238090.40000000002,
-          "month": 24436.599499999997,
+          "month": 28811.097999999998,
           "ytd": 0.0
         }
       ]
@@ -832,78 +832,78 @@
     {
       "month": "Feb",
       "value": 11787301.55,
-      "forecast_val": null,
+      "forecast_val": 11787301.55,
       "is_forecast": false,
-      "is_current_month": false,
+      "is_current_month": true,
       "is_fallback": false,
       "value_pct": 34.5
     },
     {
       "month": "Mar",
-      "value": 2692098.19,
-      "forecast_val": 14479399.75,
-      "is_forecast": false,
-      "is_current_month": true,
-      "is_fallback": false,
-      "value_pct": 7.9
+      "value": 2724315.79,
+      "forecast_val": 2724316.0,
+      "is_forecast": true,
+      "is_current_month": false,
+      "is_fallback": true,
+      "value_pct": 8.0
     },
     {
       "month": "Apr",
-      "value": 2562981.95,
+      "value": 2660404.66,
       "forecast_val": 2660405.0,
       "is_forecast": true,
       "is_current_month": false,
       "is_fallback": true,
-      "value_pct": 7.5
+      "value_pct": 7.8
     },
     {
       "month": "May",
-      "value": 2688381.16,
+      "value": 2744522.66,
       "forecast_val": 2744523.0,
       "is_forecast": true,
       "is_current_month": false,
       "is_fallback": true,
-      "value_pct": 7.9
+      "value_pct": 8.0
     },
     {
       "month": "Jun",
-      "value": 2455792.22,
+      "value": 2503622.56,
       "forecast_val": 2503623.0,
       "is_forecast": true,
       "is_current_month": false,
       "is_fallback": true,
-      "value_pct": 7.2
+      "value_pct": 7.3
     },
     {
       "month": "Jul",
-      "value": 2636672.07,
+      "value": 2362018.95,
       "forecast_val": 2362019.0,
       "is_forecast": true,
       "is_current_month": false,
       "is_fallback": true,
-      "value_pct": 7.7
+      "value_pct": 6.9
     },
     {
       "month": "Aug",
-      "value": 3719269.39,
+      "value": 3737301.81,
       "forecast_val": 3737302.0,
       "is_forecast": true,
       "is_current_month": false,
       "is_fallback": true,
-      "value_pct": 10.9
+      "value_pct": 11.0
     },
     {
       "month": "Sep",
-      "value": 3734471.42,
+      "value": 3685564.65,
       "forecast_val": 3685565.0,
       "is_forecast": true,
       "is_current_month": false,
       "is_fallback": true,
-      "value_pct": 10.9
+      "value_pct": 10.8
     },
     {
       "month": "Oct",
-      "value": 606803.87,
+      "value": 608801.07,
       "forecast_val": 608801.0,
       "is_forecast": true,
       "is_current_month": false,
@@ -912,7 +912,7 @@
     },
     {
       "month": "Nov",
-      "value": 554438.26,
+      "value": 558195.86,
       "forecast_val": 558196.0,
       "is_forecast": true,
       "is_current_month": false,
@@ -921,12 +921,12 @@
     },
     {
       "month": "Dec",
-      "value": 729684.64,
+      "value": 750064.19,
       "forecast_val": 750064.0,
       "is_forecast": true,
       "is_current_month": false,
       "is_fallback": true,
-      "value_pct": 2.1
+      "value_pct": 2.2
     }
   ]
 }
