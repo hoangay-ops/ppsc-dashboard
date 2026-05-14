@@ -28,7 +28,7 @@ except ImportError:
 ROOT     = Path(__file__).resolve().parent
 DATA_DIR = ROOT / "data"
 OUT_DIR  = ROOT
-ARCHIVE_DIR = None # This prevents the script from having a destination for archives
+ARCHIVE_DIR = ROOT / "archive"
 
 SITE_BASE_URL    = "https://hoangay-ops.github.io/ppsc-dashboard/"
 ARCHIVE_BASE_URL = f"{SITE_BASE_URL}archive/"
@@ -518,12 +518,10 @@ def archive_manifest(archive_dir: Path) -> List[Dict]:
     return items
 
 def build_archive_index(archive_dir: Path, current_month_full: str) -> None:
+    archive_dir.mkdir(parents=True, exist_ok=True)
     items = archive_manifest(archive_dir)
     cards = "".join(
-        f'<a class="month-card" href="{it["file"]}">'
-        f'<div class="month-title">{it["label"]}'
-        f'{"  (current)" if it["label"]==current_month_full else ""}</div>'
-        f'<div class="month-copy">Open archived snapshot</div></a>'
+        f'<a class="month-card" href="{it["file"]}">'         f'<div class="month-title">{it["label"]}'         f'{"  (current)" if it["label"]==current_month_full else ""}</div>'         f'<div class="month-copy">Open archived snapshot</div></a>'
         for it in items
     ) or '<div style="color:#51627d;">No archives yet.</div>'
     html = (
@@ -559,7 +557,9 @@ def build_archive_index(archive_dir: Path, current_month_full: str) -> None:
         f'<section class="panel"><div class="grid">{cards}</div></section>'
         '</div></body></html>'
     )
-  # (archive_dir / "index.html").write_text(html, encoding="utf-8")
+    (archive_dir / "index.html").write_text(html, encoding="utf-8")
+    manifest = [{"label": it["label"], "file": it["file"]} for it in items]
+    (archive_dir / "manifest.json").write_text(json.dumps(manifest, indent=2), encoding="utf-8")
 
 def git_push(repo_dir: Path, message: str) -> None:
     # 1. Temporarily hide any unsaved changes to automate.py
@@ -573,7 +573,7 @@ def git_push(repo_dir: Path, message: str) -> None:
     subprocess.run(["git", "-C", str(repo_dir), "stash", "pop"], check=False)
     
     # 4. Add the new dashboard and push
-    subprocess.run(["git", "-C", str(repo_dir), "add", "index.html"], check=True)
+    subprocess.run(["git", "-C", str(repo_dir), "add", "index.html", "archive", "output/dashboard_data.json"], check=True)
     subprocess.run(["git", "-C", str(repo_dir), "commit", "-m", message], check=False)
     subprocess.run(["git", "-C", str(repo_dir), "push"], check=True)
 
@@ -724,21 +724,24 @@ def generate_html(
     stories_data:         Dict,
     hours_data:           Dict,
 ) -> None:
+    # 1. FIND AND READ THE TEMPLATE
     template_path = next(
         (p for p in [ROOT/"dashboard_template_fixed.html", ROOT/"dashboard_template.html"]
          if p.exists()), None
     )
     if not template_path:
-        print("ERROR: dashboard_template.html not found"); return
+        print("❌ ERROR: dashboard_template.html not found")
+        return
 
     html = template_path.read_text(encoding="utf-8")
-if ARCHIVE_DIR:
-    ARCHIVE_DIR.mkdir(exist_ok=True)
-    print("  Fetching Chart.js\u2026")
-    chartjs     = fetch_js("https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.js")
-    print("  Fetching html2pdf\u2026")
+
+    # 2. FETCH EXTERNAL ASSETS
+    print("  Fetching Chart.js…")
+    chartjs = fetch_js("https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.js")
+    print("  Fetching html2pdf…")
     html2pdf_js = fetch_js("https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js")
 
+    # 3. CALCULATE TOTALS AND DATA POINTS
     at_risk  = [m for m in all_milestones if m.status == "At Risk"]
     on_watch = [m for m in all_milestones if m.status == "Watch"]
     on_track = [m for m in all_milestones if m.status in ("On Track","Complete")]
@@ -757,20 +760,21 @@ if ARCHIVE_DIR:
 
     prev_val    = monthly_chart[rep_idx-1]["value"] or month_tot if rep_idx > 0 else month_tot
     trend_pct   = round((month_tot - prev_val)/prev_val*100, 1) if prev_val else 0.0
-    trend_arrow = "\u25b2" if trend_pct>0 else "\u25bc" if trend_pct<0 else "\u2192"
+    trend_arrow = "▲" if trend_pct>0 else "▼" if trend_pct<0 else "→"
     trend_color = "#dc2626" if trend_pct>0 else "#059669" if trend_pct<0 else "#51627d"
 
+    # 4. BUILD SUB-SECTIONS (Watchlist, Callouts, Operations)
     flagged = at_risk + on_watch
     n_flags = len(flagged)
     n_crit  = len(at_risk)
     flag_summary = (
         "No milestone flags need escalation." if n_flags==0 else
-        f"{n_flags} flagged, all minor \u2014 monitor closely." if n_crit==0 else
-        f"{n_flags} flagged \u2014 {n_crit} require{'s' if n_crit==1 else ''} attention."
+        f"{n_flags} flagged, all minor — monitor closely." if n_crit==0 else
+        f"{n_flags} flagged — {n_crit} require{'s' if n_crit==1 else ''} attention."
     )
     tension_msg = (
-        f"Budget used is {budget_used_pct:.1f}% versus {yr_pct:.1f}% of the award year elapsed "
-        f"(Feb 2026 \u2013 Jan 2027). {len(at_risk)} milestone(s) At Risk and {len(on_watch)} on Watch."
+        f"Budget used is {budget_used_pct:.1f}% versus {yr_pct:.1f}% of the award year elapsed. "
+        f"{len(at_risk)} milestone(s) At Risk and {len(on_watch)} on Watch."
     )
 
     watchlist = sorted(
@@ -779,188 +783,95 @@ if ARCHIVE_DIR:
     )[:5]
     watchlist_html = "\n".join(
         bullet_html("risk" if m.status=="At Risk" else "warn",
-            f"<strong>{m.title}</strong> \u2014 {fmt_usd_short(abs(m.projected_overrun))} projected overrun"
-            + (f" \u2014 {short_text(narrative_for(narratives,m.title))}"
+            f"<strong>{m.title}</strong> — {fmt_usd_short(abs(m.projected_overrun))} projected overrun"
+            + (f" — {short_text(narrative_for(narratives,m.title))}"
                if narrative_for(narratives,m.title) else "") + ".")
         for m in watchlist
     ) or bullet_html("good","No milestones currently flagged for attention.")
 
     callouts = [
         bullet_html("risk" if bal_tot<0 else "good",
-            f"<strong>Portfolio balance is {'negative' if bal_tot<0 else 'positive'} "
-            f"at {fmt_usd(bal_tot)}.</strong> "
-            f"{'Projected spend exceeds budget.' if bal_tot<0 else 'Budget on track.'}"),
+            f"<strong>Portfolio balance is {'negative' if bal_tot<0 else 'positive'} at {fmt_usd(bal_tot)}.</strong>"),
         bullet_html("warn" if n_flags else "good", f"<strong>{flag_summary}</strong>"),
     ]
-    for m in at_risk[:3]:
-        callouts.append(bullet_html("risk",
-            f"<strong>{m.title} \u2014 {fmt_usd_short(abs(m.projected_overrun))} overrun</strong>"
-            + (f" \u2014 {short_text(narrative_for(narratives,m.title))}"
-               if narrative_for(narratives,m.title) else "") + "."))
     callout_html = "\n".join(callouts)
 
-    op_items = []
-    for m in sorted([m for m in all_milestones if m.monthly_spend<0],
-                    key=lambda m: m.monthly_spend):
-        op_items.append(bullet_html("good",
-            f"<strong>Credit \u2014 {m.title}:</strong> {fmt_usd(abs(m.monthly_spend))} posted."))
-    for m in sorted([m for m in all_milestones
-                     if m.monthly_spend>0 and m.budget>0 and m.monthly_spend/m.budget>0.25],
-                    key=lambda m: m.monthly_spend/m.budget, reverse=True):
-        p = round(m.monthly_spend/m.budget*100, 1)
-        op_items.append(bullet_html("warn",
-            f"<strong>Spend spike \u2014 {m.title}:</strong> "
-            f"{fmt_usd(m.monthly_spend)} this month ({p}% of annual budget)."))
-    if not op_items:
-        for m in sorted(all_milestones, key=lambda m: m.monthly_spend, reverse=True)[:5]:
-            op_items.append(bullet_html("good",
-                f"<strong>{m.title}</strong> \u2014 {fmt_usd(m.monthly_spend)} this month "
-                f"({m.percent_spent:.1f}% of budget spent to date)."))
-    operational_html = "\n".join(op_items) or bullet_html("good","No spend data.")
+    op_items = [bullet_html("good", f"<strong>{m.title}</strong> — {fmt_usd(m.monthly_spend)} this month.") 
+                for m in sorted(all_milestones, key=lambda m: m.monthly_spend, reverse=True)[:5]]
+    operational_html = "\n".join(op_items)
 
-    # Hours panel
-    if hours_data:
-        h_total = hours_data.get("total_hours",0)
-        h_lcats = hours_data.get("total_lcats",0)
-        h_mils  = hours_data.get("active_mils",0)
-        h_bm    = hours_data.get("by_milestone",[])
-        h_bl    = hours_data.get("by_lcat",[])
-        maxm    = h_bm[0]["hours"] if h_bm else 1
-        maxl    = h_bl[0]["hours"] if h_bl else 1
-        tmap    = {m.milestone_id: m.raw_title for m in all_milestones}
-
-        def hbar(lbl, val, mx, color):
-            pct = round(val/mx*100) if mx else 0
-            return (f'<div style="display:flex;align-items:center;gap:8px;margin-bottom:6px;font-size:12px;">'
-                    f'<div style="width:130px;flex:none;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;color:#51627d;" title="{lbl}">{lbl}</div>'
-                    f'<div style="flex:1;height:8px;background:rgba(15,23,42,.08);border-radius:4px;overflow:hidden;">'
-                    f'<div style="width:{pct}%;height:100%;background:{color};border-radius:4px;"></div></div>'
-                    f'<div style="width:52px;text-align:right;color:#51627d;">{val:,.1f}</div></div>')
-
-        mil_bars  = "".join(hbar(
-            f'{r["milestone_id"]}' + (f' \u2014 {tmap[r["milestone_id"]]}' if r["milestone_id"] in tmap else ""),
-            r["hours"], maxm, "#2563eb") for r in h_bm[:8])
-        lcat_bars = "".join(hbar(r["lcat"], r["hours"], maxl, "#059669") for r in h_bl[:8])
-
-        hours_panel_html = (
-            f'<section class="panel" style="margin-bottom:18px;">'
-            f'<h2>NORC People &amp; Hours \u2014 {reporting_month_full}</h2>'
-            f'<p class="note">Direct labor charged by LCAT across all active milestones.</p>'
-            f'<div style="display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-bottom:16px;">'
-            f'<div class="card" style="min-height:auto;padding:14px;"><div class="label">Staff charged</div>'
-            f'<div class="value">{h_lcats}</div><div class="delta">unique LCATs billing</div></div>'
-            f'<div class="card" style="min-height:auto;padding:14px;"><div class="label">Total hours</div>'
-            f'<div class="value">{h_total:,.0f}</div><div class="delta">across all milestones</div></div>'
-            f'<div class="card" style="min-height:auto;padding:14px;"><div class="label">Active milestones</div>'
-            f'<div class="value">{h_mils}</div><div class="delta">with hours charged</div></div></div>'
-            f'<div style="display:grid;grid-template-columns:1fr 1fr;gap:18px;">'
-            f'<div><div style="font-size:13px;font-weight:700;margin-bottom:8px;">Hours by milestone</div>{mil_bars}</div>'
-            f'<div><div style="font-size:13px;font-weight:700;margin-bottom:8px;">Hours by LCAT</div>{lcat_bars}</div>'
-            f'</div></section>'
-        )
-    else:
-        hours_panel_html = ('<section class="panel" style="margin-bottom:18px;">'
-                            '<h2>NORC People &amp; Hours</h2>'
-                            '<p class="note">Add <em>9877 Hours by LCAT*.xlsx</em> to data/ to populate.</p>'
-                            '</section>')
-
+    # 5. INTEGRATE COMPONENTS
     monthly_json = json.dumps(monthly_chart)
-    chart_section = build_chart_section(
-        chartjs, monthly_json, m_el, on_track, on_watch, at_risk, watchlist_html
-    )
+    chart_section = build_chart_section(chartjs, monthly_json, m_el, on_track, on_watch, at_risk, watchlist_html)
 
+    # Replace Chart section in template
     start = html.find('<section class="grid">')
     end   = html.find('</section>', start) + len('</section>') if start != -1 else -1
     if start != -1 and end != -1:
         html = html[:start] + chart_section + html[end:]
-
-    milestone_span = "N/A"
-    if all_milestones:
-        ids = [m.milestone_id for m in all_milestones]
-        milestone_span = f"{ids[0]}\u2013{ids[-1]}"
-
-    slug         = month_slug(reporting_month_full)
+# Ensure script tags are built for the template
+    sc_tag = '<' + '/script>'
+    pdf_js_tag = '<script>' + html2pdf_js + sc_tag
+    
+    # Define a slug for potential filename use
+    slug = month_slug(reporting_month_full)
     current_file = f"{slug}.html"
-    sc_tag       = '<' + '/script>'
-    pdf_js_tag   = '<script>' + html2pdf_js + sc_tag
 
+    # 6. RUN PLACEHOLDER REPLACEMENTS
+    milestone_span = f"{all_milestones[0].milestone_id}–{all_milestones[-1].milestone_id}" if all_milestones else "N/A"
+    
     replacements = {
         "__MONTH__":            reporting_month_full,
         "__BALANCE_COLOR__":    balance_color,
-        "__TITLE__":            f"PPSC Financial Dashboard \u2014 {reporting_month_full}",
-        "__SUBTITLE__":         f"Award(s): {awards_str} \u00b7 {len(all_milestones)} milestones \u00b7 {reporting_month_full}.",
+        "__TITLE__":            f"PPSC Financial Dashboard — {reporting_month_full}",
+        "__SUBTITLE__":         f"Award(s): {awards_str} · {reporting_month_full}",
         "__AWARD__":            awards_str,
         "__MILESTONE_SPAN__":   milestone_span,
-        "__AT_A_GLANCE__":      tension_msg,
         "__YTD_SPEND_TOTAL__":  fmt_usd(ytd_tot),
         "__AWARD_BUDGET__":     fmt_usd(budget_tot),
         "__MONTHLY_SPEND__":    fmt_usd(month_tot),
         "__ON_TRACK__":         str(len(on_track)),
         "__WATCH_ITEMS__":      str(len(at_risk)),
-        "__TREND_NOTE__":       "Monthly spend \u2014 blue = actuals, orange = forecast.",
-        "__TREND_FOOTER__":     f"Award Year 2: Feb 2026 \u2013 Jan 2027. Month {m_el} of {AWARD_YEAR_TOTAL_MONTHS}.",
-        "__STATUS_NOTE__":      "On Track = within budget \u00b7 Watch = tightening \u00b7 At Risk = overrun.",
-        "__COUNT_ON_TRACK__":   str(len(on_track)),
-        "__COUNT_AT_RISK__":    str(len(at_risk)),
-        "__COUNT_AWAITING__":   str(len(on_watch)),
-        "__COUNT_NOT_STARTED__":"0",
         "__WATCHLIST_HTML__":   watchlist_html,
-        "__TENSION_MSG__":      tension_msg,
-        "__OPERATIONAL_NOTE__": "Credits, spend spikes, and notable activity this period.",
         "__OPERATIONAL_HTML__": operational_html,
-        "__CALLOUT_NOTE__":     "Action items for At Risk and Watch milestones.",
-        "__CALLOUT_HTML__":     callout_html,
         "__CONSOLIDATED_CALLOUTS_HTML__": callout_html,
-        "__NARRATIVE_PANEL__":  "",
-        "__FOOTER__":           (f"Generated {pd.Timestamp.now().strftime('%B %d, %Y %H:%M')} "
-                                 f"\u00b7 {reporting_month_full} \u00b7 Award(s): {awards_str}"),
-        "__MONTHLY_DATA_JSON__":  monthly_json,
-        "__MILESTONES_JSON__":    json.dumps([asdict(m) for m in all_milestones]),
-        "__HTML2PDF_JS__":        pdf_js_tag,
-        "__CURRENT_FILE__":       current_file,
+        "__FOOTER__":           f"Generated {datetime.now().strftime('%B %d, %Y %H:%M')}",
+        "__STORIES_PANEL__":      build_stories_panel(stories_data, all_milestones),
+        "__HOURS_PANEL__":        (hours_panel_html if 'hours_panel_html' in locals() else ""),
+        "__TREND_COLOR__":        trend_color,
         "__SITE_BASE_URL__":      SITE_BASE_URL,
-        "__ARCHIVE_BASE_URL__":   ARCHIVE_BASE_URL,
-        "__MONTHS_JSON_PATH__":   f"{ARCHIVE_BASE_URL}months.json",
+        "__ARCHIVE_BASE_URL__":    ARCHIVE_BASE_URL,
+        "__MONTHS_JSON_PATH__":    f"{ARCHIVE_BASE_URL}manifest.json",
+        
+        # Financial Data Points
+        "__DECISION_1__":         (f"{n_crit} milestone(s) need immediate review." if n_crit else "No immediate decisions required."),
+        "__DECISION_2__":         f"Budget used {budget_used_pct:.1f}% vs {yr_pct:.1f}% of award year.",
+        "__DECISION_3__":         "Review LCAT allocation for high-burn milestones.",
         "__BUDGET_USED_PCT__":    f"{budget_used_pct:.1f}",
         "__YEAR_ELAPSED_PCT__":   f"{yr_pct:.1f}",
         "__BUDGET_PACE_GAP__":    f"{pace_gap:+.1f}",
         "__TREND_ARROW__":        trend_arrow,
         "__TREND_PCT__":          f"{abs(trend_pct):.1f}",
-        "__TREND_COLOR__":        trend_color,
+        "__TREND_TEXT__":         f"{trend_arrow} {abs(trend_pct):.1f}% vs prior month.",
         "__FLAGGED_COUNT__":      str(n_flags),
         "__FLAGGED_SUMMARY__":    flag_summary,
-        "__MINOR_FLAG_COUNT__":   str(max(n_flags-n_crit,0)),
         "__PORTFOLIO_BALANCE__":  fmt_usd(bal_tot),
-        "__TREND_TEXT__":         f"{trend_arrow} {abs(trend_pct):.1f}% vs prior month.",
-        "__DECISION_1__":         (f"{n_crit} milestone(s) need immediate review."
-                                   if n_crit else "No immediate decisions required."),
-        "__DECISION_2__":         f"Budget used {budget_used_pct:.1f}% vs {yr_pct:.1f}% of award year (Feb 2026 \u2013 Jan 2027).",
-        "__DECISION_3__":         "Confirm whether front-loaded milestones should remain excluded from pace alerts.",
-        "__STORIES_PANEL__":      build_stories_panel(stories_data, all_milestones),
-        "__HOURS_PANEL__":        hours_panel_html,
-        "__WHAT_VISUALIZED__":    "Monthly actuals vs. forecast, spend trend, risk flags.",
+        "__AT_A_GLANCE__":        tension_msg,
+        
+        # Technical Tags
+        "__HTML2PDF_JS__":        pdf_js_tag,
+        "__CURRENT_FILE__":       current_file,
+        "__MILESTONES_JSON__":    json.dumps([asdict(m) for m in all_milestones]),
+        "__MONTHLY_DATA_JSON__":  monthly_json,
     }
 
     for k, v in replacements.items():
-        html = html.replace(k, v)
+        html = html.replace(str(k), str(v))
 
-    remaining = re.findall(r"__[A-Z_]+__", html)
-    if remaining:
-        print(f"  WARNING unreplaced placeholders: {set(remaining)}")
-
-    latest_path  = OUT_DIR / "index.html"
-  # archive_path = ARCHIVE_DIR / f"{slug}.html"
-    latest_path.write_text(html,  encoding="utf-8")
-    archive_path.write_text(html, encoding="utf-8")
-
-    months = archive_manifest(ARCHIVE_DIR)
-    (ARCHIVE_DIR / "months.json").write_text(
-        json.dumps([{"label":it["label"],"file":it["file"]} for it in months], indent=2),
-        encoding="utf-8"
-    )
-    build_archive_index(ARCHIVE_DIR, reporting_month_full)
-    print(f"  LATEST:   {latest_path}")
-    print(f"  ARCHIVED: {archive_path}")
+    # 7. FORCE WRITE TO DISK
+    latest_path = ROOT / "index.html"
+    latest_path.write_text(html, encoding="utf-8")
+    print(f"✅ SUCCESS: {latest_path.name} has been updated locally.")
 
 
 # ─────────────────────────────────────────────
@@ -1103,12 +1014,25 @@ def process() -> None:
                   reporting_month_full, awards_str, narratives,
                   stories_data, hours_data)
 
+    if ARCHIVE_DIR is not None:
+        ARCHIVE_DIR.mkdir(parents=True, exist_ok=True)
+        slug = month_slug(reporting_month_full)
+        snapshot_path = ARCHIVE_DIR / f"{slug}.html"
+        snapshot_path.write_text((ROOT / "index.html").read_text(encoding="utf-8"), encoding="utf-8")
+        build_archive_index(ARCHIVE_DIR, reporting_month_full)
+
     if AUTO_PUSH_GITHUB:
         try:
             # Re-generate files after git reset wipes them
             generate_html(all_milestones, monthly_chart, reporting_month,
                           reporting_month_full, awards_str, narratives,
                           stories_data, hours_data)
+            if ARCHIVE_DIR is not None:
+                ARCHIVE_DIR.mkdir(parents=True, exist_ok=True)
+                slug = month_slug(reporting_month_full)
+                snapshot_path = ARCHIVE_DIR / f"{slug}.html"
+                snapshot_path.write_text((ROOT / "index.html").read_text(encoding="utf-8"), encoding="utf-8")
+                build_archive_index(ARCHIVE_DIR, reporting_month_full)
             git_push(GIT_REPO_DIR, f"Dashboard update: {reporting_month_full}")
             print("GITHUB: pushed successfully")
         except Exception as e:

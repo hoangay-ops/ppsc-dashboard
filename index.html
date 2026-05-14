@@ -273,7 +273,7 @@
         </div>
         <div class="card">
           <div class="label">Monthly Spend</div>
-          <div class="value">$4,099,161 <span style="font-size:13px;color:__TREND_COLOR__;font-weight:600;">▲ 52.3%</span></div>
+          <div class="value">$4,099,161 <span style="font-size:13px;color:#dc2626;font-weight:600;">▲ 52.3%</span></div>
           <div class="delta">▲ 52.3% vs prior month.</div>
         </div>
         <div class="card">
@@ -575,7 +575,7 @@ tr.innerHTML =
       detailTr.style.background = '#f9fafb';
       var ws = Array.isArray(m.workstreams) ? m.workstreams : [];
       var wsHtml = ws.map(function(w) {
-        return '<li>' + w.name + ': ' + fmt.format(w.val) + '</li>';
+        return '<li>' + w.name + ': ' + fmt.format(w.month || 0) + ' this month, ' + fmt.format(w.ytd || 0) + ' YTD</li>';
       }).join('');
       detailTr.innerHTML = '<td colspan="6" style="padding:15px 30px;"><strong>Workstream Breakdown:</strong><ul>' +
         (wsHtml || '<li>No data</li>') + '</ul></td>';
@@ -817,9 +817,9 @@ function exportPDF() {
 (async function() {
   var body         = document.body;
   var currentFile  = body.dataset.currentFile;
-  var manifestPath = "__MONTHS_JSON_PATH__";
-  var baseUrl      = "__SITE_BASE_URL__";
-  var archiveUrl   = "__ARCHIVE_BASE_URL__";
+  var manifestPath = "https://hoangay-ops.github.io/ppsc-dashboard/archive/manifest.json";
+  var baseUrl      = "https://hoangay-ops.github.io/ppsc-dashboard/";
+  var archiveUrl   = "https://hoangay-ops.github.io/ppsc-dashboard/archive/";
   var months = [];
   try {
     var res = await fetch(manifestPath, {cache:"no-store"});
