@@ -736,6 +736,7 @@
       "forecast_val": null,
       "is_forecast": false,
       "is_current_month": false,
+      "is_fallback": false,
       "value_pct": 0.0
     },
     {
@@ -744,6 +745,7 @@
       "forecast_val": null,
       "is_forecast": false,
       "is_current_month": false,
+      "is_fallback": false,
       "value_pct": 35.0
     },
     {
@@ -752,6 +754,7 @@
       "forecast_val": 2724316.0,
       "is_forecast": false,
       "is_current_month": false,
+      "is_fallback": false,
       "value_pct": 8.0
     },
     {
@@ -760,6 +763,7 @@
       "forecast_val": 15129403.85,
       "is_forecast": false,
       "is_current_month": true,
+      "is_fallback": false,
       "value_pct": 12.2
     },
     {
@@ -768,6 +772,7 @@
       "forecast_val": 2744523.0,
       "is_forecast": true,
       "is_current_month": false,
+      "is_fallback": true,
       "value_pct": 7.8
     },
     {
@@ -776,6 +781,7 @@
       "forecast_val": 2503623.0,
       "is_forecast": true,
       "is_current_month": false,
+      "is_fallback": true,
       "value_pct": 7.1
     },
     {
@@ -784,6 +790,7 @@
       "forecast_val": 2362019.0,
       "is_forecast": true,
       "is_current_month": false,
+      "is_fallback": true,
       "value_pct": 7.5
     },
     {
@@ -792,6 +799,7 @@
       "forecast_val": 3737302.0,
       "is_forecast": true,
       "is_current_month": false,
+      "is_fallback": true,
       "value_pct": 7.6
     },
     {
@@ -800,6 +808,7 @@
       "forecast_val": 3685565.0,
       "is_forecast": true,
       "is_current_month": false,
+      "is_fallback": true,
       "value_pct": 9.0
     },
     {
@@ -808,6 +817,7 @@
       "forecast_val": 608801.0,
       "is_forecast": true,
       "is_current_month": false,
+      "is_fallback": true,
       "value_pct": 1.8
     },
     {
@@ -816,6 +826,7 @@
       "forecast_val": 558196.0,
       "is_forecast": true,
       "is_current_month": false,
+      "is_fallback": true,
       "value_pct": 1.8
     },
     {
@@ -824,6 +835,7 @@
       "forecast_val": 750064.0,
       "is_forecast": true,
       "is_current_month": false,
+      "is_fallback": true,
       "value_pct": 2.3
     }
   ]
