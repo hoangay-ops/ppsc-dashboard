@@ -848,7 +848,7 @@
       "month": "Jan",
       "value": null,
       "forecast_val": null,
-      "is_forecast": false,
+      "is_forecast": true,
       "is_current_month": false,
       "is_fallback": false,
       "value_pct": 0.0
