@@ -328,7 +328,7 @@
       "title": "M51 \u2014 Data. Process amd protocol automation",
       "raw_title": "Data. Process amd protocol automation",
       "award_number": "OT2OD036464",
-      "status": "Watch",
+      "status": "On Track",
       "budget": 642997.95,
       "monthly_spend": 274578.108,
       "percent_spent": 61.5,
@@ -643,7 +643,7 @@
       "title": "M58 \u2014 TEP",
       "raw_title": "TEP",
       "award_number": "OT2OD036464",
-      "status": "Watch",
+      "status": "On Track",
       "budget": 574478.2784999999,
       "monthly_spend": 15267.3045,
       "percent_spent": 13.5,
@@ -735,6 +735,7 @@
       "value": null,
       "forecast_val": null,
       "is_forecast": false,
+      "is_current_month": false,
       "value_pct": 0.0
     },
     {
@@ -742,6 +743,7 @@
       "value": 11787301.55,
       "forecast_val": null,
       "is_forecast": false,
+      "is_current_month": false,
       "value_pct": 35.0
     },
     {
@@ -749,6 +751,7 @@
       "value": 2692098.19,
       "forecast_val": 2724316.0,
       "is_forecast": false,
+      "is_current_month": false,
       "value_pct": 8.0
     },
     {
@@ -756,6 +759,7 @@
       "value": 4099160.98,
       "forecast_val": 2660405.0,
       "is_forecast": false,
+      "is_current_month": true,
       "value_pct": 12.2
     },
     {
@@ -763,6 +767,7 @@
       "value": 2629214.67,
       "forecast_val": 2744523.0,
       "is_forecast": true,
+      "is_current_month": false,
       "value_pct": 7.8
     },
     {
@@ -770,6 +775,7 @@
       "value": 2384619.02,
       "forecast_val": 2503623.0,
       "is_forecast": true,
+      "is_current_month": false,
       "value_pct": 7.1
     },
     {
@@ -777,6 +783,7 @@
       "value": 2534941.62,
       "forecast_val": 2362019.0,
       "is_forecast": true,
+      "is_current_month": false,
       "value_pct": 7.5
     },
     {
@@ -784,6 +791,7 @@
       "value": 2574573.87,
       "forecast_val": 3737302.0,
       "is_forecast": true,
+      "is_current_month": false,
       "value_pct": 7.6
     },
     {
@@ -791,6 +799,7 @@
       "value": 3028015.84,
       "forecast_val": 3685565.0,
       "is_forecast": true,
+      "is_current_month": false,
       "value_pct": 9.0
     },
     {
@@ -798,6 +807,7 @@
       "value": 612057.55,
       "forecast_val": 608801.0,
       "is_forecast": true,
+      "is_current_month": false,
       "value_pct": 1.8
     },
     {
@@ -805,6 +815,7 @@
       "value": 594751.7,
       "forecast_val": 558196.0,
       "is_forecast": true,
+      "is_current_month": false,
       "value_pct": 1.8
     },
     {
@@ -812,6 +823,7 @@
       "value": 771229.58,
       "forecast_val": 750064.0,
       "is_forecast": true,
+      "is_current_month": false,
       "value_pct": 2.3
     }
   ]
