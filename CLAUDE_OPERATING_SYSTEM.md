@@ -18,9 +18,8 @@ prevention of repeated past failures
 
 This is an existing production dashboard built with:
 
-Python (Flask backend)
-HTML templates (frontend)
-Bootstrap styling
+Python 
+HTML template (frontend)
 Session-based filtering system
 Chart rendering via shared helper functions
 
