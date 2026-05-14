@@ -984,6 +984,18 @@ def process() -> None:
     print(f"Main: {[p.name for p in main_files]}")
     print(f"Aux:  {[p.name for p in aux_files]}")
 
+    print(f"Checking for data in: {DATA_DIR}")
+    files = list(DATA_DIR.glob("*.xlsx"))
+    print(f"Found {len(files)} files: {[f.name for f in files]}")
+    
+    # Filter out temp files and aux files
+    valid_files = [f for f in files if is_valid_xlsx(f) and not is_aux(f)]
+    print(f"Valid data files found: {[f.name for f in valid_files]}")
+    
+    if not valid_files:
+        print("❌ ERROR: No valid Excel data files found in /data folder!")
+        return
+
     current_file     = main_files[-1]
     all_milestones:  List[MilestoneRow]   = []
     awards_found:    List[str]            = []
