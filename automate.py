@@ -562,14 +562,19 @@ def build_archive_index(archive_dir: Path, current_month_full: str) -> None:
   # (archive_dir / "index.html").write_text(html, encoding="utf-8")
 
 def git_push(repo_dir: Path, message: str) -> None:
-    # 1. Get latest from GitHub
+    # 1. Temporarily hide any unsaved changes to automate.py
+    subprocess.run(["git", "-C", str(repo_dir), "stash"], check=False)
+    
+    # 2. Get latest and sync
     subprocess.run(["git", "-C", str(repo_dir), "fetch", "origin"], check=True)
-    # 2. Merge changes instead of resetting (this keeps your new index.html)
     subprocess.run(["git", "-C", str(repo_dir), "pull", "origin", "main", "--rebase"], check=True)
-    # 3. Stage the new file
+    
+    # 3. Bring your script changes back
+    subprocess.run(["git", "-C", str(repo_dir), "stash", "pop"], check=False)
+    
+    # 4. Add the new dashboard and push
     subprocess.run(["git", "-C", str(repo_dir), "add", "index.html"], check=True)
-    # 4. Commit and Push
-    result = subprocess.run(["git", "-C", str(repo_dir), "commit", "-m", message], capture_output=True, text=True)
+    subprocess.run(["git", "-C", str(repo_dir), "commit", "-m", message], check=False)
     subprocess.run(["git", "-C", str(repo_dir), "push"], check=True)
 
 def sync_and_push(out_dir: Path, repo_dir: Path, message: str) -> None:

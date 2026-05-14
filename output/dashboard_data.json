@@ -1,0 +1,818 @@
+{
+  "summary": {
+    "reporting_month": "April 2026",
+    "awards": "OT2OD036464",
+    "budget_total": 33707478.4095,
+    "ytd_total": 18578560.7245,
+    "month_total": 4099160.9760000003,
+    "bal_total": -485.1698808097426
+  },
+  "milestones": [
+    {
+      "milestone_id": "M44",
+      "title": "M44 \u2014 Directorate",
+      "raw_title": "Directorate",
+      "award_number": "OT2OD036464",
+      "status": "At Risk",
+      "budget": 402821.6875,
+      "monthly_spend": 140832.825,
+      "percent_spent": 65.6,
+      "labor_actual": 11151.79,
+      "travel_actual": 0.0,
+      "odc_actual": 113168.59,
+      "ytd_actual": 264122.74,
+      "total_forecast": 150242.3251612878,
+      "est_total_spend": 414365.0651612878,
+      "est_balance": -11543.37766128776,
+      "expected_spend": 100705.42,
+      "burn_rate_status": "Ahead",
+      "pace_variance": 163417.32,
+      "projected_overrun": 11543.38,
+      "exception_note": "",
+      "people_count": 0,
+      "total_hours": 0.0,
+      "story_points": 0.0,
+      "workstreams": [
+        {
+          "name": "Labor",
+          "month": 11151.79,
+          "ytd": 59708.799999999996,
+          "budget": 92122.0
+        },
+        {
+          "name": "Travel",
+          "month": 0.0,
+          "ytd": 4510.0599999999995,
+          "budget": 0.0
+        },
+        {
+          "name": "ODC",
+          "month": 113168.59,
+          "ytd": 142075.88999999998,
+          "budget": 211119.0
+        }
+      ]
+    },
+    {
+      "milestone_id": "M45",
+      "title": "M45 \u2014 Product Implementation",
+      "raw_title": "Product Implementation",
+      "award_number": "OT2OD036464",
+      "status": "At Risk",
+      "budget": 2335517.05,
+      "monthly_spend": 525222.831,
+      "percent_spent": 33.8,
+      "labor_actual": 3326.92,
+      "travel_actual": 0.0,
+      "odc_actual": 490987.01,
+      "ytd_actual": 789168.6494999999,
+      "total_forecast": 1549185.9420100797,
+      "est_total_spend": 2338354.5915100793,
+      "est_balance": -2838.5415100798054,
+      "expected_spend": 583879.26,
+      "burn_rate_status": "Ahead",
+      "pace_variance": 205289.39,
+      "projected_overrun": 2837.54,
+      "exception_note": "",
+      "people_count": 0,
+      "total_hours": 0.0,
+      "story_points": 0.0,
+      "workstreams": [
+        {
+          "name": "Labor",
+          "month": 3326.92,
+          "ytd": 29657.339999999997,
+          "budget": 40321.0
+        },
+        {
+          "name": "Travel",
+          "month": 0.0,
+          "ytd": 0.0,
+          "budget": 0.0
+        },
+        {
+          "name": "ODC",
+          "month": 490987.01,
+          "ytd": 692001.48,
+          "budget": 2135256.0
+        }
+      ]
+    },
+    {
+      "milestone_id": "M46",
+      "title": "M46 \u2014 Website Maintenance",
+      "raw_title": "Website Maintenance",
+      "award_number": "OT2OD036464",
+      "status": "Watch",
+      "budget": 1100033.55,
+      "monthly_spend": 259459.4205,
+      "percent_spent": 38.0,
+      "labor_actual": 0.0,
+      "travel_actual": 0.0,
+      "odc_actual": 244079.29,
+      "ytd_actual": 417539.7345,
+      "total_forecast": 679303.3655136183,
+      "est_total_spend": 1096843.1000136184,
+      "est_balance": 3190.4499863816654,
+      "expected_spend": 275008.39,
+      "burn_rate_status": "Ahead",
+      "pace_variance": 142531.34,
+      "projected_overrun": -3190.45,
+      "exception_note": "",
+      "people_count": 0,
+      "total_hours": 0.0,
+      "story_points": 0.0,
+      "workstreams": [
+        {
+          "name": "Labor",
+          "month": 0.0,
+          "ytd": 14992.160000000002,
+          "budget": 5251.0
+        },
+        {
+          "name": "Travel",
+          "month": 0.0,
+          "ytd": 0.0,
+          "budget": 0.0
+        },
+        {
+          "name": "ODC",
+          "month": 244079.29,
+          "ytd": 362144.4,
+          "budget": 1016309.0
+        }
+      ]
+    },
+    {
+      "milestone_id": "M47",
+      "title": "M47 \u2014 Communications Delivery",
+      "raw_title": "Communications Delivery",
+      "award_number": "OT2OD036464",
+      "status": "At Risk",
+      "budget": 1682690.1,
+      "monthly_spend": 333497.388,
+      "percent_spent": 33.9,
+      "labor_actual": 0.0,
+      "travel_actual": 0.0,
+      "odc_actual": 315548.64,
+      "ytd_actual": 569914.5165,
+      "total_forecast": 1151285.2086986252,
+      "est_total_spend": 1721199.7251986254,
+      "est_balance": -38509.6251986252,
+      "expected_spend": 420672.53,
+      "burn_rate_status": "Ahead",
+      "pace_variance": 149241.99,
+      "projected_overrun": 38509.63,
+      "exception_note": "",
+      "people_count": 0,
+      "total_hours": 0.0,
+      "story_points": 0.0,
+      "workstreams": [
+        {
+          "name": "Labor",
+          "month": 0.0,
+          "ytd": 22775.5,
+          "budget": 5251.0
+        },
+        {
+          "name": "Travel",
+          "month": 0.0,
+          "ytd": 0.0,
+          "budget": 0.0
+        },
+        {
+          "name": "ODC",
+          "month": 315548.64,
+          "ytd": 497914.04000000004,
+          "budget": 1583575.0
+        }
+      ]
+    },
+    {
+      "milestone_id": "M48",
+      "title": "M48 \u2014 Data Quality & Platform analytics",
+      "raw_title": "Data Quality & Platform analytics",
+      "award_number": "OT2OD036464",
+      "status": "Watch",
+      "budget": 934901.2365,
+      "monthly_spend": 219096.864,
+      "percent_spent": 42.1,
+      "labor_actual": 23388.64,
+      "travel_actual": 0.0,
+      "odc_actual": 165838.92,
+      "ytd_actual": 393271.11149999994,
+      "total_forecast": 525944.9116417399,
+      "est_total_spend": 919216.0231417399,
+      "est_balance": 15685.213358260116,
+      "expected_spend": 233725.31,
+      "burn_rate_status": "Ahead",
+      "pace_variance": 159545.8,
+      "projected_overrun": -15685.21,
+      "exception_note": "",
+      "people_count": 0,
+      "total_hours": 0.0,
+      "story_points": 0.0,
+      "workstreams": [
+        {
+          "name": "Labor",
+          "month": 23388.64,
+          "ytd": 93436.64,
+          "budget": 209328.21
+        },
+        {
+          "name": "Travel",
+          "month": 0.0,
+          "ytd": 0.0,
+          "budget": 0.0
+        },
+        {
+          "name": "ODC",
+          "month": 165838.92,
+          "ytd": 205902.92,
+          "budget": 498039.0
+        }
+      ]
+    },
+    {
+      "milestone_id": "M49",
+      "title": "M49 \u2014 Tier 2&3 support",
+      "raw_title": "Tier 2&3 support",
+      "award_number": "OT2OD036464",
+      "status": "Watch",
+      "budget": 818740.125,
+      "monthly_spend": 121836.6555,
+      "percent_spent": 53.5,
+      "labor_actual": 35894.48,
+      "travel_actual": 0.0,
+      "odc_actual": 50325.7,
+      "ytd_actual": 437729.5335000001,
+      "total_forecast": 376360.1813361626,
+      "est_total_spend": 814089.7148361626,
+      "est_balance": 4650.410163837369,
+      "expected_spend": 204685.03,
+      "burn_rate_status": "Ahead",
+      "pace_variance": 233044.5,
+      "projected_overrun": -4650.41,
+      "exception_note": "",
+      "people_count": 0,
+      "total_hours": 0.0,
+      "story_points": 0.0,
+      "workstreams": [
+        {
+          "name": "Labor",
+          "month": 35894.48,
+          "ytd": 177068.80000000002,
+          "budget": 311149.28
+        },
+        {
+          "name": "Travel",
+          "month": 0.0,
+          "ytd": 0.0,
+          "budget": 0.0
+        },
+        {
+          "name": "ODC",
+          "month": 50325.7,
+          "ytd": 94252.88,
+          "budget": 195136.0
+        }
+      ]
+    },
+    {
+      "milestone_id": "M50",
+      "title": "M50 \u2014 Development + Operations & Maintenance",
+      "raw_title": "Development + Operations & Maintenance",
+      "award_number": "OT2OD036464",
+      "status": "Watch",
+      "budget": 7460577.6,
+      "monthly_spend": 1709166.3015,
+      "percent_spent": 35.4,
+      "labor_actual": 30408.82,
+      "travel_actual": 0.0,
+      "odc_actual": 1558955.97,
+      "ytd_actual": 2642932.4669999997,
+      "total_forecast": 4767530.733541277,
+      "est_total_spend": 7410463.200541276,
+      "est_balance": 50114.39945872387,
+      "expected_spend": 1865144.4,
+      "burn_rate_status": "Ahead",
+      "pace_variance": 777788.07,
+      "projected_overrun": -50114.4,
+      "exception_note": "",
+      "people_count": 0,
+      "total_hours": 0.0,
+      "story_points": 0.0,
+      "workstreams": [
+        {
+          "name": "Labor",
+          "month": 30408.82,
+          "ytd": 154490.76,
+          "budget": 216764.0
+        },
+        {
+          "name": "Travel",
+          "month": 0.0,
+          "ytd": 0.0,
+          "budget": 0.0
+        },
+        {
+          "name": "ODC",
+          "month": 1558955.97,
+          "ytd": 2205487.4299999997,
+          "budget": 6626937.0
+        }
+      ]
+    },
+    {
+      "milestone_id": "M51",
+      "title": "M51 \u2014 Data. Process amd protocol automation",
+      "raw_title": "Data. Process amd protocol automation",
+      "award_number": "OT2OD036464",
+      "status": "Watch",
+      "budget": 642997.95,
+      "monthly_spend": 274578.108,
+      "percent_spent": 61.5,
+      "labor_actual": 5850.18,
+      "travel_actual": 0.0,
+      "odc_actual": 249331.57,
+      "ytd_actual": 395701.1625,
+      "total_forecast": 226619.50633860083,
+      "est_total_spend": 622320.668838601,
+      "est_balance": 20677.281161399093,
+      "expected_spend": 160749.49,
+      "burn_rate_status": "Ahead",
+      "pace_variance": 234951.67,
+      "projected_overrun": -20677.28,
+      "exception_note": "",
+      "people_count": 0,
+      "total_hours": 0.0,
+      "story_points": 0.0,
+      "workstreams": [
+        {
+          "name": "Labor",
+          "month": 5850.18,
+          "ytd": 11436.41,
+          "budget": 77316.0
+        },
+        {
+          "name": "Travel",
+          "month": 0.0,
+          "ytd": 0.0,
+          "budget": 0.0
+        },
+        {
+          "name": "ODC",
+          "month": 249331.57,
+          "ytd": 353936.01,
+          "budget": 465865.0
+        }
+      ]
+    },
+    {
+      "milestone_id": "M52",
+      "title": "M52 \u2014 Security",
+      "raw_title": "Security",
+      "award_number": "OT2OD036464",
+      "status": "Watch",
+      "budget": 507006.8115,
+      "monthly_spend": 85315.73399999998,
+      "percent_spent": 40.2,
+      "labor_actual": 12969.06,
+      "travel_actual": 0.0,
+      "odc_actual": 56466.2,
+      "ytd_actual": 203691.1695,
+      "total_forecast": 302964.56721175753,
+      "est_total_spend": 506655.73671175755,
+      "est_balance": 351.07478824245845,
+      "expected_spend": 126751.7,
+      "burn_rate_status": "Ahead",
+      "pace_variance": 76939.47,
+      "projected_overrun": -351.07,
+      "exception_note": "",
+      "people_count": 0,
+      "total_hours": 0.0,
+      "story_points": 0.0,
+      "workstreams": [
+        {
+          "name": "Labor",
+          "month": 12969.06,
+          "ytd": 68120.73999999999,
+          "budget": 106061.27
+        },
+        {
+          "name": "Travel",
+          "month": 0.0,
+          "ytd": 0.0,
+          "budget": 0.0
+        },
+        {
+          "name": "ODC",
+          "month": 56466.2,
+          "ytd": 67976.2,
+          "budget": 260251.0
+        }
+      ]
+    },
+    {
+      "milestone_id": "M53",
+      "title": "M53 \u2014 Licenses",
+      "raw_title": "Licenses",
+      "award_number": "OT2OD036464",
+      "status": "On Track",
+      "budget": 9214479.75,
+      "monthly_spend": -222515.23949999997,
+      "percent_spent": 101.7,
+      "labor_actual": 133.76,
+      "travel_actual": 0.0,
+      "odc_actual": 60045.53,
+      "ytd_actual": 9372222.1155,
+      "total_forecast": 0.0,
+      "est_total_spend": 9372222.1155,
+      "est_balance": -157742.36550000036,
+      "expected_spend": 2303619.94,
+      "burn_rate_status": "Ahead",
+      "pace_variance": 7068602.18,
+      "projected_overrun": 157742.37,
+      "exception_note": "Annual license fees paid upfront in February \u2014 no further spend expected.",
+      "people_count": 1,
+      "total_hours": 1.0,
+      "story_points": 0.0,
+      "workstreams": [
+        {
+          "name": "Labor",
+          "month": 133.76,
+          "ytd": 942224.87,
+          "budget": 0.0
+        },
+        {
+          "name": "Travel",
+          "month": 0.0,
+          "ytd": 0.0,
+          "budget": 0.0
+        },
+        {
+          "name": "ODC",
+          "month": 60045.53,
+          "ytd": 6577419.78,
+          "budget": 7313079.0
+        }
+      ]
+    },
+    {
+      "milestone_id": "M54",
+      "title": "M54 \u2014 Directorate and Management",
+      "raw_title": "Directorate and Management",
+      "award_number": "OT2OD036464",
+      "status": "Watch",
+      "budget": 450886.078,
+      "monthly_spend": -50473.248,
+      "percent_spent": 42.4,
+      "labor_actual": -24285.22,
+      "travel_actual": 0.0,
+      "odc_actual": -3784.21,
+      "ytd_actual": 191272.85100000002,
+      "total_forecast": 255913.1811882881,
+      "est_total_spend": 447186.0321882881,
+      "est_balance": 3699.0458117119033,
+      "expected_spend": 112721.52,
+      "burn_rate_status": "Ahead",
+      "pace_variance": 78551.33,
+      "projected_overrun": -3700.05,
+      "exception_note": "",
+      "people_count": 0,
+      "total_hours": 0.0,
+      "story_points": 0.0,
+      "workstreams": [
+        {
+          "name": "Labor",
+          "month": -24285.22,
+          "ytd": 99107.02,
+          "budget": 219465.26
+        },
+        {
+          "name": "Travel",
+          "month": 0.0,
+          "ytd": 1030.92,
+          "budget": 0.0
+        },
+        {
+          "name": "ODC",
+          "month": -3784.21,
+          "ytd": 6891.250000000001,
+          "budget": 19869.0
+        }
+      ]
+    },
+    {
+      "milestone_id": "M55",
+      "title": "M55 \u2014 Protocol Compliance",
+      "raw_title": "Protocol Compliance",
+      "award_number": "OT2OD036464",
+      "status": "At Risk",
+      "budget": 917727.489,
+      "monthly_spend": 199417.386,
+      "percent_spent": 44.0,
+      "labor_actual": 86979.52,
+      "travel_actual": 0.0,
+      "odc_actual": 28047.71,
+      "ytd_actual": 403737.7365,
+      "total_forecast": 514073.949834249,
+      "est_total_spend": 917811.6863342489,
+      "est_balance": -84.19733424895821,
+      "expected_spend": 229431.87,
+      "burn_rate_status": "Ahead",
+      "pace_variance": 174305.87,
+      "projected_overrun": 84.2,
+      "exception_note": "",
+      "people_count": 0,
+      "total_hours": 0.0,
+      "story_points": 0.0,
+      "workstreams": [
+        {
+          "name": "Labor",
+          "month": 86979.52,
+          "ytd": 170991.12,
+          "budget": 283826.13
+        },
+        {
+          "name": "Travel",
+          "month": 0.0,
+          "ytd": 0.0,
+          "budget": 0.0
+        },
+        {
+          "name": "ODC",
+          "month": 28047.71,
+          "ytd": 64240.409999999996,
+          "budget": 303363.0
+        }
+      ]
+    },
+    {
+      "milestone_id": "M56",
+      "title": "M56 \u2014 Partner and Participant Coordination",
+      "raw_title": "Partner and Participant Coordination",
+      "award_number": "OT2OD036464",
+      "status": "Watch",
+      "budget": 600671.4,
+      "monthly_spend": 54957.903,
+      "percent_spent": 45.8,
+      "labor_actual": 27364.54,
+      "travel_actual": 0.0,
+      "odc_actual": 2775.0,
+      "ytd_actual": 274931.03400000004,
+      "total_forecast": 314350.41087441024,
+      "est_total_spend": 589281.4448744104,
+      "est_balance": 11389.955125589728,
+      "expected_spend": 150167.85,
+      "burn_rate_status": "Ahead",
+      "pace_variance": 124763.18,
+      "projected_overrun": -11389.96,
+      "exception_note": "",
+      "people_count": 0,
+      "total_hours": 0.0,
+      "story_points": 0.0,
+      "workstreams": [
+        {
+          "name": "Labor",
+          "month": 27364.54,
+          "ytd": 135103.59,
+          "budget": 289921.0
+        },
+        {
+          "name": "Travel",
+          "month": 0.0,
+          "ytd": 2833.27,
+          "budget": 0.0
+        },
+        {
+          "name": "ODC",
+          "month": 2775.0,
+          "ytd": 13661.64,
+          "budget": 30244.0
+        }
+      ]
+    },
+    {
+      "milestone_id": "M57",
+      "title": "M57 \u2014 Data Governance and Delivery",
+      "raw_title": "Data Governance and Delivery",
+      "award_number": "OT2OD036464",
+      "status": "Watch",
+      "budget": 1214051.412,
+      "monthly_spend": 153997.557,
+      "percent_spent": 61.6,
+      "labor_actual": 77978.45,
+      "travel_actual": 0.0,
+      "odc_actual": 5877.45,
+      "ytd_actual": 747351.885,
+      "total_forecast": 450737.576233191,
+      "est_total_spend": 1198089.461233191,
+      "est_balance": 15961.950766808994,
+      "expected_spend": 303512.85,
+      "burn_rate_status": "Ahead",
+      "pace_variance": 443839.04,
+      "projected_overrun": -15961.95,
+      "exception_note": "",
+      "people_count": 0,
+      "total_hours": 0.0,
+      "story_points": 0.0,
+      "workstreams": [
+        {
+          "name": "Labor",
+          "month": 77978.45,
+          "ytd": 377465.29,
+          "budget": 595940.98
+        },
+        {
+          "name": "Travel",
+          "month": 0.0,
+          "ytd": 0.0,
+          "budget": 0.0
+        },
+        {
+          "name": "ODC",
+          "month": 5877.45,
+          "ytd": 29932.26,
+          "budget": 45783.75
+        }
+      ]
+    },
+    {
+      "milestone_id": "M58",
+      "title": "M58 \u2014 TEP",
+      "raw_title": "TEP",
+      "award_number": "OT2OD036464",
+      "status": "Watch",
+      "budget": 574478.2784999999,
+      "monthly_spend": 15267.3045,
+      "percent_spent": 13.5,
+      "labor_actual": 7631.14,
+      "travel_actual": 0.0,
+      "odc_actual": 728.16,
+      "ytd_actual": 77269.185,
+      "total_forecast": 492502.746126033,
+      "est_total_spend": 569771.931126033,
+      "est_balance": 4706.347373966997,
+      "expected_spend": 143619.57,
+      "burn_rate_status": "Behind",
+      "pace_variance": -66350.39,
+      "projected_overrun": -4706.35,
+      "exception_note": "",
+      "people_count": 0,
+      "total_hours": 0.0,
+      "story_points": 0.0,
+      "workstreams": [
+        {
+          "name": "Labor",
+          "month": 7631.14,
+          "ytd": 38472.14,
+          "budget": 100135.97
+        },
+        {
+          "name": "Travel",
+          "month": 0.0,
+          "ytd": 0.0,
+          "budget": 0.0
+        },
+        {
+          "name": "ODC",
+          "month": 728.16,
+          "ytd": 3903.87,
+          "budget": 301725.0
+        }
+      ]
+    },
+    {
+      "milestone_id": "M59",
+      "title": "M59 \u2014 Support Center",
+      "raw_title": "Support Center",
+      "award_number": "OT2OD036464",
+      "status": "Watch",
+      "budget": 4849897.8915,
+      "monthly_spend": 279503.1855,
+      "percent_spent": 28.8,
+      "labor_actual": 127769.13,
+      "travel_actual": 0.0,
+      "odc_actual": 46136.6,
+      "ytd_actual": 1397704.8329999999,
+      "total_forecast": 3372389.2491714894,
+      "est_total_spend": 4770094.0821714895,
+      "est_balance": 79806.80932851016,
+      "expected_spend": 1212474.47,
+      "burn_rate_status": "Ahead",
+      "pace_variance": 185230.36,
+      "projected_overrun": -79803.81,
+      "exception_note": "",
+      "people_count": 0,
+      "total_hours": 0.0,
+      "story_points": 0.0,
+      "workstreams": [
+        {
+          "name": "Labor",
+          "month": 127769.13,
+          "ytd": 711138.61,
+          "budget": 2449996.01
+        },
+        {
+          "name": "Travel",
+          "month": 0.0,
+          "ytd": 0.0,
+          "budget": 0.0
+        },
+        {
+          "name": "ODC",
+          "month": 46136.6,
+          "ytd": 133692.3,
+          "budget": 624501.0
+        }
+      ]
+    }
+  ],
+  "monthlyData": [
+    {
+      "month": "Jan",
+      "value": null,
+      "forecast_val": null,
+      "is_forecast": false,
+      "value_pct": 0.0
+    },
+    {
+      "month": "Feb",
+      "value": 11787301.55,
+      "forecast_val": null,
+      "is_forecast": false,
+      "value_pct": 35.0
+    },
+    {
+      "month": "Mar",
+      "value": 2692098.19,
+      "forecast_val": 2724316.0,
+      "is_forecast": false,
+      "value_pct": 8.0
+    },
+    {
+      "month": "Apr",
+      "value": 4099160.98,
+      "forecast_val": 2660405.0,
+      "is_forecast": false,
+      "value_pct": 12.2
+    },
+    {
+      "month": "May",
+      "value": 2629214.67,
+      "forecast_val": 2744523.0,
+      "is_forecast": true,
+      "value_pct": 7.8
+    },
+    {
+      "month": "Jun",
+      "value": 2384619.02,
+      "forecast_val": 2503623.0,
+      "is_forecast": true,
+      "value_pct": 7.1
+    },
+    {
+      "month": "Jul",
+      "value": 2534941.62,
+      "forecast_val": 2362019.0,
+      "is_forecast": true,
+      "value_pct": 7.5
+    },
+    {
+      "month": "Aug",
+      "value": 2574573.87,
+      "forecast_val": 3737302.0,
+      "is_forecast": true,
+      "value_pct": 7.6
+    },
+    {
+      "month": "Sep",
+      "value": 3028015.84,
+      "forecast_val": 3685565.0,
+      "is_forecast": true,
+      "value_pct": 9.0
+    },
+    {
+      "month": "Oct",
+      "value": 612057.55,
+      "forecast_val": 608801.0,
+      "is_forecast": true,
+      "value_pct": 1.8
+    },
+    {
+      "month": "Nov",
+      "value": 594751.7,
+      "forecast_val": 558196.0,
+      "is_forecast": true,
+      "value_pct": 1.8
+    },
+    {
+      "month": "Dec",
+      "value": 771229.58,
+      "forecast_val": 750064.0,
+      "is_forecast": true,
+      "value_pct": 2.3
+    }
+  ]
+}
