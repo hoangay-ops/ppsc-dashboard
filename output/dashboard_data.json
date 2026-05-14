@@ -1,932 +1,121 @@
 {
   "summary": {
-    "reporting_month": "February 2026",
-    "awards": "OT2OD036464",
-    "budget_total": 34122955.65,
-    "ytd_total": 0.0,
-    "month_total": 11787301.554000003,
-    "bal_total": 34122113.74918355
+    "reporting_month": "January 2026",
+    "awards": "2_PPSC Financial Reporting_January 2026",
+    "budget_total": 0,
+    "ytd_total": 0,
+    "month_total": 0,
+    "bal_total": 0
   },
-  "milestones": [
-    {
-      "milestone_id": "M44",
-      "title": "M44 \u2014 Directorate",
-      "raw_title": "Directorate",
-      "award_number": "OT2OD036464",
-      "status": "On Track",
-      "budget": 427822.45,
-      "monthly_spend": 58088.835,
-      "percent_spent": 0.0,
-      "labor_actual": 27454.42,
-      "travel_actual": 3451.77,
-      "odc_actual": 1626.15,
-      "ytd_actual": 0.0,
-      "total_forecast": 58088.835,
-      "est_total_spend": 361477.9515538925,
-      "est_balance": 419566.78655389254,
-      "expected_spend": 35651.87,
-      "burn_rate_status": "Behind",
-      "pace_variance": -35651.87,
-      "projected_overrun": -66344.5,
-      "exception_note": "",
-      "people_count": 0,
-      "total_hours": 0.0,
-      "story_points": 0.0,
-      "workstreams": [
-        {
-          "name": "Labor",
-          "budget": 105005.0,
-          "month": 27454.42,
-          "ytd": 0.0
-        },
-        {
-          "name": "ODC",
-          "budget": 211119.0,
-          "month": 1626.15,
-          "ytd": 0.0
-        },
-        {
-          "name": "Indirect Costs",
-          "budget": 91325.0,
-          "month": 22790.36,
-          "ytd": 0.0
-        },
-        {
-          "name": "Fee costs",
-          "budget": 20373.45,
-          "month": 2766.135,
-          "ytd": 0.0
-        }
-      ]
-    },
-    {
-      "milestone_id": "M45",
-      "title": "M45 \u2014 Product Implementation",
-      "raw_title": "Product Implementation",
-      "award_number": "OT2OD036464",
-      "status": "On Track",
-      "budget": 2335517.05,
-      "monthly_spend": 33267.381,
-      "percent_spent": 0.0,
-      "labor_actual": 12273.01,
-      "travel_actual": 0.0,
-      "odc_actual": 7940.25,
-      "ytd_actual": 0.0,
-      "total_forecast": 33267.381,
-      "est_total_spend": 2286582.4327309206,
-      "est_balance": 2319849.81373092,
-      "expected_spend": 194626.42,
-      "burn_rate_status": "Behind",
-      "pace_variance": -194626.42,
-      "projected_overrun": -48934.62,
-      "exception_note": "",
-      "people_count": 0,
-      "total_hours": 0.0,
-      "story_points": 0.0,
-      "workstreams": [
-        {
-          "name": "Labor",
-          "budget": 40321.0,
-          "month": 12273.01,
-          "ytd": 0.0
-        },
-        {
-          "name": "ODC",
-          "budget": 2135256.0,
-          "month": 7940.25,
-          "ytd": 0.0
-        },
-        {
-          "name": "Indirect Costs",
-          "budget": 48724.0,
-          "month": 11469.96,
-          "ytd": 0.0
-        },
-        {
-          "name": "Fee costs",
-          "budget": 111215.05,
-          "month": 1584.161,
-          "ytd": 0.0
-        }
-      ]
-    },
-    {
-      "milestone_id": "M46",
-      "title": "M46 \u2014 Website Maintenance",
-      "raw_title": "Website Maintenance",
-      "award_number": "OT2OD036464",
-      "status": "On Track",
-      "budget": 1100033.55,
-      "monthly_spend": 48056.064,
-      "percent_spent": 0.0,
-      "labor_actual": 14710.79,
-      "travel_actual": 0.0,
-      "odc_actual": 15883.6,
-      "ytd_actual": 0.0,
-      "total_forecast": 48056.064,
-      "est_total_spend": 1047438.3820478214,
-      "est_balance": 1095494.4460478213,
-      "expected_spend": 91669.46,
-      "burn_rate_status": "Behind",
-      "pace_variance": -91669.46,
-      "projected_overrun": -52595.17,
-      "exception_note": "",
-      "people_count": 0,
-      "total_hours": 0.0,
-      "story_points": 0.0,
-      "workstreams": [
-        {
-          "name": "Labor",
-          "budget": 5251.0,
-          "month": 14710.79,
-          "ytd": 0.0
-        },
-        {
-          "name": "ODC",
-          "budget": 1016309.0,
-          "month": 15883.6,
-          "ytd": 0.0
-        },
-        {
-          "name": "Indirect Costs",
-          "budget": 26091.0,
-          "month": 15173.29,
-          "ytd": 0.0
-        },
-        {
-          "name": "Fee costs",
-          "budget": 52382.55,
-          "month": 2288.384,
-          "ytd": 0.0
-        }
-      ]
-    },
-    {
-      "milestone_id": "M47",
-      "title": "M47 \u2014 Communications Delivery",
-      "raw_title": "Communications Delivery",
-      "award_number": "OT2OD036464",
-      "status": "On Track",
-      "budget": 1682690.1,
-      "monthly_spend": 27459.925499999998,
-      "percent_spent": 0.0,
-      "labor_actual": 12975.64,
-      "travel_actual": 0.0,
-      "odc_actual": 2404.4,
-      "ytd_actual": 0.0,
-      "total_forecast": 27459.925499999998,
-      "est_total_spend": 1673337.5158500003,
-      "est_balance": 1700797.44135,
-      "expected_spend": 140224.18,
-      "burn_rate_status": "Behind",
-      "pace_variance": -140224.18,
-      "projected_overrun": -9352.58,
-      "exception_note": "",
-      "people_count": 0,
-      "total_hours": 0.0,
-      "story_points": 0.0,
-      "workstreams": [
-        {
-          "name": "Labor",
-          "budget": 5251.0,
-          "month": 12975.64,
-          "ytd": 0.0
-        },
-        {
-          "name": "ODC",
-          "budget": 1583575.0,
-          "month": 2404.4,
-          "ytd": 0.0
-        },
-        {
-          "name": "Indirect Costs",
-          "budget": 13736.0,
-          "month": 10772.27,
-          "ytd": 0.0
-        },
-        {
-          "name": "Fee costs",
-          "budget": 80128.1,
-          "month": 1307.6154999999999,
-          "ytd": 0.0
-        }
-      ]
-    },
-    {
-      "milestone_id": "M48",
-      "title": "M48 \u2014 Data Quality & Platform analytics",
-      "raw_title": "Data Quality & Platform analytics",
-      "award_number": "OT2OD036464",
-      "status": "On Track",
-      "budget": 960378.3,
-      "monthly_spend": 86774.4675,
-      "percent_spent": 0.0,
-      "labor_actual": 41525.74,
-      "travel_actual": 0.0,
-      "odc_actual": 7228.85,
-      "ytd_actual": 0.0,
-      "total_forecast": 86774.4675,
-      "est_total_spend": 853229.4464074709,
-      "est_balance": 940003.913907471,
-      "expected_spend": 80031.53,
-      "burn_rate_status": "Behind",
-      "pace_variance": -80031.53,
-      "projected_overrun": -107148.85,
-      "exception_note": "",
-      "people_count": 0,
-      "total_hours": 0.0,
-      "story_points": 0.0,
-      "workstreams": [
-        {
-          "name": "Labor",
-          "budget": 222458.0,
-          "month": 41525.74,
-          "ytd": 0.0
-        },
-        {
-          "name": "ODC",
-          "budget": 498039.0,
-          "month": 7228.85,
-          "ytd": 0.0
-        },
-        {
-          "name": "Indirect Costs",
-          "budget": 194149.0,
-          "month": 33887.76,
-          "ytd": 0.0
-        },
-        {
-          "name": "Fee costs",
-          "budget": 45732.3,
-          "month": 4132.1175,
-          "ytd": 0.0
-        }
-      ]
-    },
-    {
-      "milestone_id": "M49",
-      "title": "M49 \u2014 Tier 2&3 support",
-      "raw_title": "Tier 2&3 support",
-      "award_number": "OT2OD036464",
-      "status": "On Track",
-      "budget": 843742.2,
-      "monthly_spend": 213067.80600000004,
-      "percent_spent": 0.0,
-      "labor_actual": 104097.32,
-      "travel_actual": 0.0,
-      "odc_actual": 13668.27,
-      "ytd_actual": 0.0,
-      "total_forecast": 213067.80600000004,
-      "est_total_spend": 612017.8643474196,
-      "est_balance": 825085.6703474196,
-      "expected_spend": 70311.85,
-      "burn_rate_status": "Behind",
-      "pace_variance": -70311.85,
-      "projected_overrun": -231724.34,
-      "exception_note": "",
-      "people_count": 0,
-      "total_hours": 0.0,
-      "story_points": 0.0,
-      "workstreams": [
-        {
-          "name": "Labor",
-          "budget": 324033.0,
-          "month": 104097.32,
-          "ytd": 0.0
-        },
-        {
-          "name": "ODC",
-          "budget": 195136.0,
-          "month": 13668.27,
-          "ytd": 0.0
-        },
-        {
-          "name": "Indirect Costs",
-          "budget": 284395.0,
-          "month": 85156.13,
-          "ytd": 0.0
-        },
-        {
-          "name": "Fee costs",
-          "budget": 40178.200000000004,
-          "month": 10146.086000000003,
-          "ytd": 0.0
-        }
-      ]
-    },
-    {
-      "milestone_id": "M50",
-      "title": "M50 \u2014 Development + Operations & Maintenance",
-      "raw_title": "Development + Operations & Maintenance",
-      "award_number": "OT2OD036464",
-      "status": "On Track",
-      "budget": 7460577.6,
-      "monthly_spend": 213967.2255,
-      "percent_spent": 0.0,
-      "labor_actual": 76402.77,
-      "travel_actual": 0.0,
-      "odc_actual": 54801.58,
-      "ytd_actual": 0.0,
-      "total_forecast": 213967.2255,
-      "est_total_spend": 7195952.60552743,
-      "est_balance": 7409919.8310274305,
-      "expected_spend": 621714.8,
-      "burn_rate_status": "Behind",
-      "pace_variance": -621714.8,
-      "projected_overrun": -264624.99,
-      "exception_note": "",
-      "people_count": 0,
-      "total_hours": 0.0,
-      "story_points": 0.0,
-      "workstreams": [
-        {
-          "name": "Labor",
-          "budget": 216764.0,
-          "month": 76402.77,
-          "ytd": 0.0
-        },
-        {
-          "name": "ODC",
-          "budget": 6626937.0,
-          "month": 54801.58,
-          "ytd": 0.0
-        },
-        {
-          "name": "Indirect Costs",
-          "budget": 261611.0,
-          "month": 72573.96,
-          "ytd": 0.0
-        },
-        {
-          "name": "Fee costs",
-          "budget": 355265.60000000003,
-          "month": 10188.915500000001,
-          "ytd": 0.0
-        }
-      ]
-    },
-    {
-      "milestone_id": "M51",
-      "title": "M51 \u2014 Data. Process amd protocol automation",
-      "raw_title": "Data. Process amd protocol automation",
-      "award_number": "OT2OD036464",
-      "status": "On Track",
-      "budget": 642997.95,
-      "monthly_spend": 4662.3045,
-      "percent_spent": 0.0,
-      "labor_actual": 2381.32,
-      "travel_actual": 0.0,
-      "odc_actual": 148.0,
-      "ytd_actual": 0.0,
-      "total_forecast": 4662.3045,
-      "est_total_spend": 625091.5412597173,
-      "est_balance": 629753.8457597174,
-      "expected_spend": 53583.16,
-      "burn_rate_status": "Behind",
-      "pace_variance": -53583.16,
-      "projected_overrun": -17906.41,
-      "exception_note": "",
-      "people_count": 0,
-      "total_hours": 0.0,
-      "story_points": 0.0,
-      "workstreams": [
-        {
-          "name": "Labor",
-          "budget": 77316.0,
-          "month": 2381.32,
-          "ytd": 0.0
-        },
-        {
-          "name": "ODC",
-          "budget": 465865.0,
-          "month": 148.0,
-          "ytd": 0.0
-        },
-        {
-          "name": "Indirect Costs",
-          "budget": 69198.0,
-          "month": 1910.97,
-          "ytd": 0.0
-        },
-        {
-          "name": "Fee costs",
-          "budget": 30618.95,
-          "month": 222.0145,
-          "ytd": 0.0
-        }
-      ]
-    },
-    {
-      "milestone_id": "M52",
-      "title": "M52 \u2014 Security",
-      "raw_title": "Security",
-      "award_number": "OT2OD036464",
-      "status": "On Track",
-      "budget": 532005.6,
-      "monthly_spend": 73193.505,
-      "percent_spent": 0.0,
-      "labor_actual": 35853.88,
-      "travel_actual": 0.0,
-      "odc_actual": 4557.9,
-      "ytd_actual": 0.0,
-      "total_forecast": 73193.505,
-      "est_total_spend": 455211.9995874465,
-      "est_balance": 528405.5045874465,
-      "expected_spend": 44333.8,
-      "burn_rate_status": "Behind",
-      "pace_variance": -44333.8,
-      "projected_overrun": -76793.6,
-      "exception_note": "",
-      "people_count": 0,
-      "total_hours": 0.0,
-      "story_points": 0.0,
-      "workstreams": [
-        {
-          "name": "Labor",
-          "budget": 118945.0,
-          "month": 35853.88,
-          "ytd": 0.0
-        },
-        {
-          "name": "ODC",
-          "budget": 260251.0,
-          "month": 4557.9,
-          "ytd": 0.0
-        },
-        {
-          "name": "Indirect Costs",
-          "budget": 127476.0,
-          "month": 29296.32,
-          "ytd": 0.0
-        },
-        {
-          "name": "Fee costs",
-          "budget": 25333.600000000002,
-          "month": 3485.4050000000007,
-          "ytd": 0.0
-        }
-      ]
-    },
-    {
-      "milestone_id": "M53",
-      "title": "M53 \u2014 Licenses",
-      "raw_title": "Licenses",
-      "award_number": "OT2OD036464",
-      "status": "On Track",
-      "budget": 9214479.75,
-      "monthly_spend": 9581166.640500002,
-      "percent_spent": 0.0,
-      "labor_actual": 942091.11,
-      "travel_actual": 0.0,
-      "odc_actual": 6506823.65,
-      "ytd_actual": 0.0,
-      "total_forecast": 9581166.640500002,
-      "est_total_spend": 0.0,
-      "est_balance": 9581166.640500002,
-      "expected_spend": 767873.31,
-      "burn_rate_status": "Behind",
-      "pace_variance": -767873.31,
-      "projected_overrun": -9214479.75,
-      "exception_note": "Annual license fees paid upfront in February \u2014 no further spend expected.",
-      "people_count": 0,
-      "total_hours": 0.0,
-      "story_points": 0.0,
-      "workstreams": [
-        {
-          "name": "ODC",
-          "budget": 7313079.0,
-          "month": 6506823.65,
-          "ytd": 0.0
-        },
-        {
-          "name": "Indirect Costs",
-          "budget": 1462616.0,
-          "month": 1676005.85,
-          "ytd": 0.0
-        },
-        {
-          "name": "Fee costs",
-          "budget": 438784.75,
-          "month": 456246.0305000001,
-          "ytd": 0.0
-        }
-      ]
-    },
-    {
-      "milestone_id": "M54",
-      "title": "M54 \u2014 Directorate and Management",
-      "raw_title": "Directorate and Management",
-      "award_number": "OT2OD036464",
-      "status": "On Track",
-      "budget": 500886.7,
-      "monthly_spend": 175621.719,
-      "percent_spent": 0.0,
-      "labor_actual": 87260.97,
-      "travel_actual": 1030.92,
-      "odc_actual": 8105.81,
-      "ytd_actual": 0.0,
-      "total_forecast": 175621.719,
-      "est_total_spend": 297916.3637691565,
-      "est_balance": 473538.08276915655,
-      "expected_spend": 41740.56,
-      "burn_rate_status": "Behind",
-      "pace_variance": -41740.56,
-      "projected_overrun": -202970.34,
-      "exception_note": "",
-      "people_count": 0,
-      "total_hours": 0.0,
-      "story_points": 0.0,
-      "workstreams": [
-        {
-          "name": "Labor",
-          "budget": 245233.0,
-          "month": 87260.97,
-          "ytd": 0.0
-        },
-        {
-          "name": "ODC",
-          "budget": 19869.0,
-          "month": 8105.81,
-          "ytd": 0.0
-        },
-        {
-          "name": "Indirect Costs",
-          "budget": 211932.0,
-          "month": 70861.08,
-          "ytd": 0.0
-        },
-        {
-          "name": "Fee costs",
-          "budget": 23851.7,
-          "month": 8362.939,
-          "ytd": 0.0
-        }
-      ]
-    },
-    {
-      "milestone_id": "M55",
-      "title": "M55 \u2014 Protocol Compliance",
-      "raw_title": "Protocol Compliance",
-      "award_number": "OT2OD036464",
-      "status": "On Track",
-      "budget": 957727.05,
-      "monthly_spend": 81671.562,
-      "percent_spent": 0.0,
-      "labor_actual": 33916.0,
-      "travel_actual": 0.0,
-      "odc_actual": 13978.5,
-      "ytd_actual": 0.0,
-      "total_forecast": 81671.562,
-      "est_total_spend": 832454.7021736247,
-      "est_balance": 914126.2641736246,
-      "expected_spend": 79810.59,
-      "burn_rate_status": "Behind",
-      "pace_variance": -79810.59,
-      "projected_overrun": -125272.35,
-      "exception_note": "",
-      "people_count": 0,
-      "total_hours": 0.0,
-      "story_points": 0.0,
-      "workstreams": [
-        {
-          "name": "Labor",
-          "budget": 304440.0,
-          "month": 33916.0,
-          "ytd": 0.0
-        },
-        {
-          "name": "ODC",
-          "budget": 303363.0,
-          "month": 13978.5,
-          "ytd": 0.0
-        },
-        {
-          "name": "Indirect Costs",
-          "budget": 304318.0,
-          "month": 29887.94,
-          "ytd": 0.0
-        },
-        {
-          "name": "Fee costs",
-          "budget": 45606.05,
-          "month": 3889.1220000000003,
-          "ytd": 0.0
-        }
-      ]
-    },
-    {
-      "milestone_id": "M56",
-      "title": "M56 \u2014 Partner and Participant Coordination",
-      "raw_title": "Partner and Participant Coordination",
-      "award_number": "OT2OD036464",
-      "status": "On Track",
-      "budget": 600671.4,
-      "monthly_spend": 141996.981,
-      "percent_spent": 0.0,
-      "labor_actual": 68816.69,
-      "travel_actual": 2833.27,
-      "odc_actual": 7090.44,
-      "ytd_actual": 0.0,
-      "total_forecast": 141996.981,
-      "est_total_spend": 434178.29956479353,
-      "est_balance": 576175.2805647936,
-      "expected_spend": 50055.95,
-      "burn_rate_status": "Behind",
-      "pace_variance": -50055.95,
-      "projected_overrun": -166493.1,
-      "exception_note": "",
-      "people_count": 0,
-      "total_hours": 0.0,
-      "story_points": 0.0,
-      "workstreams": [
-        {
-          "name": "Labor",
-          "budget": 289921.0,
-          "month": 68816.69,
-          "ytd": 0.0
-        },
-        {
-          "name": "ODC",
-          "budget": 30244.0,
-          "month": 7090.44,
-          "ytd": 0.0
-        },
-        {
-          "name": "Indirect Costs",
-          "budget": 251903.0,
-          "month": 56494.82,
-          "ytd": 0.0
-        },
-        {
-          "name": "Fee costs",
-          "budget": 28603.4,
-          "month": 6761.761,
-          "ytd": 0.0
-        }
-      ]
-    },
-    {
-      "milestone_id": "M57",
-      "title": "M57 \u2014 Data Governance and Delivery",
-      "raw_title": "Data Governance and Delivery",
-      "award_number": "OT2OD036464",
-      "status": "On Track",
-      "budget": 1264051.95,
-      "monthly_spend": 400897.5705,
-      "percent_spent": 0.0,
-      "labor_actual": 202186.90999999997,
-      "travel_actual": 0.0,
-      "odc_actual": 16486.46,
-      "ytd_actual": 0.0,
-      "total_forecast": 400897.5705,
-      "est_total_spend": 836041.0646684769,
-      "est_balance": 1236938.6351684767,
-      "expected_spend": 105337.66,
-      "burn_rate_status": "Behind",
-      "pace_variance": -105337.66,
-      "projected_overrun": -428010.89,
-      "exception_note": "",
-      "people_count": 0,
-      "total_hours": 0.0,
-      "story_points": 0.0,
-      "workstreams": [
-        {
-          "name": "Labor",
-          "budget": 621709.0,
-          "month": 202186.90999999997,
-          "ytd": 0.0
-        },
-        {
-          "name": "ODC",
-          "budget": 45784.0,
-          "month": 16486.46,
-          "ytd": 0.0
-        },
-        {
-          "name": "Indirect Costs",
-          "budget": 536366.0,
-          "month": 163133.84,
-          "ytd": 0.0
-        },
-        {
-          "name": "Fee costs",
-          "budget": 60192.950000000004,
-          "month": 19090.3605,
-          "ytd": 0.0
-        }
-      ]
-    },
-    {
-      "milestone_id": "M58",
-      "title": "M58 \u2014 TEP",
-      "raw_title": "TEP",
-      "award_number": "OT2OD036464",
-      "status": "On Track",
-      "budget": 599478.6,
-      "monthly_spend": 42376.509000000005,
-      "percent_spent": 0.0,
-      "labor_actual": 21043.77,
-      "travel_actual": 0.0,
-      "odc_actual": 2221.85,
-      "ytd_actual": 0.0,
-      "total_forecast": 42376.509000000005,
-      "est_total_spend": 554560.7452246922,
-      "est_balance": 596937.2542246922,
-      "expected_spend": 49956.55,
-      "burn_rate_status": "Behind",
-      "pace_variance": -49956.55,
-      "projected_overrun": -44917.85,
-      "exception_note": "",
-      "people_count": 0,
-      "total_hours": 0.0,
-      "story_points": 0.0,
-      "workstreams": [
-        {
-          "name": "Labor",
-          "budget": 113021.0,
-          "month": 21043.77,
-          "ytd": 0.0
-        },
-        {
-          "name": "ODC",
-          "budget": 301725.0,
-          "month": 2221.85,
-          "ytd": 0.0
-        },
-        {
-          "name": "Indirect Costs",
-          "budget": 156186.0,
-          "month": 17092.96,
-          "ytd": 0.0
-        },
-        {
-          "name": "Fee costs",
-          "budget": 28546.600000000002,
-          "month": 2017.929,
-          "ytd": 0.0
-        }
-      ]
-    },
-    {
-      "milestone_id": "M59",
-      "title": "M59 \u2014 Support Center",
-      "raw_title": "Support Center",
-      "award_number": "OT2OD036464",
-      "status": "On Track",
-      "budget": 4999895.4,
-      "monthly_spend": 605033.058,
-      "percent_spent": 0.0,
-      "labor_actual": 316402.38,
-      "travel_actual": 0.0,
-      "odc_actual": 38466.479999999996,
-      "ytd_actual": 0.0,
-      "total_forecast": 605033.058,
-      "est_total_spend": 4269321.280470693,
-      "est_balance": 4874354.338470693,
-      "expected_spend": 416657.95,
-      "burn_rate_status": "Behind",
-      "pace_variance": -416657.95,
-      "projected_overrun": -730574.12,
-      "exception_note": "",
-      "people_count": 0,
-      "total_hours": 0.0,
-      "story_points": 0.0,
-      "workstreams": [
-        {
-          "name": "Labor",
-          "budget": 2561305.0,
-          "month": 316402.38,
-          "ytd": 0.0
-        },
-        {
-          "name": "ODC",
-          "budget": 624501.0,
-          "month": 38466.479999999996,
-          "ytd": 0.0
-        },
-        {
-          "name": "Indirect Costs",
-          "budget": 1576002.0,
-          "month": 221353.1,
-          "ytd": 0.0
-        },
-        {
-          "name": "Fee costs",
-          "budget": 238090.40000000002,
-          "month": 28811.097999999998,
-          "ytd": 0.0
-        }
-      ]
-    }
-  ],
+  "milestones": [],
   "monthlyData": [
     {
       "month": "Jan",
       "value": null,
       "forecast_val": null,
       "is_forecast": false,
-      "is_current_month": false,
+      "is_current_month": true,
       "is_fallback": false,
       "value_pct": 0.0
     },
     {
       "month": "Feb",
-      "value": 11787301.55,
-      "forecast_val": 11787301.55,
-      "is_forecast": false,
-      "is_current_month": true,
+      "value": null,
+      "forecast_val": null,
+      "is_forecast": true,
+      "is_current_month": false,
       "is_fallback": false,
-      "value_pct": 34.5
+      "value_pct": 0.0
     },
     {
       "month": "Mar",
-      "value": 2724315.79,
+      "value": null,
       "forecast_val": 2724316.0,
       "is_forecast": true,
       "is_current_month": false,
       "is_fallback": true,
-      "value_pct": 8.0
+      "value_pct": 0.0
     },
     {
       "month": "Apr",
-      "value": 2660404.66,
+      "value": null,
       "forecast_val": 2660405.0,
       "is_forecast": true,
       "is_current_month": false,
       "is_fallback": true,
-      "value_pct": 7.8
+      "value_pct": 0.0
     },
     {
       "month": "May",
-      "value": 2744522.66,
+      "value": null,
       "forecast_val": 2744523.0,
       "is_forecast": true,
       "is_current_month": false,
       "is_fallback": true,
-      "value_pct": 8.0
+      "value_pct": 0.0
     },
     {
       "month": "Jun",
-      "value": 2503622.56,
+      "value": null,
       "forecast_val": 2503623.0,
       "is_forecast": true,
       "is_current_month": false,
       "is_fallback": true,
-      "value_pct": 7.3
+      "value_pct": 0.0
     },
     {
       "month": "Jul",
-      "value": 2362018.95,
+      "value": null,
       "forecast_val": 2362019.0,
       "is_forecast": true,
       "is_current_month": false,
       "is_fallback": true,
-      "value_pct": 6.9
+      "value_pct": 0.0
     },
     {
       "month": "Aug",
-      "value": 3737301.81,
+      "value": null,
       "forecast_val": 3737302.0,
       "is_forecast": true,
       "is_current_month": false,
       "is_fallback": true,
-      "value_pct": 11.0
+      "value_pct": 0.0
     },
     {
       "month": "Sep",
-      "value": 3685564.65,
+      "value": null,
       "forecast_val": 3685565.0,
       "is_forecast": true,
       "is_current_month": false,
       "is_fallback": true,
-      "value_pct": 10.8
+      "value_pct": 0.0
     },
     {
       "month": "Oct",
-      "value": 608801.07,
+      "value": null,
       "forecast_val": 608801.0,
       "is_forecast": true,
       "is_current_month": false,
       "is_fallback": true,
-      "value_pct": 1.8
+      "value_pct": 0.0
     },
     {
       "month": "Nov",
-      "value": 558195.86,
+      "value": null,
       "forecast_val": 558196.0,
       "is_forecast": true,
       "is_current_month": false,
       "is_fallback": true,
-      "value_pct": 1.6
+      "value_pct": 0.0
     },
     {
       "month": "Dec",
-      "value": 750064.19,
+      "value": null,
       "forecast_val": 750064.0,
       "is_forecast": true,
       "is_current_month": false,
       "is_fallback": true,
-      "value_pct": 2.2
+      "value_pct": 0.0
     }
   ]
 }
