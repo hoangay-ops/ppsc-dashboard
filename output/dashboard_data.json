@@ -740,91 +740,91 @@
     },
     {
       "month": "Feb",
-      "value": 11787301.55,
+      "value": 20495442.42,
       "forecast_val": null,
       "is_forecast": false,
       "is_current_month": false,
-      "value_pct": 35.0
+      "value_pct": 60.8
     },
     {
       "month": "Mar",
-      "value": 2692098.19,
+      "value": 4738864.78,
       "forecast_val": 2724316.0,
       "is_forecast": false,
       "is_current_month": false,
-      "value_pct": 8.0
+      "value_pct": 14.1
     },
     {
       "month": "Apr",
-      "value": 4099160.98,
+      "value": 7910250.32,
       "forecast_val": 2660405.0,
       "is_forecast": false,
       "is_current_month": true,
-      "value_pct": 12.2
+      "value_pct": 23.5
     },
     {
       "month": "May",
-      "value": 2629214.67,
+      "value": 4722421.9,
       "forecast_val": 2744523.0,
       "is_forecast": true,
       "is_current_month": false,
-      "value_pct": 7.8
+      "value_pct": 14.0
     },
     {
       "month": "Jun",
-      "value": 2384619.02,
+      "value": 4301146.27,
       "forecast_val": 2503623.0,
       "is_forecast": true,
       "is_current_month": false,
-      "value_pct": 7.1
+      "value_pct": 12.8
     },
     {
       "month": "Jul",
-      "value": 2534941.62,
+      "value": 4628962.51,
       "forecast_val": 2362019.0,
       "is_forecast": true,
       "is_current_month": false,
-      "value_pct": 7.5
+      "value_pct": 13.7
     },
     {
       "month": "Aug",
-      "value": 2574573.87,
+      "value": 4726933.73,
       "forecast_val": 3737302.0,
       "is_forecast": true,
       "is_current_month": false,
-      "value_pct": 7.6
+      "value_pct": 14.0
     },
     {
       "month": "Sep",
-      "value": 3028015.84,
+      "value": 5666938.1,
       "forecast_val": 3685565.0,
       "is_forecast": true,
       "is_current_month": false,
-      "value_pct": 9.0
+      "value_pct": 16.8
     },
     {
       "month": "Oct",
-      "value": 612057.55,
+      "value": 991813.23,
       "forecast_val": 608801.0,
       "is_forecast": true,
       "is_current_month": false,
-      "value_pct": 1.8
+      "value_pct": 2.9
     },
     {
       "month": "Nov",
-      "value": 594751.7,
+      "value": 962365.23,
       "forecast_val": 558196.0,
       "is_forecast": true,
       "is_current_month": false,
-      "value_pct": 1.8
+      "value_pct": 2.9
     },
     {
       "month": "Dec",
-      "value": 771229.58,
+      "value": 1278722.39,
       "forecast_val": 750064.0,
       "is_forecast": true,
       "is_current_month": false,
-      "value_pct": 2.3
+      "value_pct": 3.8
     }
   ]
 }
