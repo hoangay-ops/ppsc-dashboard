@@ -15,15 +15,11 @@
     .health-matrix {
       display: grid;
       grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
-      gap: 12px;
-      margin-top: 10px;
+      gap: 12px; margin-top: 10px;
     }
     .matrix-tile {
-      padding: 12px;
-      border-radius: 14px;
-      text-align: center;
-      border: 1px solid rgba(0,0,0,0.05);
-      transition: transform 0.2s;
+      padding: 12px; border-radius: 14px; text-align: center;
+      border: 1px solid rgba(0,0,0,0.05); transition: transform 0.2s;
     }
     .matrix-tile:hover { transform: translateY(-2px); }
     .matrix-tile.risk { background: #fee2e2; color: #991b1b; }
@@ -45,8 +41,7 @@
     }
 
     .decision-box {
-      background: #f1f5f9; border-radius: 12px;
-      padding: 16px; margin-top: 12px;
+      background: #f1f5f9; border-radius: 12px; padding: 16px; margin-top: 12px;
     }
 
     body {
@@ -61,13 +56,28 @@
     }
     .wrap { max-width: 1300px; margin: 0 auto; padding: 14px; }
 
-    .header-bar { display:flex; justify-content:flex-end; align-items:center; margin-bottom:12px; padding:0 10px; }
-    .header-actions { display:flex; gap:10px; align-items:center; flex-wrap:wrap; }
-    .header-actions a, .header-actions button {
-      font-size:12px; line-height:1; padding:8px 12px; border-radius:6px; text-decoration:none;
+    /* ── Nav bar — Latest / Archive / ← Prev / Next → all in one row ── */
+    .header-bar {
+      display: flex; justify-content: flex-end; align-items: center;
+      margin-bottom: 12px; padding: 0 10px;
     }
-    #exportBtn { border:1px solid #cbd5e1; background:#2563eb; color:#fff; cursor:pointer; }
-    #exportBtn:hover { background:#1d4ed8; }
+    .header-actions {
+      display: flex; gap: 10px; align-items: center; flex-wrap: wrap;
+    }
+    .header-actions a, .header-actions button {
+      font-size: 12px; line-height: 1; padding: 8px 12px;
+      border-radius: 6px; text-decoration: none;
+    }
+    #exportBtn {
+      border: 1px solid #cbd5e1; background: #2563eb; color: #fff; cursor: pointer;
+    }
+    #exportBtn:hover { background: #1d4ed8; }
+
+    /* ── Milestone count popover link ── */
+    .mil-count-link {
+      cursor: pointer; text-decoration: underline dotted;
+      color: #2563eb; font-weight: 700;
+    }
 
     .hero, .panel, .card {
       background: linear-gradient(180deg, rgba(255,255,255,0.96), rgba(248,250,252,0.98));
@@ -85,8 +95,6 @@
     .meta { margin-top:18px; display:flex; flex-wrap:wrap; gap:10px; color:#51627d; font-size:13px; }
     .meta span { padding:8px 12px; border-radius:999px; background:rgba(15,23,42,0.04); border:1px solid rgba(15,23,42,0.08); }
     .hero-side { display:grid; gap:12px; align-content:start; }
-    .mini-title { font-weight:700; font-size:14px; color:#10203a; margin-bottom:6px; }
-    .mini-copy  { color:var(--muted); font-size:13px; line-height:1.5; }
 
     .tension-box {
       background: linear-gradient(135deg, rgba(37,99,235,0.06), rgba(124,58,237,0.06));
@@ -154,30 +162,24 @@
     .filter-row label  { font-size:13px; color:var(--muted); font-weight:600; }
     .filter-row select { padding:10px 12px; border-radius:12px; border:1px solid rgba(15,23,42,0.14); background:#fff; color:#10203a; font:inherit; }
 
-    .bars { display:grid; grid-template-columns:repeat(10,1fr); gap:10px; align-items:end; height:340px; padding-top:14px; }
-    .bar-col  { display:flex; flex-direction:column; align-items:center; gap:8px; height:100%; justify-content:end; }
-    .bar-wrap { width:100%; height:100%; display:flex; align-items:end; justify-content:center; padding-bottom:4px; }
-    .bar { width:72%; min-width:28px; border-radius:16px 16px 8px 8px;
-           background:linear-gradient(180deg,rgba(37,99,235,0.92),rgba(124,58,237,0.92));
-           box-shadow:0 10px 20px rgba(37,99,235,0.14); position:relative;
-           display:flex; align-items:flex-end; justify-content:center; }
-    .bar span { position:absolute; top:-22px; font-size:11px; color:#1d4ed8; white-space:nowrap; }
-    .bar-label { font-size:12px; color:#51627d; text-align:center; line-height:1.2; }
-    .bar-pair { width:100%; height:100%; display:flex; align-items:end; justify-content:center; gap:6px; padding-bottom:4px; }
-    .bar-mini { width:42%; min-width:12px; border-radius:12px 12px 6px 6px; position:relative; display:flex; align-items:flex-end; justify-content:center; }
-    .bar-mini span { position:absolute; top:-22px; font-size:10px; color:#51627d; white-space:nowrap; }
+    /* ── Bar chart ── */
+    .bars { display:grid; grid-template-columns:repeat(12,1fr); gap:6px; align-items:end; height:260px; padding-top:14px; }
+    .bar-col  { display:flex; flex-direction:column; align-items:center; gap:4px; height:100%; justify-content:flex-end; }
+    .bar-wrap { width:100%; flex:1; display:flex; align-items:flex-end; justify-content:center; }
+    .bar-actual   { width:44%; border-radius:4px 4px 2px 2px; background:#2563eb; min-height:2px; position:relative; }
+    .bar-forecast { width:44%; border-radius:4px 4px 2px 2px; background:rgba(217,119,6,0.75); min-height:2px; }
+    .bar-label { font-size:10px; color:#51627d; text-align:center; line-height:1.2; white-space:nowrap; }
 
     @media (max-width:1100px) {
       .hero, .grid, .two-col { grid-template-columns:1fr; }
       .kpis, .health-grid { grid-template-columns:repeat(2,1fr); }
       .status-row { grid-template-columns:repeat(2,1fr); }
-      .bars { grid-template-columns:repeat(5,1fr); height:420px; }
+      .bars { grid-template-columns:repeat(6,1fr); }
     }
     @media (max-width:700px) {
       .wrap { padding:16px; }
       .kpis, .status-row, .health-grid { grid-template-columns:1fr; }
-      .bars { grid-template-columns:repeat(2,1fr); height:auto; }
-      .bar-col { min-height:170px; }
+      .bars { grid-template-columns:repeat(4,1fr); }
     }
     @media print {
       body { background:white !important; }
@@ -186,23 +188,8 @@
     }
     table.sortable th { cursor: pointer; position: relative; padding-right: 20px; }
     table.sortable th:after {
-      content: ' \2195';
-      position: absolute;
-      right: 5px;
-      opacity: 0.3;
-      font-size: 0.8em;
-    }.forecast-dot {
-  width: 10px;
-  height: 10px;
-  background: #d97706; /* High-contrast Orange */
-  border-radius: 50%;
-  position: absolute;
-  left: 50%;
-  transform: translate(-50%, 50%); /* Centers the dot on the height value */
-  z-index: 10;
-  border: 2px solid #fff;
-  box-shadow: 0 2px 4px rgba(0,0,0,0.2);
-}
+      content: ' \2195'; position: absolute; right: 5px; opacity: 0.3; font-size: 0.8em;
+    }
   </style>
 </head>
 <body data-current-file="__CURRENT_FILE__">
@@ -210,9 +197,11 @@
   <div class="wrap">
     <div id="execSummary">
 
+      <!-- Nav: Latest / Archive / ← Prev / Next → all rendered by siteNav JS below -->
       <div class="header-bar">
         <div class="header-actions">
           <div id="siteNav"></div>
+<noscript>__NAV_HTML__</noscript>
           <button id="exportBtn" onclick="exportPDF()">Export to PDF</button>
         </div>
       </div>
@@ -264,7 +253,7 @@
       <section class="kpis">
         <div class="card">
           <div class="label">Budget Utilization</div>
-          <div class="value" id="budgetUtilVal">__BUDGET_USED_PCT__%</div>
+          <div class="value">__BUDGET_USED_PCT__%</div>
           <div class="progress-container">
             <div class="progress-fill" id="budgetFill"></div>
             <div class="progress-marker" id="yearMarker" title="Year elapsed"></div>
@@ -278,40 +267,55 @@
         </div>
         <div class="card">
           <div class="label">Milestone Flags</div>
-          <div class="value">__FLAGGED_COUNT__ flagged</div>
+          <!-- Clickable count spans — JS popover shows which milestones -->
+          <div class="value">
+            <span class="mil-count-link" data-mids="__AT_RISK_MIDS__" title="Click to see At Risk milestones">__COUNT_AT_RISK__</span> At Risk ·
+            <span class="mil-count-link" data-mids="__WATCH_MIDS__"   title="Click to see Watch milestones">__COUNT_WATCH__</span> Watch
+          </div>
           <div class="delta">__FLAGGED_SUMMARY__</div>
         </div>
         <div class="card">
           <div class="label">Portfolio Balance</div>
-          <div class="value" id="balanceVal">__PORTFOLIO_BALANCE__</div>
+          <div class="value" id="balanceVal" style="color:__BALANCE_COLOR__;">__PORTFOLIO_BALANCE__</div>
           <div class="delta">Estimated end-of-year balance</div>
         </div>
       </section>
 
       <section class="panel" style="margin-bottom:18px;">
         <h2>Portfolio Health</h2>
-        <p class="note">How milestones track against their monthly spend allowance — only true outliers flag red.</p>
+        <p class="note">How milestones track against their monthly spend allowance.</p>
         <div class="health-grid" id="healthCards"></div>
       </section>
 
+      <!-- Chart section injected by Python (build_chart_section) -->
       <section class="grid">
         <div class="panel">
-          <h2>Monthly Spend Trend</h2>
-          <p class="note">__TREND_NOTE__</p>
+          <h2>Monthly Spend — Actuals vs. Forecast</h2>
+          <p class="note">Blue = actual spend · Orange = forecast. Hover for values.</p>
           <div style="display:flex;gap:16px;margin-bottom:8px;font-size:12px;color:#51627d;">
-            <span style="display:flex;align-items:center;gap:4px;"><span style="width:10px;height:10px;border-radius:2px;background:#2563eb;display:inline-block;"></span>Actual</span>
-            <span style="display:flex;align-items:center;gap:4px;"><span style="width:10px;height:10px;border-radius:2px;background:#9ca3af;display:inline-block;"></span>Prior forecast</span>
+            <span style="display:flex;align-items:center;gap:4px;">
+              <span style="width:10px;height:10px;border-radius:2px;background:#2563eb;display:inline-block;"></span>Actual
+            </span>
+            <span style="display:flex;align-items:center;gap:4px;">
+              <span style="width:10px;height:10px;border-radius:2px;background:#d97706;display:inline-block;"></span>Forecast
+            </span>
           </div>
-<div class="bars" id="bars"></div>
-          <div class="footer">__TREND_FOOTER__</div>
+          <div class="bars" id="bars"></div>
+          <div class="footer" id="chartFooter"></div>
         </div>
         <div class="panel">
           <h2>Status Mix</h2>
-          <p class="note">__STATUS_NOTE__</p>
+          <p class="note">On Track = within budget · Watch = balance tightening · At Risk = projected overrun.</p>
           <div class="status-row">
-            <div class="status-chip status-good"><div class="txt">On Track</div><div class="num">__COUNT_ON_TRACK__</div></div>
-            <div class="status-chip status-watch"><div class="txt">Watch</div><div class="num">__COUNT_AWAITING__</div></div>
-            <div class="status-chip status-risk"><div class="txt">At Risk</div><div class="num">__COUNT_AT_RISK__</div></div>
+            <div class="status-chip status-good"><div class="txt">On Track</div>
+              <div class="num"><span class="mil-count-link" data-mids="__ON_TRACK_MIDS__">__COUNT_ON_TRACK__</span></div>
+            </div>
+            <div class="status-chip status-watch"><div class="txt">Watch</div>
+              <div class="num"><span class="mil-count-link" data-mids="__WATCH_MIDS__">__COUNT_WATCH__</span></div>
+            </div>
+            <div class="status-chip status-risk"><div class="txt">At Risk</div>
+              <div class="num"><span class="mil-count-link" data-mids="__AT_RISK_MIDS__">__COUNT_AT_RISK__</span></div>
+            </div>
           </div>
           <h2 style="margin-top:18px;">Priority Watchlist</h2>
           <div class="bullets">__WATCHLIST_HTML__</div>
@@ -320,7 +324,7 @@
 
       <section class="panel" style="margin-bottom:18px;">
         <h2>Milestone Budget Snapshot</h2>
-        <p class="note">Exceptions shown by default — switch to "All" to see the full portfolio.</p>
+        <p class="note">Exceptions shown by default — switch to "All" to see the full portfolio. Click a row to expand workstream detail.</p>
         <div class="filter-row">
           <label for="statusFilter">View</label>
           <select id="statusFilter" aria-label="Filter milestones by status">
@@ -342,7 +346,9 @@
                 <th>Budget</th>
                 <th>YTD Actual</th>
                 <th>% Spent</th>
-                <th>Projected Overrun</th>
+                <th>Est. Balance</th>
+                <th>Proj. Overrun</th>
+                <th>Staff</th>
                 <th>Note</th>
               </tr>
             </thead>
@@ -369,18 +375,33 @@
         </div>
       </section>
 
+      <!-- Top 5 tables: data populated by JS from milestones[] -->
       <section class="two-col" style="margin-bottom:18px;">
         <div class="panel">
           <h2>Top 5 by Personnel</h2>
+          <p class="note">Milestones with the most staff charged this period.</p>
           <table class="sortable">
-            <thead><tr><th>Milestone</th><th style="text-align:right;">Staff Count</th></tr></thead>
+            <thead>
+              <tr>
+                <th>Milestone</th>
+                <th style="text-align:right;">Staff Count</th>
+                <th style="text-align:right;">Hours</th>
+              </tr>
+            </thead>
             <tbody id="topPeopleRows"></tbody>
           </table>
         </div>
         <div class="panel">
           <h2>Top 5 by Total Hours</h2>
+          <p class="note">Milestones with the highest total labor hours.</p>
           <table class="sortable">
-            <thead><tr><th>Milestone</th><th style="text-align:right;">Total Hours</th></tr></thead>
+            <thead>
+              <tr>
+                <th>Milestone</th>
+                <th style="text-align:right;">Hours</th>
+                <th style="text-align:right;">Staff</th>
+              </tr>
+            </thead>
             <tbody id="topHoursRows"></tbody>
           </table>
         </div>
@@ -395,266 +416,257 @@
 </div>
 
 <script>
-  const monthlyData  = __MONTHLY_DATA_JSON__;
-  const milestones   = __MILESTONES_JSON__;
-  const fmt          = new Intl.NumberFormat('en-US', {style:'currency',currency:'USD',maximumFractionDigits:0});
-  const rows         = document.getElementById('milestoneRows');
-  const statusFilter = document.getElementById('statusFilter');
-  const filterCount  = document.getElementById('filterCount');
+// ─── Data injected by Python ───────────────────────────────────────────────
+const monthlyData = __MONTHLY_DATA_JSON__;
+const milestones  = __MILESTONES_JSON__;
+const fmt = new Intl.NumberFormat('en-US', {style:'currency', currency:'USD', maximumFractionDigits:0});
 
-  (function() {
-    var budgetPct = parseFloat("__BUDGET_USED_PCT__") || 0;
-    var yearPct   = parseFloat("__YEAR_ELAPSED_PCT__") || 0;
-    var fill   = document.getElementById('budgetFill');
-    var marker = document.getElementById('yearMarker');
-    if (fill)   fill.style.width  = Math.min(budgetPct, 100) + '%';
-    if (marker) marker.style.left = Math.min(yearPct,   100) + '%';
-    var balEl = document.getElementById('balanceVal');
-    if (balEl) {
-      var estBal = milestones.reduce(function(s,m){ return s+(m.est_balance||0); }, 0);
-      balEl.style.color = estBal < 0 ? 'var(--risk)' : 'var(--good)';
-    }
-  })();
+// ─── Progress bar ──────────────────────────────────────────────────────────
+(function() {
+  var fill   = document.getElementById('budgetFill');
+  var marker = document.getElementById('yearMarker');
+  if (fill)   fill.style.width  = Math.min(parseFloat("__BUDGET_USED_PCT__")||0, 100) + '%';
+  if (marker) marker.style.left = Math.min(parseFloat("__YEAR_ELAPSED_PCT__")||0, 100) + '%';
+})();
 
-  var healthEl    = document.getElementById('healthCards');
-  var onPaceCount = milestones.filter(function(m){ return m.burn_rate_status === 'On Pace'; }).length;
-  var aheadCount  = milestones.filter(function(m){ return m.burn_rate_status === 'Ahead'; }).length;
-  var behindCount = milestones.filter(function(m){ return m.burn_rate_status === 'Behind'; }).length;
+// ─── Portfolio health chips ────────────────────────────────────────────────
+(function() {
+  var el          = document.getElementById('healthCards');
+  var onPace      = milestones.filter(function(m){ return m.burn_rate_status === 'On Pace'; }).length;
+  var ahead       = milestones.filter(function(m){ return m.burn_rate_status === 'Ahead'; }).length;
+  var behind      = milestones.filter(function(m){ return m.burn_rate_status === 'Behind'; }).length;
   var atRiskCount = milestones.filter(function(m){ return m.status === 'At Risk'; }).length;
-  var totalOverrun = milestones.reduce(function(s,m){ return s + (m.projected_overrun > 0 ? m.projected_overrun : 0); }, 0);
-
+  var totalOver   = milestones.reduce(function(s,m){ return s + Math.max(m.projected_overrun||0, 0); }, 0);
   [
-    { label:'On Pace',             value: onPaceCount + ' of ' + milestones.length, cls:'status-good' },
-    { label:'Ahead of Plan',       value: aheadCount,                               cls:'status-warn' },
-    { label:'Behind Plan',         value: behindCount,                              cls:'status-neutral' },
-    { label:'Total Proj. Overrun', value: fmt.format(totalOverrun),                 cls: atRiskCount > 0 ? 'status-risk' : 'status-good' },
+    { label:'On Pace',             value: onPace + ' of ' + milestones.length, cls:'status-good' },
+    { label:'Ahead of Plan',       value: ahead,                               cls:'status-warn' },
+    { label:'Behind Plan',         value: behind,                              cls:'status-neutral' },
+    { label:'Total Proj. Overrun', value: fmt.format(totalOver),               cls: atRiskCount > 0 ? 'status-risk' : 'status-good' },
   ].forEach(function(c) {
-    healthEl.innerHTML += '<div class="status-chip ' + c.cls + '"><div class="txt">' + c.label + '</div><div class="num">' + c.value + '</div></div>';
+    el.innerHTML += '<div class="status-chip ' + c.cls + '"><div class="txt">' + c.label + '</div><div class="num">' + c.value + '</div></div>';
+  });
+})();
+
+// ─── Milestone Budget Snapshot table ──────────────────────────────────────
+var statusFilter = document.getElementById('statusFilter');
+var filterCount  = document.getElementById('filterCount');
+var rows         = document.getElementById('milestoneRows');
+
+function toggleRow(id) {
+  var el = document.getElementById(id);
+  if (el) el.style.display = (el.style.display === 'none') ? 'table-row' : 'none';
+}
+
+function renderRows() {
+  rows.innerHTML = '';
+  var sv = statusFilter.value;
+  var filtered = milestones.filter(function(m) {
+    if (sv === 'All')        return true;
+    if (sv === 'Exceptions') return m.status === 'At Risk' || m.status === 'Watch';
+    return m.status.toLowerCase() === sv.toLowerCase();
   });
 
-  function toggleRow(id) {
-    var el = document.getElementById(id);
-    el.style.display = (el.style.display === 'none') ? 'table-row' : 'none';
-  }
+  filtered.forEach(function(m) {
+    var statusClass = m.status === 'At Risk'  ? 'risk'
+                    : m.status === 'Watch'    ? 'warn'
+                    : m.status === 'Complete' ? 'neutral'
+                    : 'good';
+    var varCls  = (m.projected_overrun||0) > 0 ? 'risk' : 'good';
+    var varSign = (m.projected_overrun||0) > 0 ? '+' : '';
+    var balCls  = (m.est_balance||0) < 0 ? 'risk' : 'good';
 
-  // FIX 6 & 7: statusClass/varCls/varSign now defined; workstreams guarded
-  function renderRows() {
-    rows.innerHTML = '';
-    var sv = statusFilter.value;
-    var filtered = milestones.filter(function(m) {
-      if (sv === 'All')        return true;
-      if (sv === 'Exceptions') return m.status === 'At Risk' || m.status === 'Watch';
-      return m.status.toLowerCase() === sv.toLowerCase();
-    });
+    var tr = document.createElement('tr');
+    tr.style.cursor = 'pointer';
+    tr.onclick = function() { toggleRow('details-' + m.milestone_id); };
+    tr.innerHTML =
+      '<td><strong>' + m.title + '</strong></td>' +
+      '<td><span class="pill ' + statusClass + '">' + m.status + '</span></td>' +
+      '<td>' + fmt.format(m.budget||0) + '</td>' +
+      '<td>' + fmt.format(m.ytd_actual||0) + '</td>' +
+      '<td>' + (m.percent_spent||0).toFixed(1) + '%</td>' +
+      '<td><span class="pill ' + balCls + '">' + fmt.format(m.est_balance||0) + '</span></td>' +
+      '<td><span class="pill ' + varCls + '">' + varSign + fmt.format(m.projected_overrun||0) + '</span></td>' +
+      '<td style="text-align:center;">👥 ' + (m.people_count||0) + '</td>' +
+      '<td style="font-size:12px;">' + (m.exception_note || '—') + '</td>';
+    rows.appendChild(tr);
 
-    filtered.forEach(function(m) {
-      var statusClass = m.status === 'At Risk'  ? 'risk'
-                      : m.status === 'Watch'    ? 'warn'
-                      : m.status === 'Complete' ? 'neutral'
-                      : 'good';
-      var varCls  = m.projected_overrun > 0 ? 'risk' : 'good';
-      var varSign = m.projected_overrun > 0 ? '+' : '';
+    // ── Expandable workstream detail row ──────────────────────────────────
+    // FIX: use w.month (monthly actual) and w.ytd — not the undefined w.val
+    var detailTr = document.createElement('tr');
+    detailTr.id = 'details-' + m.milestone_id;
+    detailTr.style.display = 'none';
+    detailTr.style.background = '#f9fafb';
+    var ws = Array.isArray(m.workstreams) ? m.workstreams : [];
+    var wsHtml = ws.length
+      ? '<table style="width:auto;margin:0;font-size:13px;">'
+        + '<thead><tr>'
+        + '<th style="padding:4px 12px 4px 0;color:#51627d;">Workstream</th>'
+        + '<th style="padding:4px 12px;color:#51627d;text-align:right;">Budget</th>'
+        + '<th style="padding:4px 12px;color:#51627d;text-align:right;">Month Actual</th>'
+        + '<th style="padding:4px 12px;color:#51627d;text-align:right;">YTD Actual</th>'
+        + '</tr></thead><tbody>'
+        + ws.map(function(w) {
+            return '<tr>'
+              + '<td style="padding:4px 12px 4px 0;font-weight:600;">' + w.name + '</td>'
+              + '<td style="padding:4px 12px;text-align:right;">' + fmt.format(w.budget||0) + '</td>'
+              + '<td style="padding:4px 12px;text-align:right;">' + fmt.format(w.month||0) + '</td>'
+              + '<td style="padding:4px 12px;text-align:right;">' + fmt.format(w.ytd||0) + '</td>'
+              + '</tr>';
+          }).join('')
+        + '</tbody></table>'
+      : '<em style="color:#51627d;">No workstream data.</em>';
+    detailTr.innerHTML = '<td colspan="9" style="padding:14px 24px;">'
+      + '<strong>Workstream Breakdown</strong><br style="margin-bottom:6px;">' + wsHtml + '</td>';
+    rows.appendChild(detailTr);
+  });
 
-      var tr = document.createElement('tr');
-      tr.style.cursor = 'pointer';
-      tr.onclick = function() { toggleRow('details-' + m.milestone_id); };
-      // Inside renderRows() function in dashboard_template.html
-      // Inside renderRows in dashboard_template.html
-tr.innerHTML =
-  '<td><strong>' + m.title + '</strong><br><small>👥 ' + (m.people_count || 0) + ' Staff</small></td>' +
-  '<td><span class="pill ' + statusClass + '">' + m.status + '</span></td>' +
-  '<td>' + fmt.format(m.budget) + '</td>' +
-  '<td>' + fmt.format(m.ytd_actual) + '</td>' +
-  '<td>' + (m.percent_spent || 0) + '%</td>' + 
-  '<td><span class="pill ' + varCls + '">' + varSign + fmt.format(m.projected_overrun) + '</span></td>' +
-  '<td style="font-size:12px;">' + (m.exception_note || '—') + '</td>';
-      rows.appendChild(tr);
+  // ── Top 5 by Personnel ────────────────────────────────────────────────
+  // Sorted from the full milestones array (not the filtered subset)
+  var topPeople = milestones.slice()
+    .sort(function(a,b){ return (b.people_count||0) - (a.people_count||0); })
+    .slice(0,5);
+  document.getElementById('topPeopleRows').innerHTML = topPeople.map(function(m) {
+    return '<tr>'
+      + '<td>' + (m.title || m.milestone_id) + '</td>'
+      + '<td style="text-align:right;font-weight:700;">' + (m.people_count||0) + '</td>'
+      + '<td style="text-align:right;">' + (m.total_hours||0).toLocaleString() + '</td>'
+      + '</tr>';
+  }).join('');
 
-      var detailTr = document.createElement('tr');
-      detailTr.id = 'details-' + m.milestone_id;
-      detailTr.style.display = 'none';
-      detailTr.style.background = '#f9fafb';
-      var ws = Array.isArray(m.workstreams) ? m.workstreams : [];
-      var wsHtml = ws.map(function(w) {
-        return '<li>' + w.name + ': ' + fmt.format(w.val) + '</li>';
-      }).join('');
-      detailTr.innerHTML = '<td colspan="6" style="padding:15px 30px;"><strong>Workstream Breakdown:</strong><ul>' +
-        (wsHtml || '<li>No data</li>') + '</ul></td>';
-      rows.appendChild(detailTr);
-    });
+  // ── Top 5 by Hours ────────────────────────────────────────────────────
+  var topHours = milestones.slice()
+    .sort(function(a,b){ return (b.total_hours||0) - (a.total_hours||0); })
+    .slice(0,5);
+  document.getElementById('topHoursRows').innerHTML = topHours.map(function(m) {
+    return '<tr>'
+      + '<td>' + (m.title || m.milestone_id) + '</td>'
+      + '<td style="text-align:right;font-weight:700;">' + (m.total_hours||0).toLocaleString() + '</td>'
+      + '<td style="text-align:right;">' + (m.people_count||0) + '</td>'
+      + '</tr>';
+  }).join('');
 
-    // Top 5 by Personnel
-var topPeople = milestones.slice().sort(function(a,b){ 
-    return (b.people_count || 0) - (a.people_count || 0); 
-}).slice(0,5);
+  filterCount.textContent = filtered.length + ' milestone' + (filtered.length === 1 ? '' : 's') + ' shown';
+}
 
-// Top 5 by Total Hours
-var topHours = milestones.slice().sort(function(a,b){ 
-    return (b.total_hours || 0) - (a.total_hours || 0); 
-}).slice(0,5);
+statusFilter.addEventListener('change', renderRows);
+renderRows();
 
-    document.getElementById('topPeopleRows').innerHTML = topPeople.map(function(m) {
-      return '<tr><td>' + (m.title || m.milestone_id) + '</td><td style="text-align:right;">' + (m.people_count||0) + '</td></tr>';
-    }).join('');
+// ─── Bar chart ────────────────────────────────────────────────────────────
+// FIX: maxVal was always 1 — now derived from actual data
+(function() {
+  var barsEl = document.getElementById('bars');
+  if (!barsEl) return;
 
-    document.getElementById('topHoursRows').innerHTML = topHours.map(function(m) {
-  return '<tr><td>' + (m.title || m.milestone_id) + '</td><td style="text-align:right;">' + (m.total_hours || 0).toLocaleString() + '</td></tr>';
-}).join('');
-
-    filterCount.textContent = filtered.length + ' milestone' + (filtered.length === 1 ? '' : 's') + ' shown';
-  }
-
-  statusFilter.addEventListener('change', renderRows);
-  renderRows();
-
-  var bars   = document.getElementById('bars');
+  // Compute true max across actuals and forecasts for scaling
   var maxVal = 1;
-  
-monthlyData.forEach(function(d) {
-    if (d.month === 'YTD') return;
-    
-    var actualVal   = d.is_forecast ? null : (d.value || null);
-    var forecastVal = (d.forecast_val !== null) ? d.forecast_val : null;
+  monthlyData.forEach(function(d) {
+    if (d.value       && d.value       > maxVal) maxVal = d.value;
+    if (d.forecast_val && d.forecast_val > maxVal) maxVal = d.forecast_val;
+  });
 
-    var col  = document.createElement('div'); col.className  = 'bar-col';
+  monthlyData.forEach(function(d) {
+    var col  = document.createElement('div'); col.className = 'bar-col';
     var wrap = document.createElement('div'); wrap.className = 'bar-wrap';
-    var pair = document.createElement('div'); pair.className = 'bar-pair'; // Container for relative positioning
+    wrap.style.gap = '3px';
+    wrap.style.alignItems = 'flex-end';
+    wrap.style.display = 'flex';
 
-    // Render Blue Bar (Actuals)
-    if (actualVal !== null) {
-      var actual = document.createElement('div'); 
-      actual.className = 'bar-mini';
-      actual.style.height = Math.max((actualVal / maxVal) * 100, 1) + '%';
-      actual.style.width = '80%'; // Make bar wider for better visibility
-      pair.appendChild(actual);
+    // Actual bar (blue) — only for past/current months
+    if (!d.is_forecast && d.value && d.value > 0) {
+      var barA = document.createElement('div'); barA.className = 'bar-actual';
+      var pct  = Math.max((d.value / maxVal) * 100, 1);
+      barA.style.height = pct + '%';
+      barA.title = d.month + ' Actual: ' + fmt.format(d.value);
+      wrap.appendChild(barA);
     }
 
-    // Render Orange Dot (Prior Forecast)
-    if (forecastVal !== null && forecastVal > 0) {
-      var dot = document.createElement('div');
-      dot.className = 'forecast-dot';
-      // Set the vertical position based on the forecast value
-      dot.style.bottom = (forecastVal / maxVal * 100) + '%';
-      dot.title = 'Prior Forecast for ' + d.month + ': $' + Math.round(forecastVal).toLocaleString();
-      pair.appendChild(dot);
+    // Forecast bar (orange) — current month + future months
+    if (d.forecast_val && d.forecast_val > 0 && (d.is_forecast || d.is_current_month)) {
+      var barF = document.createElement('div'); barF.className = 'bar-forecast';
+      barF.style.height = Math.max((d.forecast_val / maxVal) * 100, 1) + '%';
+      barF.title = d.month + ' Forecast: ' + fmt.format(d.forecast_val);
+      wrap.appendChild(barF);
     }
 
-    wrap.appendChild(pair);
+    // Dotted forecast reference line for past months (CSS top offset)
+    if (!d.is_forecast && !d.is_current_month && d.forecast_val && d.forecast_val > 0) {
+      var line = document.createElement('div');
+      line.style.cssText = 'position:absolute;left:0;right:0;height:2px;'
+        + 'border-top:2px dashed rgba(217,119,6,0.6);'
+        + 'bottom:' + Math.max((d.forecast_val / maxVal) * 100, 0) + '%;';
+      line.title = d.month + ' Forecast (ref): ' + fmt.format(d.forecast_val);
+      wrap.style.position = 'relative';
+      wrap.appendChild(line);
+    }
+
     var label = document.createElement('div'); label.className = 'bar-label';
     label.textContent = d.month;
-    col.appendChild(wrap); col.appendChild(label);
-    bars.appendChild(col);
-});
+    col.appendChild(wrap);
+    col.appendChild(label);
+    barsEl.appendChild(col);
+  });
+
+  var footer = document.getElementById('chartFooter');
+  if (footer) footer.textContent = 'Award Year 2: Feb 1 2026 – Jan 31 2027';
+})();
 </script>
 
 __HTML2PDF_JS__
 
 <script>
+// ─── Export PDF ────────────────────────────────────────────────────────────
 function exportPDF() {
   var month    = "__MONTH__";
   var award    = "__AWARD__";
   var filename = 'PPSC_Executive_Summary_' + month.replace(/\s+/g,'_') + '.pdf';
-
-  var fmtUsd = function(v) {
-    return new Intl.NumberFormat('en-US',{style:'currency',currency:'USD',maximumFractionDigits:0}).format(v);
-  };
-  var fmtShort = function(v) {
-    var av = Math.abs(v), sign = v < 0 ? '-' : '';
-    if (av >= 1000000) return sign+'$'+(av/1000000).toFixed(1)+'M';
-    if (av >= 1000)    return sign+'$'+(av/1000).toFixed(0)+'k';
-    return sign+'$'+av.toFixed(0);
-  };
+  var fmtUsd   = function(v){ return new Intl.NumberFormat('en-US',{style:'currency',currency:'USD',maximumFractionDigits:0}).format(v); };
+  var fmtShort = function(v){ var av=Math.abs(v),s=v<0?'-':''; if(av>=1e6) return s+'$'+(av/1e6).toFixed(1)+'M'; if(av>=1e3) return s+'$'+(av/1e3).toFixed(0)+'k'; return s+'$'+av.toFixed(0); };
 
   var atRisk       = milestones.filter(function(m){ return m.status==='At Risk'; });
   var onWatch      = milestones.filter(function(m){ return m.status==='Watch'; });
-  var onPaceList   = milestones.filter(function(m){ return m.burn_rate_status==='On Pace'; });
-  var aheadList    = milestones.filter(function(m){ return m.burn_rate_status==='Ahead'; });
-  var behindList   = milestones.filter(function(m){ return m.burn_rate_status==='Behind'; });
-  var totalOverrun = milestones.reduce(function(s,m){ return s+Math.max(m.projected_overrun,0); },0);
+  var totalOverrun = milestones.reduce(function(s,m){ return s+Math.max(m.projected_overrun||0,0); },0);
   var estBal       = milestones.reduce(function(s,m){ return s+(m.est_balance||0); },0);
   var ytdTotal     = milestones.reduce(function(s,m){ return s+(m.ytd_actual||0); },0);
   var monthTotal   = milestones.reduce(function(s,m){ return s+(m.monthly_spend||0); },0);
   var budgetTotal  = milestones.reduce(function(s,m){ return s+(m.budget||0); },0);
-  var balColor     = estBal < 0 ? '#dc2626' : '#059669';
-
-  var riskScore = function(m) {
-    return Math.abs(m.projected_overrun)/Math.max(m.budget,1)*50
-      + (m.burn_rate_status==='Ahead'?30:0)
-      + (m.status==='At Risk'?20:0);
-  };
+  var balColor     = estBal<0?'#dc2626':'#059669';
 
   var watchlist = milestones.slice()
     .filter(function(m){ return !m.exception_note; })
-    .sort(function(a,b){ return riskScore(b)-riskScore(a); })
+    .sort(function(a,b){ return Math.abs(b.projected_overrun||0)-Math.abs(a.projected_overrun||0); })
     .slice(0,8);
 
-  var tableRows = watchlist.map(function(m) {
-    var rowBg    = m.status==='At Risk'?'#fff5f5':m.status==='Watch'?'#fffbeb':'#ffffff';
-    var varColor = m.projected_overrun>0?'#dc2626':'#059669';
-    var varArrow = m.projected_overrun>0?'▲':'▼';
-    var sColor   = m.status==='At Risk'?'#dc2626':m.status==='Watch'?'#92400e':'#059669';
-    return '<tr style="background:'+rowBg+';page-break-inside:avoid;">'
-      +'<td style="font-weight:600">'+m.title+'</td>'
-      +'<td style="color:'+sColor+';font-weight:700">'+m.status+'</td>'
-      +'<td>'+fmtUsd(m.budget)+'</td>'
-      +'<td>'+fmtUsd(m.ytd_actual)+'</td>'
-      +'<td style="color:'+varColor+';font-weight:600">'+varArrow+' '+fmtShort(Math.abs(m.projected_overrun))+'</td>'
-      +'<td style="font-size:8px;color:#51627d;max-width:180px;">'+(m.exception_note||'—')+'</td>'
+  var tableRows = watchlist.map(function(m){
+    var rowBg=m.status==='At Risk'?'#fff5f5':m.status==='Watch'?'#fffbeb':'#fff';
+    var varC=m.projected_overrun>0?'#dc2626':'#059669';
+    var sC=m.status==='At Risk'?'#dc2626':m.status==='Watch'?'#92400e':'#059669';
+    return '<tr style="background:'+rowBg+';">'
+      +'<td style="font-weight:600;">'+m.title+'</td>'
+      +'<td style="color:'+sC+';font-weight:700;">'+m.status+'</td>'
+      +'<td>'+fmtUsd(m.budget||0)+'</td>'
+      +'<td>'+fmtUsd(m.ytd_actual||0)+'</td>'
+      +'<td style="color:'+varC+';font-weight:600;">'+(m.projected_overrun>0?'+':'')+fmtShort(m.projected_overrun||0)+'</td>'
+      +'<td style="font-size:8px;color:#51627d;">'+(m.exception_note||'—')+'</td>'
       +'</tr>';
   }).join('');
 
-  var findings = [];
-  findings.push(estBal<0
-    ? '⚠️ Portfolio balance is <b>negative ('+fmtUsd(estBal)+')</b> — budget review required.'
-    : '✅ Portfolio is on budget (<b>'+fmtUsd(estBal)+'</b> variance). Balance is tight — monitor closely.');
-  atRisk.slice(0,4).forEach(function(m) {
-    var pct  = m.budget>0?Math.round(Math.abs(m.projected_overrun)/m.budget*100):0;
-    var note = m.exception_note ? ' — '+m.exception_note : '';
-    findings.push('⚠️ <b>'+m.title+' ('+fmtShort(Math.abs(m.projected_overrun))+' overrun, '+pct+'%)</b>'+note+'. Action: Revised spend plan due by end of next month.');
-  });
-  onWatch.slice(0,2).forEach(function(m) {
-    findings.push('👁 <b>'+m.title+'</b>: balance tightening ('+fmtUsd(m.est_balance)+' remaining). Monitor next month actuals.');
-  });
-  milestones.filter(function(m){ return m.exception_note; }).forEach(function(m) {
-    findings.push('ⓘ <b>'+m.title+'</b>: '+m.exception_note);
-  });
+  var findings=[];
+  findings.push(estBal<0?'⚠️ Portfolio balance is negative ('+fmtUsd(estBal)+')':'✅ Portfolio is on budget ('+fmtUsd(estBal)+' remaining).');
+  atRisk.slice(0,4).forEach(function(m){ findings.push('⚠️ <b>'+m.title+'</b>: '+fmtShort(Math.abs(m.projected_overrun||0))+' projected overrun.'); });
+  onWatch.slice(0,2).forEach(function(m){ findings.push('👁 <b>'+m.title+'</b>: balance tightening ('+fmtUsd(m.est_balance||0)+' remaining).'); });
+  milestones.filter(function(m){return m.exception_note;}).forEach(function(m){ findings.push('ⓘ <b>'+m.title+'</b>: '+m.exception_note); });
 
-  var now = new Date().toLocaleString('en-US',{month:'long',day:'numeric',year:'numeric',hour:'2-digit',minute:'2-digit'});
+  var now=new Date().toLocaleString('en-US',{month:'long',day:'numeric',year:'numeric',hour:'2-digit',minute:'2-digit'});
+  var kpiCells=[['Award Budget',fmtUsd(budgetTotal),'#10203a'],['Monthly Spend',fmtUsd(monthTotal),'#10203a'],['YTD Spend',fmtUsd(ytdTotal),'#10203a'],['Est. Balance',fmtUsd(estBal),balColor]]
+    .map(function(x,i){ return (i>0?'<td style="width:10px"></td>':'')+'<td class="kpi"><div class="kpi-lbl">'+x[0]+'</div><div class="kpi-val" style="color:'+x[2]+';">'+x[1]+'</div></td>'; }).join('');
 
-  var kpiCells = [
-    ['Award Budget',  fmtUsd(budgetTotal), '#10203a'],
-    ['Monthly Spend', fmtUsd(monthTotal),  '#10203a'],
-    ['YTD Spend',     fmtUsd(ytdTotal),    '#10203a'],
-    ['Est. Balance',  fmtUsd(estBal),      balColor],
-  ].map(function(x,i) {
-    return (i>0?'<td style="width:10px"></td>':'')
-      +'<td class="kpi"><div class="kpi-lbl">'+x[0]+'</div>'
-      +'<div class="kpi-val" style="color:'+x[2]+'">'+x[1]+'</div></td>';
-  }).join('');
-
-  var paceSummary = [
-    ['On Pace', onPaceList.length,  '#059669','#f0fdf4'],
-    ['Ahead',   aheadList.length,   '#d97706','#fffbeb'],
-    ['Behind',  behindList.length,  '#2563eb','#eff6ff'],
-    ['At Risk', atRisk.length,      '#dc2626','#fff5f5'],
-  ].map(function(x,i) {
-    return (i>0?'<td style="width:6px"></td>':'')
-      +'<td style="background:'+x[3]+';border-radius:6px;padding:6px;text-align:center;">'
-      +'<div style="font-size:16px;font-weight:800;color:'+x[2]+'">'+x[1]+'</div>'
-      +'<div style="font-size:7px;text-transform:uppercase;color:'+x[2]+';margin-top:1px;">'+x[0]+'</div>'
-      +'</td>';
-  }).join('');
-
-  var findingsHtml = findings.map(function(f){ return '<div class="finding">'+f+'</div>'; }).join('');
-
-  var html = '<!DOCTYPE html><html><head><meta charset="UTF-8"><style>'
+  var html='<!DOCTYPE html><html><head><meta charset="UTF-8"><style>'
     +'@page{size:landscape;margin:0.55in 0.5in 0.45in 0.5in;}'
     +'*{box-sizing:border-box;margin:0;padding:0;-webkit-print-color-adjust:exact;print-color-adjust:exact;}'
     +'body{font-family:Arial,sans-serif;font-size:9.5px;color:#10203a;background:white;}'
     +'table{border-collapse:collapse;width:100%;}td,th{vertical-align:top;}'
     +'.hdr{background:linear-gradient(135deg,#2563eb,#7c3aed)!important;color:white!important;border-radius:7px;padding:10px 16px;margin-bottom:10px;}'
-    +'.hdr-title{font-size:16px;font-weight:800;}'
-    +'.hdr-sub{font-size:9px;opacity:0.85;margin-top:3px;}'
+    +'.hdr-title{font-size:16px;font-weight:800;}.hdr-sub{font-size:9px;opacity:.85;margin-top:3px;}'
     +'.kpi{border:1px solid #e2e8f0;border-radius:7px;padding:8px 12px;text-align:center;}'
     +'.kpi-lbl{font-size:7.5px;text-transform:uppercase;color:#51627d;letter-spacing:.05em;}'
     +'.kpi-val{font-size:14px;font-weight:800;margin-top:3px;}'
@@ -662,105 +674,86 @@ function exportPDF() {
     +'.ms-table th{background:#f6f8fc!important;padding:5px 8px;font-size:8px;text-transform:uppercase;color:#51627d;border-bottom:1px solid #e2e8f0;text-align:left;}'
     +'.ms-table td{padding:5px 8px;border-bottom:1px solid #f1f5f9;font-size:8.5px;line-height:1.4;}'
     +'.finding{font-size:9px;line-height:1.55;padding:4px 0;border-bottom:1px solid #f1f5f9;}'
-    +'.notes{font-size:8px;color:#51627d;line-height:1.7;}'
     +'.footer{font-size:8px;color:#94a3b8;text-align:center;border-top:1px solid #f1f5f9;padding-top:6px;margin-top:9px;}'
     +'</style></head><body>'
-    +'<table style="margin-bottom:10px;"><tr><td class="hdr">'
-    +'<div class="hdr-title">PPSC Financial Executive Summary</div>'
-    +'<div class="hdr-sub">'+month+' &nbsp;·&nbsp; Award '+award+' &nbsp;·&nbsp; '+now+'</div>'
-    +'</td></tr></table>'
+    +'<table style="margin-bottom:10px;"><tr><td class="hdr"><div class="hdr-title">PPSC Financial Executive Summary</div><div class="hdr-sub">'+month+' · Award '+award+' · '+now+'</div></td></tr></table>'
     +'<table style="margin-bottom:12px;table-layout:fixed;"><tr>'+kpiCells+'</tr></table>'
     +'<table style="table-layout:fixed;margin-bottom:0;"><tr valign="top">'
-    +'<td style="width:62%">'
-    +'<div class="sec-label">Milestone Risk Ranking <span style="font-weight:400;color:#51627d;font-size:8px;">(top 8, exceptions excluded)</span></div>'
-    +'<table class="ms-table" style="margin-top:4px;"><thead><tr>'
-    +'<th style="width:24%">Milestone</th><th style="width:9%">Status</th>'
-    +'<th style="width:13%">Budget</th><th style="width:13%">YTD Actual</th>'
-    +'<th style="width:12%">Overrun</th><th style="width:29%">Narrative</th>'
-    +'</tr></thead><tbody>'+tableRows+'</tbody></table>'
-    +'</td>'
-    +'<td style="width:14px"></td>'
-    +'<td style="width:37%">'
-    +'<div class="sec-label" style="margin-bottom:6px;">Portfolio Pace Summary</div>'
-    +'<table style="margin-bottom:10px;table-layout:fixed;width:100%;"><tr>'+paceSummary+'</tr></table>'
-    +'<div style="padding:5px 8px;border-radius:6px;text-align:center;margin-bottom:7px;'
-    +'background:'+(totalOverrun>0?'#fff5f5':'#f0fdf4')+';color:'+(totalOverrun>0?'#dc2626':'#059669')+';"> '
-    +'<div style="font-size:7px;text-transform:uppercase;letter-spacing:.05em;">Total Projected Overrun</div>'
-    +'<div style="font-size:13px;font-weight:800;margin-top:2px;">'+(totalOverrun>0?fmtUsd(totalOverrun):'None')+'</div>'
-    +'</div>'
-    +'<div class="sec-label" style="margin-bottom:5px;">Key Findings &amp; Actions</div>'
-    +findingsHtml
-    +'<div class="notes" style="margin-top:8px;padding:7px 9px;border:1px solid #e2e8f0;border-radius:7px;">'
-    +'<b style="color:#10203a;">Budget Status</b><br>'
-    +'On Track = projected within budget &nbsp;·&nbsp; Watch = balance tightening &nbsp;·&nbsp; At Risk = ahead of plan<br>'
-    +'<b style="color:#10203a;margin-top:4px;display:block;">Pace Threshold</b>'
-    +'Ahead = avg monthly &gt;150% of 1/12 budget &nbsp;·&nbsp; On Pace = 80–150% &nbsp;·&nbsp; Behind &lt;80%<br>'
-    +'<b style="color:#10203a;margin-top:4px;display:block;">Projected Overrun</b>'
-    +'Est. total spend minus award budget'
-    +'</div>'
+    +'<td style="width:60%"><div class="sec-label">Milestone Risk Ranking</div>'
+    +'<table class="ms-table" style="margin-top:4px;"><thead><tr><th>Milestone</th><th>Status</th><th>Budget</th><th>YTD</th><th>Overrun</th><th>Note</th></tr></thead><tbody>'+tableRows+'</tbody></table></td>'
+    +'<td style="width:14px;"></td>'
+    +'<td style="width:40%"><div class="sec-label" style="margin-bottom:6px;">Key Findings &amp; Actions</div>'
+    +findings.map(function(f){return '<div class="finding">'+f+'</div>';}).join('')
     +'</td></tr></table>'
-    +'<div class="footer">PPSC Financial Automation &nbsp;·&nbsp; '+month+' &nbsp;·&nbsp; Award '+award+' &nbsp;·&nbsp; '+now+'</div>'
-    +'<script>window.onload=function(){setTimeout(function(){window.print();window.onafterprint=function(){window.close();};},300);};<\/script>'
+    +'<div class="footer">PPSC Financial Automation · '+month+' · '+now+'</div>'
+    +'<script>window.onload=function(){setTimeout(function(){window.print();},300);};<\/script>'
     +'</body></html>';
 
-  var win = window.open('','_blank','width=1200,height=900');
-  if (!win) {
-    alert('Pop-up blocked! Click the pop-up icon in your address bar, choose "Always allow", then try again.');
-    return;
-  }
+  var win=window.open('','_blank','width=1200,height=900');
+  if(!win){alert('Pop-up blocked — please allow pop-ups and retry.');return;}
   win.document.open(); win.document.write(html); win.document.close();
 }
 </script>
 
+<!-- ── Site nav: Latest / Archive / ← Prev / Next → ───────────────────── -->
 <script>
 (async function() {
-  var body         = document.body;
-  var currentFile  = body.dataset.currentFile;
-  var manifestPath = "__MONTHS_JSON_PATH__";
-  var baseUrl      = "__SITE_BASE_URL__";
-  var archiveUrl   = "__ARCHIVE_BASE_URL__";
+  var body        = document.body;
+  var currentFile = body.dataset.currentFile || '';
+  var manifestUrl = "__MONTHS_JSON_PATH__";
+  var baseUrl     = "__SITE_BASE_URL__";
+  var archiveUrl  = "__ARCHIVE_BASE_URL__";
   var months = [];
   try {
-    var res = await fetch(manifestPath, {cache:"no-store"});
+    var res = await fetch(manifestUrl, {cache:'no-store'});
     months  = await res.json();
-  } catch(e) { console.warn("Could not load archive manifest:", e); }
-  var cf  = currentFile.replace("archive/","");
+  } catch(e) { console.warn('Archive manifest unavailable:', e); }
+
+  // Match by filename (strip leading "archive/" if present)
+  var cf  = currentFile.replace(/^.*\//, '');
   var idx = months.findIndex(function(x){ return x.file === cf; });
-  var prev = idx > 0                           ? months[idx-1] : null;
-  var next = idx >= 0 && idx < months.length-1 ? months[idx+1] : null;
-  var nav  = document.getElementById("siteNav");
-  if (!nav) return;
-  nav.innerHTML =
+  var prev = idx > 0                             ? months[idx-1] : null;
+  var next = idx >= 0 && idx < months.length - 1 ? months[idx+1] : null;
+
+  var linkStyle = 'text-decoration:none;padding:8px 12px;border-radius:6px;'
+    + 'border:1px solid #cbd5e1;background:#fff;font-size:12px;color:#10203a;';
+  var navEl = document.getElementById('siteNav');
+  if (!navEl) return;
+  navEl.innerHTML =
     '<div style="display:flex;gap:6px;align-items:center;flex-wrap:wrap;">'
-    +'<a href="'+baseUrl+'" style="text-decoration:none;padding:8px;border-radius:6px;border:1px solid #cbd5e1;background:#fff;font-size:12px;">Latest</a>'
-    +'<a href="'+archiveUrl+'" style="text-decoration:none;padding:8px;border-radius:6px;border:1px solid #cbd5e1;background:#fff;font-size:12px;">Archive</a>'
-    +(prev?'<a href="'+archiveUrl+prev.file+'" style="text-decoration:none;padding:8px;border-radius:6px;border:1px solid #cbd5e1;background:#fff;font-size:12px;">← Previous</a>':'')
-    +(next?'<a href="'+archiveUrl+next.file+'" style="text-decoration:none;padding:8px;border-radius:6px;border:1px solid #cbd5e1;background:#fff;font-size:12px;">Next →</a>':'')
-    +'</div>';
+    + (prev ? '<a href="' + archiveUrl + prev.file + '" style="' + linkStyle + '">← ' + prev.label + '</a>' : '')
+    + '<a href="' + baseUrl     + '" style="' + linkStyle + '">Latest</a>'
+    + '<a href="' + archiveUrl  + '" style="' + linkStyle + '">Archive</a>'
+    + (next ? '<a href="' + archiveUrl + next.file + '" style="' + linkStyle + '">' + next.label + ' →</a>' : '')
+    + '</div>';
 })();
 </script>
 
+<!-- ── Column sort for .sortable tables ────────────────────────────────── -->
 <script>
 document.addEventListener('click', function(e) {
-  var target = e.target;
-  if (target.tagName !== 'TH') return;
-  var table = target.closest('table.sortable');
+  var th = e.target;
+  if (th.tagName !== 'TH') return;
+  var table = th.closest('table.sortable');
   if (!table) return;
-  var index = Array.prototype.indexOf.call(target.parentNode.children, target);
-  var tbody = table.querySelector('tbody') || table;
-  var rows  = Array.prototype.slice.call(tbody.querySelectorAll('tr'));
-  if (tbody.tagName === 'TABLE') rows.shift();
-  var ascending = table.dataset.sortOrder !== 'asc';
-  rows.sort(function(a, b) {
-    var cellA = (a.children[index] ? a.children[index].innerText : "").replace(/[%$,]/g, '');
-    var cellB = (b.children[index] ? b.children[index].innerText : "").replace(/[%$,]/g, '');
-    var valA  = isNaN(parseFloat(cellA)) ? cellA.toLowerCase() : parseFloat(cellA);
-    var valB  = isNaN(parseFloat(cellB)) ? cellB.toLowerCase() : parseFloat(cellB);
-    return (valA < valB ? -1 : 1) * (ascending ? 1 : -1);
+  var idx   = Array.prototype.indexOf.call(th.parentNode.children, th);
+  var tbody = table.querySelector('tbody');
+  var rowArr = Array.prototype.slice.call(tbody.querySelectorAll('tr'));
+  var asc   = table.dataset.sortOrder !== 'asc';
+  rowArr.sort(function(a, b) {
+    var ca = ((a.children[idx]||{}).innerText||'').replace(/[%$,]/g,'');
+    var cb = ((b.children[idx]||{}).innerText||'').replace(/[%$,]/g,'');
+    var va = isNaN(parseFloat(ca)) ? ca.toLowerCase() : parseFloat(ca);
+    var vb = isNaN(parseFloat(cb)) ? cb.toLowerCase() : parseFloat(cb);
+    return (va < vb ? -1 : 1) * (asc ? 1 : -1);
   });
-  table.dataset.sortOrder = ascending ? 'asc' : 'desc';
-  rows.forEach(function(row) { tbody.appendChild(row); });
+  table.dataset.sortOrder = asc ? 'asc' : 'desc';
+  rowArr.forEach(function(r){ tbody.appendChild(r); });
 });
 </script>
+
+<!-- ── Milestone count popover (injected by Python) ─────────────────────── -->
+__MIL_POPOVER_JS__
+
 </body>
 </html>
